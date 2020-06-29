@@ -1,0 +1,1 @@
+from y:\teaching\race-ucla-p2\trace\sync-trace.sh

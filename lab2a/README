@@ -1,0 +1,65 @@
+#NAME: Luca Matsumoto
+#ID: 204726167
+#EMAIL: lucamatsumoto@gmail.com
+#SLIPDAYS: 2
+
+lab2_add.c: Source file for the lab2_add program which adds to a shared variable counter. Takes --iterations=iteration --threads=threadNum --yield --sync=option options in order to choose the iterations, thread numbers, yielding option, and synchronization methods. 
+
+lab2_list.c: Source file for the lab2_list program that implements a modification to a link list to support concurrent programming. Command line options include--iterations=iteration --threads=threadNum --yield=yieldOpts --sync=syncOpts and outputs the statistics of the program (run time, number of operations, average time per operations).
+
+lab2_add.csv: Information about different tests run for lab2_add with different yield and sync options as well as different numbers of threads/iterations
+ 
+lab2_add-1.png: plot of the threads and iterations required to generate a failure with and without yields
+
+lab2_add-2.png: plot of the average time per operation with and without yields
+
+lab2_add-3.png: plot of the average time per single threaded operations against the number of iterations
+
+lab2_add-4.png: plot of the threads and iterations that can successfully run with yields under each sync option
+
+lab2_add-5.png: plot of the average time per protected operation against the number of threads
+
+lab2_list-1.png: plot of the average time per single threaded unprotected operations against the number of iterations
+
+lab2_list-2.png: plot of threads and iterations required to generate a failure with and without yields
+
+lab2_list-3.png: plot of threads and iterations required to generate a failure with and without yields
+
+lab2_list-4.png: plot of length adjust cost per operation vs the number of threads for the various synchronization options
+
+SortedList.h: header file that describes the interface for the linked list operations
+
+SortedList.c: C source file for a module that implements linked list insert, delete, lookup, and length operations
+
+tester.sh: file that runs tests for combinations of different threads, iterations, yields, and sync options and stores the results into csv files.
+
+Makefile: Makefile that includes graphs, build, clean, tests, and dist targets to generate files for submission.
+
+README: Description of files contained in lab as well as the answers to the questions
+
+Questions
+
+2.1.1: Because there are less iterations, race conditions that result in non-deterministic outcomes are not likely to occur. This mainly occurs because the overhead of creating a thread is big relative to a small number of iterations, meaning that threads may able to finish executing their respective operations before being preempted. With large amounts of iterations, threads may have overlapping work which causes race conditions from one thread accessing the shared variable at the same time as others.
+Significantly smaller number of iterations seldom fail because the probability that one thread will access the shared counter at the same time as others is low compared to high iterations.
+
+2.1.2: Because yielding is a system call that requires a context switch to be made, it can signficantly slow dodown the time it takes. This is expensive because it requires saving register values onto the kernel stack in order to execute the context switch, and those values must be restored on returning to user mode. 
+Therefore, the additional time is going towards the expensive overhead from the context switches that are being executed.
+It is not possible to get valid per-operatio timings if we are using the yield option because there is an extra amount of time added to the operation time that is not related to the operation itself. 
+
+2.1.3: The average cost per operations drops with increasing iterations because the overhead that occurs from thread creation doesn't increase because it is spread out over more iterations. 
+To find what the correct cost is, we can keep increasing the number of iterations until the slope becomes 1, or it becomes stable.  
+
+2.1.4: The options perform well/similarly for low numbers of threads because there is low contention for a lock. This means that each thread may be able to retrieve the lock faster/more immediately than where there is high contention. When there are large amounts of threads, there is high contention for a resource and therefore the time spent waiting for a lock to become available is greater.
+
+Operation slows down as the number of threads rise because mutexes cause threads to sleep if the lock is already owned by another thread. Therefore, as the threads increase, the number of threads that will sleep increases as well. Spin-locks spin while repeatedly checking if the lock is available meaning that higher contention decreases performance. Compare and swap also waits for the lock to be released, using up CPU cycles and slowing down operations as thread numbers increase.
+
+2.2.1: As the number of threads increase, the number of time per mutex-protected operation also seems to increase. This is because the contention rises as the number of threads attempting to access the critical section increases with increasing number of threads. 
+The rate of increase in Part 2 is larger because there is a larger need for syncrhonization (insertion, deletion, lookup, etc.) compared to  a simple add function to increment a counter. Therefore, because of contention, threads spend more time waiting on other threads.
+
+2.2.2: The time per operation for mutexes and spin locks both increase with the number of threads. However, spin locks increase at a faster rate as evident by the graphs showing higher time per operation than the mutexes for large numbers of threads. This is because spin locks force waiting threads to wait (busy waiting) and waste CPU cycles while waiting to acquire the lock. Mutexes put the thread to sleep so that there aren't CPU cycles wasted. (CPU can do other tasks) 
+Both mutexes and spin locks have increasing slopes while spin locks have a steeper slop due to busy waiting and wasted CPU cycles. Once again, because the list operations are more expensive, part 2 of the project has higher time per operation that part 1 does.
+
+Resources
+https://computing.llnl.gov/tutorials/pthreads/ for pthread help
+http://gcc.gnu.org/onlinedocs/gcc-4.4.3/gcc/Atomic-Builtins.html help with spin locks and compare and swap
+https://www.cs.rutgers.edu/~pxk/416/notes/c-tutorials/gettime.html for clock_gettime help

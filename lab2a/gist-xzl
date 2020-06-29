@@ -1,0 +1,220 @@
+
+
+
+./lab2_add --iterations=10000 --threads=32 --sync=m
+./lab2_add --iterations=100000 --threads=4 --sync=c
+
+
+rm -f res.txt
+rm -f list.txt
+touch res.txt
+touch list.txt
+
+#add-none test
+for i in 1, 2, 4, 8, 12
+do
+    for j in 10, 20, 40, 80, 100, 1000, 10000, 100000
+    do
+        ./lab2_add --iterations=$j --threads=$i >> res.txt
+    done
+done
+
+#add-m test
+for i in 1, 2, 4, 8, 12
+do
+        for j in 10, 20, 40, 80, 100, 1000, 10000, 100000
+        do
+                ./lab2_add --iterations=$j --threads=$i --sync=m >> res.txt
+        done
+done
+
+#add-s test
+for i in 1, 2, 4, 8, 12
+do
+        for j in 10, 20, 40, 80, 100, 1000, 10000, 100000
+        do
+                ./lab2_add --iterations=$j --threads=$i --sync=s >> res.txt
+        done
+done
+
+#add-c test
+for i in 1, 2, 4, 8, 12
+do
+        for j in 10, 20, 40, 80, 100, 1000, 10000, 100000
+        do
+                ./lab2_add --iterations=$j --threads=$i --sync=c >> res.txt
+        done
+done
+
+
+
+################ list #################### 
+
+rm -f res.txt
+rm -f list.txt
+touch res.txt
+touch list.txt
+
+
+# single thread
+for j in 10, 100, 1000, 10000, 20000
+do
+    ./lab2_list --iterations=$j --threads=1 >> res.txt
+done
+
+# MT, no sync
+for i in 2, 4, 8, 12
+do
+    for j in 1, 10, 100, 1000
+    do
+        ./lab2_list --iterations=$j --threads=$i >> res.txt
+    done
+done
+
+
+# MT, sync, 
+
+# no sync 
+#for i in 1, 2, 4, 8, 12, 16, 24
+#do
+#    ./lab2_list --iterations=1000 --threads=$i >> res.txt
+#done
+
+for i in 1, 2, 4, 8, 12, 16, 24
+do
+    for j in 1, 10, 100, 1000
+    do
+        ./lab2_list --iterations=$j --threads=$i --sync=m >> res.txt
+	done
+done
+
+for i in 1, 2, 4, 8, 12, 16, 24
+do
+    for j in 1, 10, 100, 1000
+    do
+        ./lab2_list --iterations=$j --threads=$i --sync=s >> res.txt
+	done
+done
+
+
+./lab2_list --iterations=100000 --threads=4 --sync=c
+
+# test scalability ...
+for tr in 1, 2, 4
+do
+    for j in 1000000
+    do
+        ./lab2_list --iterations=$j --threads=$tr --sync=m --lists=4 | tee -a res.txt
+	done
+done
+
+./lab2_list --iterations=1000000 --threads=1 --sync=s --lists=4 
+
+vtune -collect hotspots \
+./lab2_list --iterations=1000000 --threads=1 --sync=m --lists=4 
+
+vtune -collect hotspots \
+./lab2_list --iterations=1000000 --threads=2 --sync=m --lists=4 
+
+
+vtune -collect hotspots \
+ ./lab2_list --iterations=1000000 --threads=2 --sync=m --lists=32
+ 
+ vtune -collect hotspots -target-duration-type veryshort\
+ ./lab2_list --iterations=1000000 --threads=1 --sync=s --lists=4
+ 
+ vtune -collect hotspots \
+ ./lab2_list --iterations=10000000 --threads=2 --sync=s --lists=4
+ 
+ vtune -collect hotspots \
+ ./lab2_list --iterations=10000000 --threads=1 --sync=s --lists=4
+ 
+ vtune -collect threading \
+ ./lab2_list --iterations=10000000 --threads=2 --sync=s --lists=4
+ 
+vtune -collect hotspot -knob sampling-mode=hw ./lab2_list --iterations=10000000 --threads=2 --sync=s --lists=4
+
+vtune -collect hotspot ./lab2_list --iterations=10000000 --threads=2 --sync=s --lists=4   
+ vtune -collect threading \
+ ./lab2_list --iterations=20000000 --threads=4 --sync=s --lists=4
+
+# w/o sync 
+ 
+ vtune -collect threading \
+ ./lab2_list --iterations=20000000 --threads=3 --lists=3
+ 
+ 
+ vtune -collect hotspot -knob sampling-mode=hw \
+ ./lab2_list --iterations=20000000 --threads=8 --lists=8
+ 
+ 
+ ./lab2_list --iterations=20000000 --threads=8 --lists=8 --sync=s
+ 
+ ./lab2_list --iterations=2000000 --threads=4 --lists=8
+ 
+  vtune -collect hotspot -knob sampling-mode=hw \
+ ./lab2_list-steal --iterations=4000000 --threads=4 --lists=16
+ 
+ # no steal 
+ vtune -collect threading -knob sampling-and-waits=hw \
+ ./lab2_list --iterations=20000000 --threads=8 --lists=16
+ 
+ # steal 
+ vtune -collect threading -knob sampling-and-waits=hw \
+ ./lab2_list-steal --iterations=20000000 --threads=8 --lists=64
+ 
+ 
+ vtune -collect threading -knob sampling-and-waits=hw \
+ ./lab2_list-steal --iterations=20000000 --threads=8 --lists=128 
+ 
+  vtune -collect hotspots -knob sampling-mode=hw \
+ ./lab2_list-steal --iterations=20000000 --threads=8 --lists=128
+ 
+ vtune -collect uarch-exploration \
+ ./lab2_list-steal --iterations=20000000 --threads=8 --lists=128  
+
+# test vtune itt
+  vtune -collect hotspot -knob sampling-mode=hw \
+ ./lab2_list-parts --iterations=100000 --threads=4 --lists=16
+ 
+ 
+ 
+ #PROG=./lab2_list-malloc
+ PROG=./lab2_list-biglock
+ PROG=./lab2_list-steal-padding
+ PROG=./lab2_list-steal
+ PROG=./list-m
+ 
+ VTUNE="vtune -collect hotspot -knob sampling-mode=hw"
+ VTUNE="vtune -collect uarch-exploration"
+ VTUNE="vtune -collect threading -knob sampling-and-waits=hw"
+ 
+ VTUNE=
+ 
+ $VTUNE $PROG --iterations=400k  --threads=1 --lists=1
+ $VTUNE $PROG --iterations=400k  --threads=2 --lists=2
+ $VTUNE $PROG --iterations=400k  --threads=4 --lists=4
+ $VTUNE $PROG --iterations=400k  --threads=8 --lists=32
+ 
+ 
+$VTUNE $PROG --iterations=400k  --threads=16 --lists=64
+ 
+ # makalu: about 50M
+ $PROG --iterations=1M --threads=1 --lists=64
+ 
+ # about 330M. ~47ms each thread. too short?
+ $VTUNE  $PROG --iterations=1M --threads=4 --lists=64
+ 
+ 
+ # scalability issue? 
+ $VTUNE  $PROG --iterations=20M --threads=16 --lists=64
+ 
+ $VTUNE  $PROG --iterations=20M --threads=4 --lists=16
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+  

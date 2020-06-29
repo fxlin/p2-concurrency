@@ -15,4 +15,4 @@ _deps
 .cproject
 .project
 
-
+figures/*.pdf

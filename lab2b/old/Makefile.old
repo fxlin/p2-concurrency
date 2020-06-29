@@ -1,0 +1,49 @@
+# configurable 
+USE_VTUNE = 1
+
+CC = gcc
+#CC = clang
+
+CFLAGS = -std=c99 -DDEBUG -g -s -Wall -Wextra -pthread
+LIBS = -pthread
+
+ifeq ($(USE_VTUNE), 1)
+	CFLAGS += -DUSE_VTUNE -I/data/intel/vtune_profiler/include
+	LIBS += /data/intel/vtune_profiler/lib64/libittnotify.a
+	LIBS += -ldl
+	#LDFLAGS = -static 
+endif
+
+PROGS = \
+lab2_list-steal \
+lab2_list-malloc \
+lab2_list-biglock \
+lab2_list-steal2-naivepadding 
+#lab2_list-parts \
+# lab2_list
+
+C_FILES = SortedList.c measure.c common.c
+OBJ_FILES = $(C_FILES:.c=.o)
+
+all: $(PROGS)
+	
+# https://stackoverflow.com/questions/15718653/makefile-pattern-rule-for-no-extension	
+$(PROGS) : % : %.o $(OBJ_FILES)	 
+	$(CC) $(LDFLAGS) $^ $(LIBS) -o $@ # -lprofiler
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $^ -o $@
+	 	
+install: 
+	scp $(PROGS) lab2_list-steal-padding run.sh makalu:/tmp/lab2b/
+	
+tests:
+	chmod +x tester.sh
+	./tester.sh
+
+
+clean:
+	rm -rf *.o $(PROGS)
+
+dist: default profile graphs
+	tar -czvf lab2b-204726167.tar.gz lab2_list.c SortedList* tester.sh *.png README Makefile lab2b_list.csv profile.out lab2_list.gp 
