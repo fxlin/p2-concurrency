@@ -1,4 +1,4 @@
-# Lab2: Concurrency
+# Project 2: Concurrency
 
 This lab has two experiments. For each experiment, i) follow the description, tinker with the given benchmark program, and reproduce the results; ii) do the exercises and submit answers. 
 
