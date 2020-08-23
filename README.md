@@ -32,4 +32,7 @@ sudo apt install cmake gcc-5 gcc-aarch64-linux-gnu
 
 
 Credits: inspired by UCLA "Operating Systems Principles "
+<<<<<<< HEAD
 
+=======
+>>>>>>> ffacd8c709b9931917c18994d3f91144f76a06f2
