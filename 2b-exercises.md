@@ -1,12 +1,18 @@
-# Assignments - scalability 
+# Scalability: exercises
 
-## 0. Reproduce our simple benchmarks
+## 0. Reproduce the benchmarks
 
+Repeat what has been described in our writeup. 
 
+Deliverable: a one-page report in PDF, in which you: 
+
+* show the scalability plots you generated; 
+* discuss your observation and compare with our results
+* provide any explanation / reasoning needed 
 
 ## 1. The unfinished scalability quest
 
-How does the list program scale with more than 8 threads? Profile the execution with VTune. It may be worth trying VTune's "microarchitecture exploration". Can you make it scale to 20 threads? If so, show the code and profiling results; if not, talk about possible bottlenecks. 
+How does the list program scale to more than 8 cores? Profile its execution with VTune. It may be worth trying VTune's "microarchitecture exploration". Can you make it scale to 20 cores? If so, show your code and profiling results; if not, reason about about possible bottlenecks. 
 
 Deliverable: 
 
@@ -29,7 +35,7 @@ At the end of the benchmark, validate the correctness by checking all the keys i
 
 ### Idea - a hashtable with internal partitions
 
-<img src="Y:/teaching/race-ucla-p2/figures/bigtable.png" style="zoom: 25%;" />
+<img src="figures/bigtable.png" style="zoom: 25%;" />
 
 The "big lock" approach ensures correctness but cannot scale. We can build our own hashtable (called "bigtable") by wrapping around the glib's hashtable. A bigtable consists of *N* hashtables internally, where *N* is a parameter much larger than the number of threads. Each hashtable has its own lock which must be grabbed by a worker thread before inserting keys in the hashtable. 
 
@@ -37,7 +43,7 @@ To insert a key K, a worker thread first computes a hash function H(K) to determ
 
 Of course, there are many details to take care of. I hope the tutorial above can give some useful pointers. 
 
-### Reference steps
+### A sample plan of the attack 
 
 1. Single-threaded. write the benchmark program using the glib hashtable API. Make sure you understand how to operate the hashtable. 
 2. Multi-threaded with a big lock. Transform the above version by adding pthread, mutex, etc. Design test to validate the correctness of the resultant hashtable. 

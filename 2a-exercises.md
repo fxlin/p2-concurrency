@@ -2,8 +2,8 @@
 
 ## 1. Zoom in the scene of race condition 
 
-Here is the assembly of function `add(long long *pointer, long long value)`, as dumped from objdump. Note that without assuming x86 knowledge from you, I showed the ARMv8 version (with -O2). 
-```
+Here is the assembly of function `add(long long *pointer, long long value)`, as dumped from objdump. Note that without assuming x86 knowledge from you, I showed the ARMv8 version below (compiled with -O2). 
+```asm
 640 0000000000001600 <add>:
 641     long long sum = *pointer + value;
 642        f9400002    ldr x2, [x0]
@@ -14,7 +14,7 @@ Here is the assembly of function `add(long long *pointer, long long value)`, as 
 647        d65f03c0    ret
 ```
 
-Read the assembly. 
+Read the assembly and answer: 
 
 i) How many bits in a `long long` type of integer? 
 
@@ -29,7 +29,7 @@ Add the following mechanisms to the source code:
 *   one that protects the add by a spin-lock, enabled by a new **--sync=s** option. You will have to implement your own spin-lock operation. 
 *   one that performs the add using compare-and-swap (CAS) primitives to ensure atomic updates to the shared counter, enabled by a new **\--sync=c** option. Note the name: compare-and-swap is the same as compare-and-exchange. 
 
-The provided code already can parse these new options. :wink:
+The provided code can already parse these new options! :wink:
 
 Example output: 
 

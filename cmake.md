@@ -6,7 +6,11 @@ To use CMake, we describe our build targets in a file CMakeLists.txt. Then we in
 
 ## **First time build**
 
-`$  cmake .`
+```
+# assuming we will build expierment A
+$ cd lab2a
+$ cmake .
+```
 
 This generates Makefile from CMakeLists.txt. You may take a look at Makefile to see whether it makes sense.  
 
@@ -51,4 +55,34 @@ $ file counter
 counter: ELF 64-bit LSB shared object, ARM aarch64, version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-aarch64.so.1, for GNU/Linux 3.7.0, BuildID[sha1]=f258ebadfacd9e41bc0425c6446ae419278fb50e, with debug_info, not stripped
 ```
 
-Now you can disassemble the ARM64 program with `aarch64-linux-gnu-objdump`. 
+Now you can disassemble the ARM64 program with `aarch64-linux-gnu-objdump`. e.g.
+
+```
+$ aarch64-linux-gnu-objdump -dS counter | more
+counter:     file format elf64-littleaarch64
+
+Disassembly of section .init:
+
+0000000000000f90 <_init>:
+ f90:   a9bf7bfd        stp     x29, x30, [sp, #-16]!
+ f94:   910003fd        mov     x29, sp
+ f98:   94000137        bl      1474 <call_weak_fn>
+ f9c:   a8c17bfd        ldp     x29, x30, [sp], #16
+ fa0:   d65f03c0        ret
+
+Disassembly of section .plt:
+
+0000000000000fb0 <.plt>:
+     fb0:       a9bf7bf0        stp     x16, x30, [sp, #-16]!
+     fb4:       b0000090        adrp    x16, 11000 <__FRAME_END__+0xf658>
+     fb8:       f9478211        ldr     x17, [x16, #3840]
+     fbc:       913c0210        add     x16, x16, #0xf00
+     fc0:       d61f0220        br      x17
+     fc4:       d503201f        nop
+     fc8:       d503201f        nop
+     fcc:       d503201f        nop
+< ... >     
+```
+
+
+

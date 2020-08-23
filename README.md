@@ -1,17 +1,35 @@
-# Lab2: Concurrency
+# Concurrency
 
-This lab has two experiments. For each experiment, i) follow the description, tinker with the given benchmark program, and reproduce the results; ii) do the exercises and submit answers. 
+This project has two experiments. 
+
+For each experiment, clone the whole repository first. Then follow the demo description, tinker with the given benchmark program, and reproduce the demo results. Then, do the exercises and submit your answers. 
+
+## Prerequisite (optional)
+
+If you are doing this on your own Linux box (assuming Ubuntu/Debian): 
+```
+sudo apt install cmake gcc-5 gcc-aarch64-linux-gnu 
+```
+
+## How to build the experiments
+
+[CMake](cmake.md)
+
+## Set up profiler/tracer
+
+* [Intel VTune](./vtune.md)
+
+* [A simple tracing facility](./measurement.md) 
+
+## Experiments
 
 * **Experiment A: Races & Synchronization** 
-  * [Description](./2a.md)
+  * [Demo](./2a.md)
   * [Exercises](./2a-exercises.md)
 * **Experiment B: Scalability** 
-  * [Description](./2b.md)
+  * [Demo](./2b.md)
   * [Exercises](./2b-exercises.md)
-* **Quickstarts:**
-  * [Intel VTune](./vtune.md)
-  * [A simple tracing facility](./measurement.md) 
-  * [CMake](cmake.md)
 
 
 Credits: inspired by UCLA "Operating Systems Principles "
+
