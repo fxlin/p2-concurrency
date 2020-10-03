@@ -9,7 +9,7 @@ if(CMAKE_ENV STREQUAL "aarch64")
   SET( CMAKE_C_COMPILER "aarch64-linux-gnu-gcc" )
   SET( CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -O2" )  # for reading disassembly
 else ()
-  SET( CMAKE_C_COMPILER "gcc-5" )
+  SET( CMAKE_C_COMPILER "gcc" )
 endif(CMAKE_ENV STREQUAL "aarch64")
 
 

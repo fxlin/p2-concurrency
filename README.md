@@ -8,6 +8,7 @@ For each experiment, clone the whole repository first. Then follow the demo desc
 
 If you are doing this on your own Linux box (assuming Ubuntu/Debian): 
 ```
+sudo apt install build-essential
 sudo apt install cmake gcc-5 gcc-aarch64-linux-gnu 
 ```
 
@@ -32,7 +33,3 @@ sudo apt install cmake gcc-5 gcc-aarch64-linux-gnu
 
 
 Credits: inspired by UCLA "Operating Systems Principles "
-<<<<<<< HEAD
-
-=======
->>>>>>> ffacd8c709b9931917c18994d3f91144f76a06f2
