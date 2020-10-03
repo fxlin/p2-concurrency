@@ -31,7 +31,12 @@ The official user guide is [here](https://software.intel.com/content/www/us/en/d
 ## Setup
 In our experiments, we run and profile our program on the **target** **machine** and view profile results on the **viewer machine**. 
 
-**VTune version info** (Aug 2020): `vtune_profiler_2020.1.0.607630`. Installation package: `vtune_profiler_2020_update1.tar.gz`. 
+**VTune version info** (Aug 2020): 
+
+| OS (choose one)  | Profiler version               | Installation package               |
+| ---------------- | ------------------------------ | ---------------------------------- |
+| Ubuntu 18.04 LTS | vtune_profiler_2020.1.0.607630 | vtune_profiler_2020_update1.tar.gz |
+| Ubuntu 20.04 LTS | vtune_profiler_2020.2.0.610396 | vtune_profiler_2020_update2.tar.gz |
 
 VTune has to be installed on the following machines. 
 

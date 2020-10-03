@@ -8,15 +8,15 @@ We will tinker with a minimalist, multithreaded app and see the role of synchron
 
 ### Student experience
 
-*   primary: recognize critical sections and address them with a variety of different mechanisms.
-*   primary: demonstrate the existence of race conditions, and efficacy of the subsequent solutions
-*   primary: experience with basic performance instrumentation, measurement and analysis
+*   primary: recognize critical sections and protect them with a variety of mechanisms.
+*   primary: demonstrate race conditions and how to fix them 
+*   primary: experience with performance instrumentation, measurement and analysis
 
-Viewed from a skills (rather than problem domain) perspective, this experiment focuses **less on programming**, and more **on performance measurement and analysis**.
+This experiment focuses **less on programming**, and more **on performance measurement and analysis**.
 
 We will focus on concurrency correctness in this experiment, and will consider scalability in the subsequent experiment. 
 
-## Reading
+## Prerequisites
 
 To do this experiment, you may need to study a few things:
 
@@ -28,7 +28,7 @@ To do this experiment, you may need to study a few things:
 
 ## Benchmark (counter.c): a shared integer counter
 
-Our benchmark program uses multiple threads to update a shared integer counter in parallel. The source project is built via CMake. See our simple instructions [here](./cmake.md).
+Our benchmark program uses multiple threads to update a shared integer counter in parallel. The source project is built via CMake. See our short introduction on CMake [here](./cmake.md).
 
 The program defines a global variable: 
 
@@ -89,17 +89,19 @@ The problem is race condition: multiple worker threads update the counter withou
 
 ### Concurrent update w/o locking
 
-We may see `the_counter==0` after workers are joined -- with a few threads and fewer iterations; however, as the numbers of threads/iterations increase moderately, we will soon observe a non-zero `the_count` which implies an error to our program. 
+We may see `the_counter==0` after workers are joined -- with a few threads and fewer iterations
+```
+$./counter-nolock --iterations=100 --threads=10
+test=add-none threadNum=10 iterations=100 numOperation=2000 runTime(ns)=634688 avgTime(ns)=317 count=0
+```
+However, as the numbers of threads/iterations increase moderately, we will soon observe a non-zero `the_counter` -- there's an error in our program! 
 
 ```
-%./counter-nolock --iterations=100 --threads=10
-test=add-none threadNum=10 iterations=100 numOperation=2000 runTime(ns)=634688 avgTime(ns)=317 count=0
-
-%./counter-nolock --iterations=10000 --threads=10
+$./counter-nolock --iterations=10000 --threads=10
 test=add-none threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=5280826 avgTime(ns)=26 count=-5275
 ```
 
-> Why does a smaller number of iterations fail seldom?  Why does it take more iterations before errors are seen?  
+> Why does a smaller number of iterations rarely fail?  Why does it take more iterations before errors are seen?  
 
 ### Concurrent update with locking
 
@@ -125,4 +127,5 @@ test=add-m threadNum=10 iterations=100000 numOperation=2000000 runTime(ns)=14750
 
 ## Conclusion
 
-We have seen the necessity of synchronization and understood the basic structure of the benchmark. Play with the given benchmark and reproduce the results above. After that, proceed to the [exercises](./2a-exercises.md). 
+We have seen the necessity of synchronization and understood the basic structure of the benchmark. Play with the given benchmark and reproduce the results above. After that, proceed to the assignments.
+

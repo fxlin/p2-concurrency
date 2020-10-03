@@ -34,9 +34,9 @@ The provided code can already parse these new options! :wink:
 Example output: 
 
 ```bash
-$./lab2_add --iterations=10000 --threads=10 --sync=s
+$./counter --iterations=10000 --threads=10 --sync=s
 test=add-s threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=27917650 avgTime(ns)=139 count=0
-$./lab2_add --iterations=10000 --threads=10 --sync=c
+$./counter --iterations=10000 --threads=10 --sync=c
 test=add-c threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=20609670 avgTime(ns)=103 count=0
 ```
 
@@ -56,11 +56,11 @@ Compare the times taken for parallel updating the shared counter:
 
 * Without any synchronization
 
-* With mutex
+* With mutex (--sync=m)
 
-* With spinlock
+* With spinlock (--sync=s)
 
-* With CAS
+* With CAS (--sync=c)
 
 Report the performance with the following arguments. Write a small paragraph to explain your observation. 
 

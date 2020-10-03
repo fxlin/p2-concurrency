@@ -9,7 +9,7 @@ For each experiment, clone the whole repository first. Then follow the demo desc
 If you are doing this on your own Linux box (assuming Ubuntu/Debian): 
 ```
 sudo apt install build-essential
-sudo apt install cmake gcc-5 gcc-aarch64-linux-gnu 
+sudo apt install cmake gcc gcc-aarch64-linux-gnu 
 ```
 
 ## How to build the experiments
@@ -24,12 +24,12 @@ sudo apt install cmake gcc-5 gcc-aarch64-linux-gnu
 
 ## Experiments
 
-* **Experiment A: Races & Synchronization** 
-  * [Demo](./2a.md)
-  * [Exercises](./2a-exercises.md)
-* **Experiment B: Scalability** 
-  * [Demo](./2b.md)
-  * [Exercises](./2b-exercises.md)
+* **Exp1: Races & Synchronization** 
+  * [Demo](./exp1.md)
+  * [Exercises](./exp1-assignment.md) (cs6456 students: please refer to MS teams for assignments)
+* **Exp2: Scalability** 
+  * [Demo](./exp2.md)
+  * [Exercises](./exp2-assignment.md)
 
 
 Credits: inspired by UCLA "Operating Systems Principles "
