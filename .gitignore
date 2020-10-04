@@ -9,6 +9,7 @@ install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
 _deps
+*.html
 
 
 
@@ -16,3 +17,18 @@ _deps
 .project
 
 figures/*.pdf
+
+
+*.docx
+
+exp2/list
+exp2/list-m
+exp2/list-p
+exp2/list-pm
+exp2/list-pml
+exp2/list-pmla
+exp2/trace-.txt
+exp2/trace-p.txt
+exp2/trace-pm.txt
+exp2/trace-pml.txt
+exp2/trace-pmla.txt

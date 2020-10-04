@@ -79,7 +79,7 @@ Search for "todo" in the given source code for extra hints.
 
 
 
-## 3. Measure slowdown due to synchronization (40%) 
+## 3. Measure slowdown caused by synchronization (40%) 
 
 Compare the times taken for parallel updating the shared counter: 
 

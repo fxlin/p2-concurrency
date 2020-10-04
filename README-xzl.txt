@@ -1,5 +1,11 @@
-++lucamatsumoto
+exp2 quick start
 
-#Name: Luca Matsumoto
-#ID: 204726167
-#Email: lucamatsumoto@gmail.com
+cd /home/xzl/p2-concurrency/exp2
+
+cmake .
+
+make
+
+./run.sh
+
+../scripts/plot.py

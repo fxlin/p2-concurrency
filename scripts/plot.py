@@ -9,13 +9,14 @@ This script parses the log files and produces a series of plots in HTML: res-0.h
 Each HTML includes additional data lines from a new log file.
 
 Example command:
-$ ls
-trace-biglock.txt  trace-nomalloc-nosteal.txt        trace-nomalloc-steal.txt
-trace-malloc.txt   trace-nomalloc-steal-padding.txt
+$ ls *.txt
+trace-pmla.txt  trace-pml.txt  trace-pm.txt  trace-p.txt  trace-.txt
 
 $ ~/p2-concurrency/scripts/plot.py
-res-0.html  res-2.html  res-4.html  trace-biglock.txt  trace-nomalloc-nosteal.txt        trace-nomalloc-steal.txt
-res-1.html  res-3.html  res.html    trace-malloc.txt   trace-nomalloc-steal-padding.txt
+
+$ ls *.html
+res-0.html  res-2.html  res-4.html  
+res-1.html  res-3.html  res.html
 
 '''
 

@@ -1,27 +1,20 @@
-# Scalability: exercises
-
-## Q & A
-
-* To measure our program's performance, why do we have to run it for sufficiently long? 
-* Attach a screenshot of VTune showing that you set it up correctly (both server and your local machine). What benchmark program did you use to verify it works properly? 
+# Scalability assignment
 
 ## 0. Reproduce the benchmarks
 
 Repeat what has been described in our writeup. 
 
-Deliverable: a one-page report in PDF, in which you: 
-
-* show the scalability plots you generated; 
-* discuss your observation and compare with our results
-* provide any explanation / reasoning needed 
+* Attach a scalability plot (ONLY the one showing all the program versions) you generated. 
+* Compare your observation with the given results. What are the same? What are different? 
+* Provide explanation / reasoning
 
 ## 1. The unfinished scalability quest
 
-How does the list program scale to more than 8 cores? Profile its execution with VTune. It may be worth trying VTune's "microarchitecture exploration". Can you make it scale to 20 cores? If so, show your code and profiling results; if not, reason about about possible bottlenecks. 
+How does the program scale to more than 8 cores? 
 
-Deliverable: 
-
-A two-page report in PDF describing your observation. 
+* Attach a scalability plot (ONLY the one showing all the program versions) with core count = {1 2 4 6 8 10 12 16 20}. You need to tweak `run.sh` and `plot.py`
+* Describe your observation. 
+* If there's any scalability bottleneck, profile its execution with VTune (e.g. consider trying VTune's "microarchitecture exploration"). Can you make the program scale better? If so, show your code and profiling results; if not, reason about about possible bottlenecks. 
 
 ## 2. A scalable hashtable 
 
@@ -48,7 +41,7 @@ To insert a key K, a worker thread first computes a hash function H(K) to determ
 
 Of course, there are many details to take care of. I hope the tutorial above can give some useful pointers. 
 
-### A sample plan of the attack 
+### A sample implementation plan 
 
 1. Single-threaded. write the benchmark program using the glib hashtable API. Make sure you understand how to operate the hashtable. 
 2. Multi-threaded with a big lock. Transform the above version by adding pthread, mutex, etc. Design test to validate the correctness of the resultant hashtable. 

@@ -21,10 +21,10 @@ run() {
   
   echo $1 $2 $3
   
-  # TODO: Set the thread count to test here
-  # for tr in 1 2 4 6 8 16 20
+  # TODO: Set thread counts to test here
+  # for tr in 1 2 4 6 8 10 12 16 20
   for tr in 1 2 4 6 8
-  #for tr in 1 2 
+  #for tr in 1 2
   do 
     $VTUNE $PROG --iterations=$ITER  --threads=$tr --parts=`expr $tr \* $FACTOR` >> $TRACEFILE 2>&1   
   done
