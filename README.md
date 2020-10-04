@@ -10,6 +10,9 @@ If you are doing this on your own Linux box (assuming Ubuntu/Debian):
 ```
 sudo apt install build-essential
 sudo apt install cmake gcc gcc-aarch64-linux-gnu 
+# python for plotting
+sudo apt install python3 python3-pip
+pip3 install bokeh
 ```
 
 ## How to build the experiments
@@ -26,7 +29,7 @@ sudo apt install cmake gcc gcc-aarch64-linux-gnu
 
 * **Exp1: Races & Synchronization** 
   * [Demo](./exp1.md)
-  * [Exercises](./exp1-assignment.md) (cs6456 students: please refer to MS teams for assignments)
+  * [Exercises](./exp1-assignment.md) (cs6456 students: refer to MS teams for your assignments instead)
 * **Exp2: Scalability** 
   * [Demo](./exp2.md)
   * [Exercises](./exp2-assignment.md)

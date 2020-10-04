@@ -52,6 +52,7 @@ file(GLOB COMMON_SOURCES
 # all executables  
 # ------------------------------------- #
 
+# biglock
 add_executable(list
   list.c
   ${COMMON_SOURCES}
@@ -60,6 +61,7 @@ add_executable(list
 TARGET_LINK_LIBRARIES(list
         ${COMMON_LIB}
         )      
+
 # ------------------------------------- #
 add_executable(list-m
   list.c
@@ -69,6 +71,7 @@ set_target_properties(list-m PROPERTIES COMPILE_FLAGS "-DUSE_MULTILISTS" )
 TARGET_LINK_LIBRARIES(list-m
         ${COMMON_LIB}
         )        
+
 # ------------------------------------- #
 add_executable(list-p
   list.c

@@ -84,25 +84,28 @@ On the target machine:
 ### Path setup (do this once, every time you login to the target)
 
 ```
-source /opt/intel/vtune_profiler_2020.1.0.607630/vtune-vars.sh
+source /opt/intel/vtune_profiler/vtune-vars.sh
 export INTEL_LIBITTNOTIFY64=/opt/intel/vtune_profiler/lib64/runtime/libittnotify_collector.so
 ```
 
 [Reference](# https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis/basic-usage-and-configuration/configuring-your-build-system.html#configuring-your-build-system) 
 
-Consider adding these commands to your `~/.bashrc`
+Consider adding the commands above to your `~/.bashrc`
 
 ### Example collection command lines
 
 ```
 # hotspot analysis
-vtune -collect hotspots -knob sampling-mode=hw
+vtune -collect hotspots -knob sampling-mode=hw ./myprogram
 
 # threading analysis
 vtune -collect threading -knob sampling-and-waits=hw ./myprogram
 
 # microarchitecture analysis
 vtune -collect uarch-exploration ./myprogram
+
+# For instance ...
+vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=1M --threads=1 --parts=1
 ```
 
 ### Profiling results

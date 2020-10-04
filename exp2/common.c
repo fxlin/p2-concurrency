@@ -88,11 +88,16 @@ SortedList_t * alloc_lists(int n_lists) {
         lists[i].key = 0;
     }
 
-    printf("init %d lists. sizeof(SortedList_t) = %lu "
+// printf() with std redirect will result in a non-ASCII text file which Python failed to parse. Why? 
+#if 1 
+    fprintf(stderr, "init %d lists. sizeof(SortedList_t) = %lu "
     		"padding seems: %s\n",
     		n_lists, sizeof(SortedList_t),
 				sizeof(SortedList_t) > sizeof(SortedListElement_t) ? "ON" : "OFF");
+#endif
 
+    //printf("%d\n", n_lists);
+	//printf("hello world");
     return lists;
 }
 

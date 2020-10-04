@@ -1,10 +1,3 @@
-/*
- * biglock				no
- * malloc					no
- * straggler 			yes/no (no when USE_LB defined and #parts == #threads)
- * false sharing 	yes/no
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -171,7 +164,7 @@ void* thread_func(void* thread_id){
     //			__itt_task_end(itt_domain);
     //	#endif // USE_VTUNE
     		vtune_task_end();
-#elif defined(USE_LB)
+#elif defined(USE_LB) // thread load balancing
     for (int part = 0; part < the_config.numParts; part++) {
     	/* try to steal */
     	if (__sync_lock_test_and_set(&spinLocks[part], 1) == 0) {
