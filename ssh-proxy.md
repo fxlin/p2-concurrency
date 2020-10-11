@@ -1,4 +1,4 @@
-# Connecting to departmental server via SSH proxy
+# Quick connection to departmental servers 
 
 To log in to `granger1` from your local machine, you could manually connect to `portal` and then `granger1` as described ([here](https://www.cs.virginia.edu/wiki/doku.php?id=linux_ssh_access)). 
 
@@ -28,7 +28,7 @@ Host granger1
    HostName granger1.cs.virginia.edu
    ProxyJump USERNAME@portal.cs.virginia.edu:22
 ```
-With the configuration, your local ssh client knows that when connecting  to host `granger1`, use `portal` as the jump proxy. So you can directly connect to `granger1` this on your local machine: 
+With the configuration, your local ssh client knows that when connecting  to host `granger1`, use `portal` as the jump proxy. So you can directly connect to `granger1` from your local machine: 
 ```
 $ ssh granger1
 Welcome to Ubuntu 20.04 LTS (GNU/Linux 5.4.0-45-generic x86_64)
