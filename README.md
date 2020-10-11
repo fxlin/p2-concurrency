@@ -4,13 +4,17 @@ This project has two experiments.
 
 For each experiment, clone the whole repository first. Then follow the demo description, tinker with the given benchmark program, and reproduce the demo results. Then, do the exercises and submit your answers. 
 
+## Work with the server
+An overview figure. See details below. 
+![](figures/workflow.png)
+
 ## Prerequisite: connect to server
 
 This experiment should be finished on the **granger1** server. NOT **labsrv06** which many of you use in project 1!
 
 To log in to `granger1` from your local machine, you could manually connect to `portal` and then `granger1` as described ([here](https://www.cs.virginia.edu/wiki/doku.php?id=linux_ssh_access)). 
 
-As you see this is tedious. Read this 5-min [tutorial](ssh-proxy.md) to simplify your workflow. 
+As you see: this is tedious. Read this 5-min [tutorial](ssh-proxy.md) to simplify your workflow. 
 
 ### (Optional) Run benchmarks on your local Linux machine instead of granger1? 
 
