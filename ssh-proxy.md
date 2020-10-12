@@ -20,7 +20,7 @@ Append your local pubkey (`~/.ssh/id_rsa.pub`) to both portal and granger1 (`~/.
 
 ### Further shorten the ssh command  
 
-Append to your local file (~/.ssh/config). **Replace USRENAME with your actual username**: 
+Append to your local file (`~/.ssh/config`). **Replace USERNAME with your actual username**: 
 
 ```
 Host granger1
