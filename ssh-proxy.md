@@ -16,11 +16,11 @@ OpenSSH_7.6p1 Ubuntu-4ubuntu0.3, OpenSSL 1.0.2n  7 Dec 2017
 
 ### Avoid typing password every time 
 
-Append your local pubkey (~/.ssh/id_rsa.pub) to both portal and granger1 (~/.ssh/authorized_keys)
+Append your local pubkey (`~/.ssh/id_rsa.pub`) to both portal and granger1 (`~/.ssh/authorized_keys`)
 
 ### Further shorten the ssh command  
 
-Append to your local file (~/.ssh/config). **Replace USRENAME with your actual username**: 
+Append to your local file (`~/.ssh/config`). **Replace USERNAME with your actual username**: 
 
 ```
 Host granger1

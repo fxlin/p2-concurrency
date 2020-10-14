@@ -45,8 +45,8 @@ VTune has to be installed on the following machines.
   Want to set up your own target machine? Some notes: 
   * Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. 
   * Preferred: Ubuntu 20.04 LTS which ships with Linux kernel > 4.17. Some VTune event-based sampling [features](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html) depends on it. 
-  * granger1 (WIP): Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
-  * labsrv06 (Aug 2020): Ubuntu 18.04 LTS on Intel Xeon Silver 4410 CPU (8c16t), 8 cores. 
+  * granger1: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
+  * labsrv06 (not recommended): Ubuntu 18.04 LTS on Intel Xeon Silver 4410 CPU (8c16t), 8 cores. 
 
 **Dev machine (optional)**. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer & dev machine. Recommended: Ubuntu 20.04 LTS. 
 
