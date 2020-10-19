@@ -127,7 +127,7 @@ SortedListElement_t *get_element(int idx) {
 
 **Results.** Type `make`, we get a program called `list`. Run `list` multiple times with different core counts (see the "scalability plot" paragraph above), we get a scalability plot. 
 
-![fig1](figures/bokeh_plot (1).png)
+![fig1](figures/baseline.png)
 
 Why does not it scale? You probably have figured out the reason. Essentially, the insertion becomes a critical section. All worker threads are serialized on this critical section. While one worker thread is in, all other threads must wait outside doing nothing. Here is a sample profiling result from VTune: 
 
@@ -164,7 +164,7 @@ void* thread_func(void *thread_id) {
 
 Removing the lock helps quite a lot! However, we are still not scaling ideally. :dizzy_face:
 
-<img src="figures/bokeh_plot (2).png" alt="fig1"  />
+<img src="figures/list-p.png" alt="fig1"  />
 
 ## Attempt 2: avoid expensive memory allocation ("list-pm")
 
@@ -199,7 +199,7 @@ SortedListElement_t *get_element(int idx) {
 }
 ```
 
-![fig1](figures/bokeh_plot (3).png)
+![fig1](figures/list-pm.png)
 
 **The results.** Run `make` to produce a binary called `list-pm`, which includes the above features with flags `"-DUSE_PREALLOC -DUSE_MULTILISTS"`.  
 
@@ -261,7 +261,7 @@ Hooray! Now all workers end more or less at the same time, indicating our fix is
 
 After load balancing, our scalability plot looks as the following. It's notably better (especially for a larger number of threads) but still not ideal. Why?
 
-![fig1](figures/bokeh_plot (4).png)
+![fig1](figures/list-pml.png)
 
 
 
@@ -332,7 +332,7 @@ As a result, we push the fields (`prev` and `next`) that are frequently updated 
 
 **The results.** Run `make` to produce a binary called `list-pmla`, which includes all the above features with flags `"-DUSE_PREALLOC -DUSE_LB -DUSE_PADDING"`.  After this change, we are much close to linear scaling! :happy:
 
-<img src="figures/bokeh_plot (5).png" alt="fig1" style="zoom: 80%;" />
+<img src="figures/list-pmla.png" alt="fig1" style="zoom: 80%;" />
 
 # Conclusion
 
