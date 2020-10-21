@@ -338,5 +338,3 @@ As a result, we push the fields (`prev` and `next`) that are frequently updated 
 
 Now you should have basic knowledge on scalability concepts, the tools, and some common pitfalls. 
 
-Proceed to the [exercises](./2b-exercises.md). 
-
