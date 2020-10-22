@@ -25,7 +25,7 @@ Take an existing hashtable implementation in `glib` and make it scalable.
 `glib` is a widely used C library that implements common data structures, such as linked lists, trees, and hashtables. 
 
 * The glib hashtable API is described [here](https://developer.gnome.org/glib/stable/glib-Hash-Tables.html). 
-* For example usage of the API, see the glib's test code [here](https://github.com/GNOME/glib/blob/mainline/glib/tests/hash.c). 
+* For example usage of the API, see the glib's test code [here](https://github.com/GNOME/glib/blob/master/glib/tests/hash.c). 
 
 Goal: write a benchmark program that spawn multiple threads for inserting keys to a hashtable concurrently. 
 
