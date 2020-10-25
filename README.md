@@ -43,10 +43,10 @@ pip3 install bokeh
 ## Experiments
 
 * **Exp1: Races & Synchronization** 
-  * [Demo](./exp1.md)
+  * [Tutorial](./exp1.md)
   * [Exercises](./exp1-assignment.md) (cs6456 students: refer to MS teams for your assignments instead)
 * **Exp2: Scalability** 
-  * [Demo](./exp2.md)
+  * [Tutorial](./exp2.md)
   * [Exercises](./exp2-assignment.md) (cs6456 students: refer to MS teams for your assignments instead)
 
 
