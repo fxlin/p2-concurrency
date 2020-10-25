@@ -234,7 +234,7 @@ int main(int argc, char** argv) {
 #ifdef USE_LB
     alloc_locks(&mutexes, 1, &spinLocks, numParts);
 #else
-    alloc_locks(&mutexes, 1, NULL, 0);  // multilists or biglock: only 1 mutex
+    alloc_locks(&mutexes, 1, NULL, 0);  // multilists or biglock: only 1 mutex, no spinlocks
 #endif
 
 #if defined(USE_MULTILISTS) || defined(USE_LB)
@@ -334,7 +334,7 @@ int main(int argc, char** argv) {
     print_csv_line(testname, numThreads, iterations, numParts, numOpts, diff);
 
     // --- clean up ---- //
-    free_locks(mutexes, numThreads, spinLocks);
+    free_locks(mutexes, 1, spinLocks);
 #ifdef USE_PREALLOC
     free(elements);
 #else
