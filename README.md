@@ -26,6 +26,8 @@ sudo apt install cmake gcc gcc-aarch64-linux-gnu
 # python for plotting
 sudo apt install python3 python3-pip
 pip3 install bokeh
+# for exercises
+sudo apt install libglib2.0-dev
 ```
 
 ## Build the given code
@@ -49,6 +51,12 @@ pip3 install bokeh
   * [Tutorial](./exp2.md)
   * [Exercises](./exp2-assignment.md) (cs6456 students: refer to MS teams for your assignments instead)
 
+## Assignment weights
 
+| Exp                                 | Weights |
+| ----------------------------------- | ------- |
+| Exp1               | 50      |
+| Exp2        | 50      |
 
 *Credits: inspired by UCLA "Operating Systems Principles"*
+
