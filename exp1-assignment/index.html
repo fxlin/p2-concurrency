@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../img/favicon.ico">
+        <title>Races and Synchronization - p1-kernel</title>
+        <link href="../css/bootstrap.min.css" rel="stylesheet">
+        <link href="../css/font-awesome.min.css" rel="stylesheet">
+        <link href="../css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="../js/jquery-1.10.2.min.js" defer></script>
+        <script src="../js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body>
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href="..">p1-kernel</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem">
+                                <a href=".." class="nav-link">Concurrency</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../cmake/" class="nav-link">Build the benchmark with CMake</a>
+                            </li>
+                            <li class="navitem active">
+                                <a href="./" class="nav-link">Races and Synchronization</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../exp1/" class="nav-link">Exp1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../exp2-assignment-qa/" class="nav-link">Exp2 assignment qa</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../exp2-assignment/" class="nav-link">Scalability assignment</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../exp2/" class="nav-link">Exp2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../measurement/" class="nav-link">A simple tracing facility in C</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="../vtune/" class="nav-link">Using Intel VTune, the modern x86 profiler</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" href="../cmake/" class="nav-link">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="../exp1/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#races-and-synchronization" class="nav-link">Races and Synchronization</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#short-qa-10" class="nav-link">Short Q&amp;A (10%)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#1-zoom-in-the-scene-of-race-condition-20" class="nav-link">1. Zoom in the scene of race condition (20%)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#2-use-spinlock-cas-30" class="nav-link">2. Use spinlock &amp; CAS (30%)</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="3"><a href="#example-output" class="nav-link">Example output</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="3"><a href="#deliverable" class="nav-link">Deliverable:</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#3-measure-slowdown-caused-by-synchronization-40" class="nav-link">3. Measure slowdown caused by synchronization (40%)</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="races-and-synchronization">Races and Synchronization</h1>
+<p>NOTE: this experiment should be finished on the <strong>granger1</strong> server. NOT <strong>labsrv06</strong> which many of you use in project 1!</p>
+<h2 id="short-qa-10">Short Q&amp;A (10%)</h2>
+<ul>
+<li>How many threads that can run simultaneously (i.e. thread-level parallelism offered by CPU hardware) on the lab server? If you are using a different machine, state it. </li>
+<li>What does pthread_join() do in the given code? </li>
+<li>Why concurrent, unsynchronized updates to <code>the_counter</code> leads to program errors? </li>
+<li>The given counter.c invokes <code>atexit()</code>. What does the function do? </li>
+</ul>
+<h2 id="1-zoom-in-the-scene-of-race-condition-20">1. Zoom in the scene of race condition (20%)</h2>
+<p>Here is the assembly of function <code>add(long long *pointer, long long value)</code>, as dumped from objdump. Note that without assuming x86 knowledge from you, I showed the ARMv8 version below (compiled with -O2). </p>
+<pre><code class="language-asm">640 0000000000001600 &lt;add&gt;:
+641     long long sum = *pointer + value;
+642        f9400002    ldr x2, [x0]
+643        8b010041    add x1, x2, x1
+644     *pointer = sum;
+645        f9000001    str x1, [x0]
+646 }
+647        d65f03c0    ret
+</code></pre>
+<p>Read the assembly and answer: </p>
+<p>i) How many bits in a <code>long long</code> type of integer? </p>
+<p>ii) Point out which instructions (by their line numbers above) constitute the window for race condition. </p>
+<p>iii) Will race condition still exist, if we run the program with multiple threads but on a single-core machine?</p>
+<h2 id="2-use-spinlock-cas-30">2. Use spinlock &amp; CAS (30%)</h2>
+<p>Add the following mechanisms to the source code: </p>
+<ul>
+<li>one that protects the add by a spin-lock, enabled by a <strong>--sync=s</strong> option. You will have to implement your own spin-lock operation. </li>
+<li>one that performs the add using compare-and-swap (CAS) primitives to ensure atomic updates to the shared counter, enabled by a <strong>--sync=c</strong> option. Note the name: compare-and-swap is the same as compare-and-exchange. </li>
+</ul>
+<p>The provided code can already parse these new options! :wink:</p>
+<h3 id="example-output">Example output</h3>
+<p>Before (by the give code)</p>
+<pre><code class="language-bash">$./counter --iterations=10000 --threads=10 --sync=s
+test=add-s threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=5640178 avgTime(ns)=28 count=-10113
+$./counter --iterations=10000 --threads=10 --sync=c
+test=add-c threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=4469589 avgTime(ns)=22 count=-7513
+</code></pre>
+<p>After (expected from your code). With with spinlocks and CAS, the final count value is integral, i.e. ==0. </p>
+<pre><code class="language-bash">$./counter --iterations=10000 --threads=10 --sync=s
+test=add-s threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=27917650 avgTime(ns)=139 count=0
+$./counter --iterations=10000 --threads=10 --sync=c
+test=add-c threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=20609670 avgTime(ns)=103 count=0
+</code></pre>
+<p><strong>Implementation hints</strong>: both spinlock and CAS shall be implemented using the GCC's atomic built-ins. Since the built-ins are architecture-independent, you do not have to write any assembly. </p>
+<ul>
+<li>
+<p>The documentation can be found <a href="https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html">here</a>. Some related <a href="https://stackoverflow.com/questions/13941385/using-gcc-atomic-builtins">discussion</a>. </p>
+</li>
+<li>
+<p>Useful functions include  <code>__atomic_compare_exchange_n()</code> and <code>__atomic_store_n()</code></p>
+</li>
+<li>These functions require memory order, for which you may specific <code>__ATOMIC_SEQ_CST</code>.  (Q: could other memory order work?)</li>
+<li>Note: older GCC offers <code>__sync_XXX</code> built-ins, which are still supported today for backward compatibility. Avoid them. They are deprecated by the __atomic builtins. </li>
+</ul>
+<p>Search for "todo" in the given source code for extra hints. </p>
+<h3 id="deliverable">Deliverable:</h3>
+<p>[upload a standalone tarball named as p2-1-2.tar.gz] </p>
+<h2 id="3-measure-slowdown-caused-by-synchronization-40">3. Measure slowdown caused by synchronization (40%)</h2>
+<p>Compare the times taken for parallel updating the shared counter: </p>
+<ul>
+<li>
+<p>Without any synchronization</p>
+</li>
+<li>
+<p>With mutex (--sync=m)</p>
+</li>
+<li>
+<p>With spinlock (--sync=s)</p>
+</li>
+<li>
+<p>With CAS (--sync=c)</p>
+</li>
+</ul>
+<p>Report the performance with the following arguments. Write a small paragraph to explain your observation. How many repeated runs did you execute? How do you ensure your executions was unaffected by other students who may run the experiments at the same time? Would different thread counts and iteration counts affect your observation? </p>
+<pre><code>./counter --iterations=100000 --threads=10 --sync=m
+./counter --iterations=100000 --threads=10 --sync=s
+./counter --iterations=100000 --threads=10 --sync=c
+</code></pre>
+<!---- To measure the time, instrument the source code with `clock_gettime()`. Take two timestamps: right before spawning all worker threads and right after all worker threads are joined. ---></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = "..",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="../js/base.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>

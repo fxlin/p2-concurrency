@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="None">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>p1-kernel</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">p1-kernel</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="." class="nav-link">Concurrency</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="cmake/" class="nav-link">Build the benchmark with CMake</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="exp1-assignment/" class="nav-link">Races and Synchronization</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="exp1/" class="nav-link">Exp1</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="exp2-assignment-qa/" class="nav-link">Exp2 assignment qa</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="exp2-assignment/" class="nav-link">Scalability assignment</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="exp2/" class="nav-link">Exp2</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="measurement/" class="nav-link">A simple tracing facility in C</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="vtune/" class="nav-link">Using Intel VTune, the modern x86 profiler</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="cmake/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#concurrency" class="nav-link">Concurrency</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#work-with-the-server" class="nav-link">Work with the server</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#prerequisite-connect-to-server" class="nav-link">Prerequisite: connect to server</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="3"><a href="#optional-run-benchmarks-on-your-local-linux-machine-instead-of-granger1" class="nav-link">(Optional) Run benchmarks on your local Linux machine instead of granger1?</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#build-the-given-code" class="nav-link">Build the given code</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#set-up-profilertracer" class="nav-link">Set up profiler/tracer</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#experiments" class="nav-link">Experiments</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#assignment-weights" class="nav-link">Assignment weights</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="concurrency">Concurrency</h1>
+<p>This project has two experiments. </p>
+<p>For each experiment, clone the whole repository first. Then follow the demo description, tinker with the given benchmark program, and reproduce the demo results. Then, do the exercises and submit your answers. </p>
+<h2 id="work-with-the-server">Work with the server</h2>
+<p>An overview figure. See details below. 
+<img alt="" src="figures/workflow.png" /></p>
+<h2 id="prerequisite-connect-to-server">Prerequisite: connect to server</h2>
+<p>This experiment should be finished on the <strong>granger1</strong> server. NOT <strong>labsrv06</strong> which many of you use in project 1!</p>
+<p>To log in to <code>granger1</code> from your local machine, you could manually connect to <code>portal</code> and then <code>granger1</code> as described (<a href="https://www.cs.virginia.edu/wiki/doku.php?id=linux_ssh_access">here</a>). </p>
+<p>As you see: this is tedious. Read this 5-min <a href="ssh-proxy.md">tutorial</a> to simplify your workflow. </p>
+<h3 id="optional-run-benchmarks-on-your-local-linux-machine-instead-of-granger1">(Optional) Run benchmarks on your local Linux machine instead of granger1?</h3>
+<p>Make sure your machine has more than a dozen of cores (not "threads". e.g. Ryzen 9, Threadripper, some Intel i9). Recommended OS: Ubuntu 18.04 or 20.04. Other Linux distros should work as well. Windows: native compilation should work but need adaptation. WSL not recommended. </p>
+<pre><code>sudo apt install build-essential
+sudo apt install cmake gcc gcc-aarch64-linux-gnu 
+# python for plotting
+sudo apt install python3 python3-pip
+pip3 install bokeh
+# for exercises
+sudo apt install libglib2.0-dev
+</code></pre>
+<h2 id="build-the-given-code">Build the given code</h2>
+<p><a href="cmake/">CMake</a></p>
+<p>(I intentionally avoid giving a "quickstart" to make sure you read &amp; experiment)</p>
+<h2 id="set-up-profilertracer">Set up profiler/tracer</h2>
+<ul>
+<li>
+<p><a href="vtune/">Intel VTune</a></p>
+</li>
+<li>
+<p><a href="measurement/">A simple tracing facility</a> </p>
+</li>
+</ul>
+<h2 id="experiments">Experiments</h2>
+<ul>
+<li><strong>Exp1: Races &amp; Synchronization</strong> </li>
+<li><a href="exp1/">Tutorial</a></li>
+<li><a href="exp1-assignment/">Exercises</a> (cs6456 students: refer to MS teams for your assignments instead)</li>
+<li><strong>Exp2: Scalability</strong> </li>
+<li><a href="exp2/">Tutorial</a></li>
+<li><a href="exp2-assignment/">Exercises</a> (cs6456 students: refer to MS teams for your assignments instead)</li>
+</ul>
+<h2 id="assignment-weights">Assignment weights</h2>
+<table>
+<thead>
+<tr>
+<th>Exp</th>
+<th>Weights</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Exp1</td>
+<td>50</td>
+</tr>
+<tr>
+<td>Exp2</td>
+<td>50</td>
+</tr>
+</tbody>
+</table>
+<p><em>Credits: inspired by UCLA "Operating Systems Principles"</em></p></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>
+                    From here you can search these documents. Enter
+                    your search terms below.
+                </p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
+    </body>
+</html>
+
+<!--
+MkDocs version : 1.1.2
+Build Date UTC : 2021-01-26 20:19:30.142801+00:00
+-->
