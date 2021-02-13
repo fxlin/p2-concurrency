@@ -14,7 +14,7 @@
     
     
       
-        <title>cmake - p2-concurrency</title>
+        <title>/cmake - p2-concurrency</title>
       
     
     
@@ -94,7 +94,7 @@
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
             
-              cmake
+              /cmake
             
           </span>
         </div>
@@ -175,7 +175,7 @@
 
   <li class="md-tabs__item">
     <a href="../vtune/" class="md-tabs__link">
-      vtune
+      /vtune
     </a>
   </li>
 
@@ -189,7 +189,7 @@
 
   <li class="md-tabs__item">
     <a href="./" class="md-tabs__link md-tabs__link--active">
-      cmake
+      /cmake
     </a>
   </li>
 
@@ -266,7 +266,7 @@
   
     <li class="md-nav__item">
       <a href="../vtune/" class="md-nav__link">
-        vtune
+        /vtune
       </a>
     </li>
   
@@ -289,12 +289,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          cmake
+          /cmake
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        cmake
+        /cmake
       </a>
       
         
@@ -311,6 +311,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#first-time-build" class="md-nav__link">
     First time build
   </a>
@@ -325,8 +332,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-for-aarch64" class="md-nav__link">
-    Build for aarch64
+  <a href="#optional-cross-build-for-aarch64" class="md-nav__link">
+    Optional: cross-build for aarch64
   </a>
   
 </li>
@@ -364,6 +371,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#background" class="md-nav__link">
+    Background
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#first-time-build" class="md-nav__link">
     First time build
   </a>
@@ -378,8 +392,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#build-for-aarch64" class="md-nav__link">
-    Build for aarch64
+  <a href="#optional-cross-build-for-aarch64" class="md-nav__link">
+    Optional: cross-build for aarch64
   </a>
   
 </li>
@@ -398,25 +412,30 @@
                 
                 
                 <h1 id="build-the-benchmark-with-cmake">Build the benchmark with CMake</h1>
+<p><em>I intentionally avoid giving a "quickstart" to make sure you read &amp; experiment.</em> </p>
+<h2 id="background">Background</h2>
 <p>The build is managed via CMake instead of hand-written Makefile. Using CMake eases building multiple targets with difference combinations of flags. We will see the benefits in subsequent experiments. </p>
 <p>To use CMake, we describe our build targets in a file CMakeLists.txt. Then we invoke <code>cmake</code> to generate a <code>makefile</code> automatically. </p>
 <h2 id="first-time-build"><strong>First time build</strong></h2>
-<pre><code># assuming we will build expierment A
-$ cd lab2a
+<pre><code>git clone https://github.com/fxlin/p2-concurrency
+# assuming we are building exp1
+$ cd exp2
 $ cmake .
 </code></pre>
-<p>This generates Makefile from CMakeLists.txt. You may take a look at Makefile to see whether it makes sense.  </p>
+<p>This generates Makefile from CMakeLists.txt. </p>
+<p><strong>Troubleshooting</strong> if CMakeCache.txt is complained to be out of date, simply delete it. </p>
+<p>Now, look at Makefile to see whether it makes sense.  </p>
 <h2 id="each-time-you-modify-source-and-rebuild"><strong>Each time you modify source and rebuild</strong></h2>
 <p>Simply run: </p>
 <p><code>$ make</code></p>
-<p>You may build individual targets: </p>
+<p>To build individual targets: </p>
 <pre><code>$ make counter
 $ make clean
 $ make &lt;tab&gt; &lt;tab&gt; # this will list all targets
 </code></pre>
-<p>To see what commands are actually invoked, do </p>
+<p>To see what commands are actually invoked by Make, do </p>
 <p><code>$ make VERBOSE=1</code></p>
-<h2 id="build-for-aarch64">Build for aarch64</h2>
+<h2 id="optional-cross-build-for-aarch64">Optional: cross-build for aarch64</h2>
 <p>Clean up all cmake intermediate files: </p>
 <pre><code>$ rm -rf CMakeCache.txt  CMakeFiles  cmake_install.cmake
 </code></pre>
@@ -483,7 +502,7 @@ Disassembly of section .plt:
                 <span class="md-footer-nav__direction">
                   Previous
                 </span>
-                vtune
+                /vtune
               </div>
             </div>
           </a>

@@ -175,7 +175,7 @@
 
   <li class="md-tabs__item">
     <a href="vtune/" class="md-tabs__link">
-      vtune
+      /vtune
     </a>
   </li>
 
@@ -187,7 +187,7 @@
 
   <li class="md-tabs__item">
     <a href="cmake/" class="md-tabs__link">
-      cmake
+      /cmake
     </a>
   </li>
 
@@ -264,7 +264,7 @@
   
     <li class="md-nav__item">
       <a href="vtune/" class="md-nav__link">
-        vtune
+        /vtune
       </a>
     </li>
   
@@ -279,7 +279,7 @@
   
     <li class="md-nav__item">
       <a href="cmake/" class="md-nav__link">
-        cmake
+        /cmake
       </a>
     </li>
   
@@ -325,9 +325,29 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#optional-run-benchmarks-on-your-local-linux-machine-instead-of-granger1" class="md-nav__link">
-    (Optional) Run benchmarks on your local Linux machine instead of granger1?
+  <a href="#optional-run-benchmarks-on-your-local-machine-instead-of-granger1" class="md-nav__link">
+    (Optional) Run benchmarks on your local machine instead of granger1?
   </a>
+  
+    <nav class="md-nav" aria-label="(Optional) Run benchmarks on your local machine instead of granger1?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#linux" class="md-nav__link">
+    Linux
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#windows" class="md-nav__link">
+    Windows
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -378,17 +398,18 @@
                 
                 
                 <h1 id="concurrency">Concurrency</h1>
+<pre><code>git clone https://github.com/fxlin/p2-concurrency
+</code></pre>
 <p>This project has two experiments. </p>
-<p>For each experiment, clone the whole repository first. Then follow the demo description, tinker with the given benchmark program, and reproduce the demo results. Then, do the exercises and submit your answers. </p>
+<p>For each experiment, clone the whole repository first. Then follow the demo description, tinker with the given benchmark program, and reproduce the demo results. Then, finish the assignments. </p>
 <h2 id="work-with-the-server">Work with the server</h2>
-<p>An overview figure. See details below. 
-<img alt="" src="figures/workflow.png" /></p>
+<p><img alt="" src="figures/workflow.png" />
+<em>An overview figure. See details below.</em> </p>
 <h2 id="prerequisite-connect-to-server">Prerequisite: connect to server</h2>
-<p>This experiment should be finished on the <strong>granger1</strong> server. NOT <strong>labsrv06</strong> which many of you use in project 1!</p>
-<p>To log in to <code>granger1</code> from your local machine, you could manually connect to <code>portal</code> and then <code>granger1</code> as described (<a href="https://www.cs.virginia.edu/wiki/doku.php?id=linux_ssh_access">here</a>). </p>
-<p>As you see: this is tedious. Read this 5-min <a href="ssh-proxy.md">tutorial</a> to simplify your workflow. </p>
-<h3 id="optional-run-benchmarks-on-your-local-linux-machine-instead-of-granger1">(Optional) Run benchmarks on your local Linux machine instead of granger1?</h3>
-<p>Make sure your machine has more than a dozen of cores (not "threads". e.g. Ryzen 9, Threadripper, some Intel i9). Recommended OS: Ubuntu 18.04 or 20.04. Other Linux distros should work as well. Windows: native compilation should work but need adaptation. WSL not recommended. </p>
+<p>This experiment should be finished on the <strong>granger1</strong> server. NOT <strong>labsrv06</strong> which many of you use in project 1.</p>
+<h3 id="optional-run-benchmarks-on-your-local-machine-instead-of-granger1">(Optional) Run benchmarks on your local machine instead of granger1?</h3>
+<h4 id="linux">Linux</h4>
+<p>Make sure your machine has more than a dozen of cores (e.g. Ryzen 9, Threadripper, some Intel i9). Recommended OS: Ubuntu 18.04 or 20.04. Other Linux distros should work as well. </p>
 <pre><code>sudo apt install build-essential
 sudo apt install cmake gcc gcc-aarch64-linux-gnu 
 # python for plotting
@@ -397,13 +418,15 @@ pip3 install bokeh
 # for exercises
 sudo apt install libglib2.0-dev
 </code></pre>
+<h4 id="windows">Windows</h4>
+<p>Native compilation with MINGW-64. </p>
+<p>WSL not recommended -- it may have scalability bottleneck. </p>
 <h2 id="build-the-given-code">Build the given code</h2>
-<p><a href="cmake/">CMake</a></p>
-<p>(I intentionally avoid giving a "quickstart" to make sure you read &amp; experiment)</p>
+<p>Follow the <a href="cmake/">CMake</a> instructions. </p>
 <h2 id="set-up-profilertracer">Set up profiler/tracer</h2>
 <ul>
 <li>
-<p><a href="vtune/">Intel VTune</a></p>
+<p>Follow the instructions on <a href="vtune/">Intel VTune</a></p>
 </li>
 <li>
 <p><a href="measurement/">A simple tracing facility</a> </p>
@@ -413,11 +436,14 @@ sudo apt install libglib2.0-dev
 <ul>
 <li><strong>Exp1: Races &amp; Synchronization</strong> </li>
 <li><a href="exp1/">Tutorial</a></li>
-<li><a href="exp1-assignment/">Exercises</a> (cs6456 students: refer to MS teams for your assignments instead)</li>
+</ul>
+<!---  * [Exercises](./exp1-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
+<ul>
 <li><strong>Exp2: Scalability</strong> </li>
 <li><a href="exp2/">Tutorial</a></li>
-<li><a href="exp2-assignment/">Exercises</a> (cs6456 students: refer to MS teams for your assignments instead)</li>
 </ul>
+<!----  * [Exercises](./exp2-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
+
 <h2 id="assignment-weights">Assignment weights</h2>
 <table>
 <thead>
