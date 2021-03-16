@@ -555,23 +555,16 @@
 <p>The official user guide is <a href="https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html">here</a>. It's long and you do NOT have to read from back to end. Just make sure when you Google (e.g. "vtune threading profiling"), only pick results coming from this user guide. </p>
 <h2 id="setup">Setup</h2>
 <p>In our experiments, we run and profile our program on the <strong>target</strong> <strong>machine</strong> and view profile results on the <strong>viewer machine</strong>. </p>
-<p><strong>VTune version info</strong> (Aug 2020): </p>
+<p><strong>VTune version info</strong> (Feb 2021): </p>
 <table>
 <thead>
 <tr>
-<th>OS (choose one)</th>
 <th>Profiler version</th>
 <th>Installation package</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Ubuntu 18.04 LTS</td>
-<td>vtune_profiler_2020.1.0.607630</td>
-<td>vtune_profiler_2020_update1.tar.gz</td>
-</tr>
-<tr>
-<td>Ubuntu 20.04 LTS</td>
 <td>vtune_profiler_2020.2.0.610396</td>
 <td>vtune_profiler_2020_update2.tar.gz</td>
 </tr>
@@ -579,15 +572,26 @@
 </table>
 <p>VTune has to be installed on the following machines. </p>
 <ul>
-<li><strong>Viewer machine</strong> (do this yourself): Your own PC. Can be Windows/Linux/OSX. You need to download &amp; install VTune from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">here</a>. Choose the standalone VTune version. </li>
-<li><strong>Target machine</strong> (the class server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/data/intel/vtune_profiler</code> or <code>/opt/intel/vtune_profiler</code>. <strong>We will use VTune from command line to collect trace.</strong> 
-  Want to set up your own target machine? Some notes: </li>
-<li>Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. </li>
-<li>Preferred: Ubuntu 20.04 LTS which ships with Linux kernel &gt; 4.17. Some VTune event-based sampling <a href="https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html">features</a> depends on it. </li>
-<li>granger1: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.</li>
-<li>labsrv06 (not recommended): Ubuntu 18.04 LTS on Intel Xeon Silver 4410 CPU (8c16t), 8 cores. </li>
+<li><strong>Viewer machine</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </li>
+<li>Fetch the installation package from portal to your local computer. Path on <strong>cs.portal</strong></li>
 </ul>
-<p><strong>Dev machine (optional)</strong>. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer &amp; dev machine. Recommended: Ubuntu 20.04 LTS. </p>
+<pre><code>/u/xl6yq/cs4414/
+├── vtune_profiler_2020_update2.dmg      
+├── VTune_Profiler_2020_update2_setup.exe
+└── vtune_profiler_2020_update2.tar.gz   
+</code></pre>
+<ul>
+<li>Method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .</code> </li>
+<li>Method 2: WinSCP, which can download files over SSH
+    <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></li>
+<li>(Optional) Want to try the newest VTune? Download from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. </li>
+<li><strong>Target machine</strong> (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/opt/intel/vtune_profiler</code>. <strong>We will use VTune from command line to collect trace.</strong> 
+  (Optional) Want to set up your own target machine? Some notes: </li>
+<li>Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. </li>
+<li>Preferred: Ubuntu 20.04 LTS with Linux kernel &gt; 4.17. Some VTune event-based sampling <a href="https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html">features</a> depends on it. </li>
+<li>granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.</li>
+<li><strong>Dev machine (optional)</strong>. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer &amp; dev machine. Recommended: Ubuntu 20.04 LTS. </li>
+</ul>
 <h3 id="workflow-overview">Workflow overview</h3>
 <p>Choose one of the two models that suit you. 
 <img alt="" src="../figures/workflow.png" /></p>

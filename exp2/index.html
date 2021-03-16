@@ -533,7 +533,7 @@
 </ul>
 <h2 id="the-benchmark">The benchmark</h2>
 <p>We will study a simple program (list.c) that inserts 64-bit integer keys into a doubly linked list. The figure below illustrates the execution timeline. </p>
-<p><img src="figures/design-0.png" style="zoom:25%;" /></p>
+<p><img alt="" src="../figures/design-0.png" /></p>
 <ul>
 <li>in the init phase, one thread pre-generates keys and stores them in a table in memory</li>
 <li>in the parallel phase, multiple threads read keys from the table and insert them to a shared linked list</li>
@@ -625,7 +625,7 @@ done
 </table>
 <h2 id="the-baseline-biglock">The baseline ("biglock")</h2>
 <p>In the first version, multiple threads insert pre-generated keys to a monolithic list. Partitioning the keys for threads to insert is easy: we split the the array in as many ranges as the worker threads, and make each worker thread work on a range of keys. To avoid corrupting the list, we need one lock for the whole list. Each thread must grab the lock before inserting any key.  The design is shown below. </p>
-<p><img src="figures/design-1.png" style="zoom:25%;" /></p>
+<p><img alt="" src="../figures/design-1.png" /></p>
 <p>The core function is: </p>
 <pre><code class="language-C">// list.c built without any macro defined
 void* thread_func(void *thread_id) {
