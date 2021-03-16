@@ -682,7 +682,7 @@ void* thread_func(void *thread_id) {
 <blockquote>
 <p>The second hottest item is [vmlinux] which is the kernel. Why is our benchmark kernel-intensive? </p>
 </blockquote>
-<p><img alt="" src="figures\list-m-malloc.png" /></p>
+<p><img alt="" src="../figures/list-m-malloc.png" /></p>
 <p><strong>The fix.</strong> You may try "scalable memory allocators", such as <a href="http://jemalloc.net/">jemalloc</a>, <a href="http://hoard.org/">Hoard</a>, and the one from Intel's TBB. Thanks to years of R&amp;D on scalable allocation, these allocators for sure will scale better than the good and old <code>malloc</code>. However, our microbenchmark, where many threads allocate small memory pieces in tight loops, is probably too adversarial and can defeat them easily. </p>
 <p>The right way to fix? The spirit is to aggressively specialize memory allocation according to our workloads Have a memory pool populated with many pre-allocated same-size list nodes. Whenever a worker thread requests a new node, it can quickly grab a free node from the pool; the pool is designed in a way such that <em>most</em> allocation/free requests can be fulfilled without locking the whole pool. This is also the idea behind the Linux kernel's <a href="https://hammertux.github.io/slab-allocator">slab allocator</a>.</p>
 <p>As compared to generic, complex memory allocators, specialization gives us simplicity, and therefore low cost and scalability. </p>
@@ -789,7 +789,7 @@ SortedListElement_t *get_element(int idx) {
 };
 </code></pre>
 <p>As a result, we push the fields (<code>prev</code> and <code>next</code>) that are frequently updated to separate CPU cache lines. </p>
-<p><img alt="" src="figures\design-4.png" /></p>
+<p><img alt="" src="../figures/design-4.png" /></p>
 <p><strong>The results.</strong> Run <code>make</code> to produce a binary called <code>list-pmla</code>, which includes all the above features with flags <code>"-DUSE_PREALLOC -DUSE_LB -DUSE_PADDING"</code>.  After this change, we are much close to linear scaling! :happy:</p>
 <p><img alt="" src="../figures/list-pmla.png" /></p>
 <h1 id="conclusion">Conclusion</h1>
