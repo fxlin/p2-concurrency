@@ -14,7 +14,7 @@
     
     
       
-        <title>Races and Synchronization - p2-concurrency</title>
+        <title>assign1 - p2-concurrency</title>
       
     
     
@@ -94,7 +94,7 @@
         <div class="md-header-nav__topic">
           <span class="md-ellipsis">
             
-              Races and Synchronization
+              assign1
             
           </span>
         </div>
@@ -164,6 +164,32 @@
   <li class="md-tabs__item">
     <a href="../exp2/" class="md-tabs__link">
       exp2
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
+      assign1
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../exp2-assignment/" class="md-tabs__link">
+      assign2
     </a>
   </li>
 
@@ -250,6 +276,115 @@
     <li class="md-nav__item">
       <a href="../exp2/" class="md-nav__link">
         exp2
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          assign1
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        assign1
+      </a>
+      
+        
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#short-qa-10" class="md-nav__link">
+    Short Q&amp;A (10%)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-zoom-in-the-scene-of-race-condition-20" class="md-nav__link">
+    1. Zoom in the scene of race condition (20%)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-use-spinlock-cas-30" class="md-nav__link">
+    2. Use spinlock &amp; CAS (30%)
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Use spinlock &amp; CAS (30%)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-output" class="md-nav__link">
+    Example output
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverable" class="md-nav__link">
+    Deliverable:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-measure-slowdown-caused-by-synchronization-40" class="md-nav__link">
+    3. Measure slowdown caused by synchronization (40%)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exp2-assignment/" class="md-nav__link">
+        assign2
       </a>
     </li>
   
@@ -371,6 +506,7 @@
                 
                 
                 <h1 id="races-and-synchronization">Races and Synchronization</h1>
+<p><strong>cs4414/6456 students: this is just a sample. Please refer to the official assignment.</strong></p>
 <p>NOTE: this experiment should be finished on the <strong>granger1</strong> server. NOT <strong>labsrv06</strong> which many of you use in project 1!</p>
 <h2 id="short-qa-10">Short Q&amp;A (10%)</h2>
 <ul>
@@ -464,6 +600,41 @@ test=add-c threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=2060967
       
         
 <footer class="md-footer">
+  
+    <div class="md-footer-nav">
+      <nav class="md-footer-nav__inner md-grid" aria-label="Footer">
+        
+          <a href="../exp2/" class="md-footer-nav__link md-footer-nav__link--prev" rel="prev">
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
+            </div>
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Previous
+                </span>
+                exp2
+              </div>
+            </div>
+          </a>
+        
+        
+          <a href="../exp2-assignment/" class="md-footer-nav__link md-footer-nav__link--next" rel="next">
+            <div class="md-footer-nav__title">
+              <div class="md-ellipsis">
+                <span class="md-footer-nav__direction">
+                  Next
+                </span>
+                assign2
+              </div>
+            </div>
+            <div class="md-footer-nav__button md-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11v2h12l-5.5 5.5 1.42 1.42L19.84 12l-7.92-7.92L10.5 5.5 16 11H4z"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    </div>
   
   <div class="md-footer-meta md-typeset">
     <div class="md-footer-meta__inner md-grid">
