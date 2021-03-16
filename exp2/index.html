@@ -654,12 +654,12 @@ void* thread_func(void *thread_id) {
 <p><strong>Results.</strong> Type <code>make</code>, we get a program called <code>list</code>. Run <code>list</code> multiple times with different core counts (see the "scalability plot" paragraph above), we get a scalability plot. </p>
 <p><img alt="fig1" src="../figures/baseline.png" /></p>
 <p>Why does not it scale? You probably have figured out the reason. Essentially, the insertion becomes a critical section. All worker threads are serialized on this critical section. While one worker thread is in, all other threads must wait outside doing nothing. Here is a sample profiling result from VTune: </p>
-<p><img src="figures/biglock-tr.png" style="zoom: 67%;" /></p>
+<p><img alt="" src="../figures/biglock-tr.png" /></p>
 <p>On the top, the profiling result shows that mutex lock/unlock contribute a high fraction of "spin time". The timeline on the bottom shows that all worker threads are spinning frequently (the orange portions) without doing much useful work (the brownish portions). </p>
 <p>But this does NOT explain why throughput <strong>drops</strong> as thread counts goes up, right? </p>
 <h2 id="attempt-1-remove-the-big-lock-by-partitioning-list-p">Attempt 1: remove the big lock by partitioning ("list-p")</h2>
 <p>Realizing the problem is the monolithic linked list, why don't we partition it? We can make each worker thread insert to its own list. After all keys are inserted and all worker threads are joined, the main thread simply concatenates the per-worker lists to a big one. Since we do not require the final list to be sorted, the concatenation takes O (1). The design is shown below. </p>
-<p><img src="figures/design-2.png" style="zoom:25%;" /></p>
+<p><img alt="" src="../figures/design-2.png" /></p>
 <p>We quickly change the core code as follows, which no longer needs the big lock: </p>
 <pre><code class="language-C">// list.c compiled with -DMULTILISTS
 SortedList_t* lists = malloc(sizeof(SortedList_t) * the_config.numThreads); 
@@ -676,13 +676,13 @@ void* thread_func(void *thread_id) {
 </code></pre>
 <p><strong>Results.</strong> Run <code>make</code>, we get a binary called <code>list-m</code> which includes the above feature by <code>-DMULTILISTS</code>. </p>
 <p>Removing the lock helps quite a lot! However, we are still not scaling ideally. :dizzy_face:</p>
-<p><img src="figures/list-p.png" alt="fig1"  /></p>
+<p><img alt="" src="../figures/list-p.png" /></p>
 <h2 id="attempt-2-avoid-expensive-memory-allocation-list-pm">Attempt 2: avoid expensive memory allocation ("list-pm")</h2>
 <p><strong>The problem.</strong> The profiling result of <code>list-m</code> shows that <code>malloc()</code> is the top hotspot, taking more than 50% of the total CPU time. This sounds right: our thread workers calls <code>malloc()</code> at high rates, and <code>malloc()</code> has scaling bottleneck in itself. </p>
 <blockquote>
 <p>The second hottest item is [vmlinux] which is the kernel. Why is our benchmark kernel-intensive? </p>
 </blockquote>
-<p><img src="figures\list-m-malloc.png" style="zoom: 50%;" /></p>
+<p><img alt="" src="figures\list-m-malloc.png" /></p>
 <p><strong>The fix.</strong> You may try "scalable memory allocators", such as <a href="http://jemalloc.net/">jemalloc</a>, <a href="http://hoard.org/">Hoard</a>, and the one from Intel's TBB. Thanks to years of R&amp;D on scalable allocation, these allocators for sure will scale better than the good and old <code>malloc</code>. However, our microbenchmark, where many threads allocate small memory pieces in tight loops, is probably too adversarial and can defeat them easily. </p>
 <p>The right way to fix? The spirit is to aggressively specialize memory allocation according to our workloads Have a memory pool populated with many pre-allocated same-size list nodes. Whenever a worker thread requests a new node, it can quickly grab a free node from the pool; the pool is designed in a way such that <em>most</em> allocation/free requests can be fulfilled without locking the whole pool. This is also the idea behind the Linux kernel's <a href="https://hammertux.github.io/slab-allocator">slab allocator</a>.</p>
 <p>As compared to generic, complex memory allocators, specialization gives us simplicity, and therefore low cost and scalability. </p>
@@ -717,7 +717,7 @@ SortedListElement_t *get_element(int idx) {
 <p>After all, our program has to <em>accommodate</em> the fact that threads may proceed at quite different rates!</p>
 <p><strong>The fix.</strong> Our problem is that we assign the same amount of work to every worker (i.e. the same number of keys). Instead, we should dynamically adjust the amount of work for workers depending on their progresses. </p>
 <p>We achieve this by slicing the input key array into smaller parts, where the number of parts, e.g. 64,  is much higher than the number of worker threads, e.g. 8. In the parallel phase, each worker will try to grab a part to work on. We put an atomic flag for each part, whichever worker grabs it will set the flag so that other workers can skip this part. </p>
-<p><img src="figures/design-3.png" style="zoom: 25%;" /></p>
+<p><img alt="" src="../figures/design-3.png" /></p>
 <p>Accordingly, we upgrade the code for worker thread: </p>
 <pre><code class="language-C">void* thread_func(void* thread_id) {
     /* ... */
@@ -738,7 +738,7 @@ SortedListElement_t *get_element(int idx) {
 <p>Often, # of parts = 4x # of numThreads is enough to diminish stragglers.</p>
 <p><strong>The results.</strong> Run <code>make</code> to produce <code>list-pml</code>, which includes the above features with flags <code>"-DUSE_PREALLOC -DUSE_LB"</code>.  Run VTune again. </p>
 <p>Hooray! Now all workers end more or less at the same time, indicating our fix is effective. Note the colorful brackets in the figure below. Each bracket corresponds to a worker working on one part of keys. it's fun to watch how our workers share workloads <em>dynamically</em>. In this example, fast workers can finish 5 parts while slower workers can only finish 3. As we have more worker threads and more parts, the effect will be more pronounced!</p>
-<p><img src="figures/steal.png" style="zoom:50%;" /></p>
+<p><img alt="" src="../figures/steal.png" /></p>
 <p>After load balancing, our scalability plot looks as the following. It's notably better (especially for a larger number of threads) but still not ideal. Why?</p>
 <p><img alt="fig1" src="../figures/list-pml.png" /></p>
 <h2 id="attempt-4-remove-false-sharing-list-pmla">Attempt 4: remove false sharing ("list-pmla")</h2>
@@ -789,9 +789,9 @@ SortedListElement_t *get_element(int idx) {
 };
 </code></pre>
 <p>As a result, we push the fields (<code>prev</code> and <code>next</code>) that are frequently updated to separate CPU cache lines. </p>
-<p><img src="figures\design-4.png" style="zoom:25%;" /></p>
+<p><img alt="" src="figures\design-4.png" /></p>
 <p><strong>The results.</strong> Run <code>make</code> to produce a binary called <code>list-pmla</code>, which includes all the above features with flags <code>"-DUSE_PREALLOC -DUSE_LB -DUSE_PADDING"</code>.  After this change, we are much close to linear scaling! :happy:</p>
-<p><img src="figures/list-pmla.png" alt="fig1" style="zoom: 80%;" /></p>
+<p><img alt="" src="../figures/list-pmla.png" /></p>
 <h1 id="conclusion">Conclusion</h1>
 <p>Now you should have basic knowledge on scalability concepts, the tools, and some common pitfalls. </p>
                 
