@@ -22,11 +22,11 @@ set(COMMON_LIB
   
 if (USE_VTUNE)
     include_directories(
-            /data/intel/vtune_profiler/include   # for vtune instrumentation
+            /opt/intel/vtune_profiler/include   # for vtune instrumentation
     )
     
     ADD_LIBRARY(ittnotify STATIC IMPORTED)
-    SET_TARGET_PROPERTIES(ittnotify PROPERTIES IMPORTED_LOCATION /data/intel/vtune_profiler/lib64/libittnotify.a)
+    SET_TARGET_PROPERTIES(ittnotify PROPERTIES IMPORTED_LOCATION /opt/intel/vtune_profiler/lib64/libittnotify.a)
     SET (COMMON_LIB ittnotify ${COMMON_LIB})
     
     add_definitions(-DUSE_VTUNE)    
