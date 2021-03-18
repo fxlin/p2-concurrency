@@ -1,38 +1,49 @@
 # Build the benchmark with CMake
 
-The build is managed via CMake instead of hand-written Makefile. Using CMake eases building multiple targets with difference combinations of flags. We will see the benefits in subsequent experiments. 
+*There is no "quickstart". Just to make sure you read & do the experiment.* 
 
-To use CMake, we describe our build targets in a file CMakeLists.txt. Then we invoke `cmake` to generate a `makefile` automatically. 
+## Background
+
+Our source tree is managed by `CMake` instead of a hand-written Makefile. CMake is widely used to build large codebases. To us, CMake eases building multiple versions of the same source code, each built with difference build flags. We will see the benefits in subsequent experiments. 
+
+To use CMake, we list our build targets in a file called `CMakeLists.txt`. Then we invoke `cmake`, which will take `CMakeLists.txt` and  generate a `makefile` . `cmake` will then invoke make automatically. 
 
 ## **First time build**
 
 ```
-# assuming we will build expierment A
-$ cd lab2a
+git clone https://github.com/fxlin/p2-concurrency
+# assuming we are building exp1
+$ cd exp1
 $ cmake .
+$ make
 ```
 
-This generates Makefile from CMakeLists.txt. You may take a look at Makefile to see whether it makes sense.  
+This generates a Makefile from CMakeLists.txt. 
 
-## **Each time you modify source and rebuild**
+**Troubleshooting** if CMakeCache.txt is complained to be out of date, simply delete or rename it and run `cmake` again. 
+
+Peek at the generated Makefile to see whether you can understand it. 
+
+## **Each time you modify source and need to rebuild**
 
 Simply run: 
 
 `$ make `
 
-You may build individual targets: 
+To build individual targets: 
 
 ```
+$ make <tab> <tab> # this will list all targets
+# examples: 
 $ make counter
 $ make clean
-$ make <tab> <tab> # this will list all targets
 ```
 
-To see what commands are actually invoked, do 
+To see what commands are actually invoked by Make, do 
 
 ```$ make VERBOSE=1```
 
-## Build for aarch64
+## Optional: cross-build for aarch64
 
 Clean up all cmake intermediate files: 
 

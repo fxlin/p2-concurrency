@@ -1,5 +1,7 @@
 # Races and Synchronization
 
+**cs4414/6456 students: this is just a sample. Please refer to the official assignment.**
+
 NOTE: this experiment should be finished on the **granger1** server. NOT **labsrv06** which many of you use in project 1!
 
 ## Short Q&A (10%)
