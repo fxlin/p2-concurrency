@@ -387,6 +387,67 @@
     Setup
   </a>
   
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    Workflow overview
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trace-collection" class="md-nav__link">
+    Trace collection
+  </a>
+  
+    <nav class="md-nav" aria-label="Trace collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-setup-do-this-once-every-time-you-login-to-the-target" class="md-nav__link">
+    Path setup (do this once, every time you login to the target)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-collection-command-lines" class="md-nav__link">
+    Example collection command lines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profiling-results" class="md-nav__link">
+    Profiling results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#itt-api-for-tracemarker-instrumentation" class="md-nav__link">
+    ITT API for tracemarker instrumentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-do-now" class="md-nav__link">
+    What to do now
+  </a>
+  
 </li>
       
     </ul>
@@ -477,6 +538,67 @@
     Setup
   </a>
   
+    <nav class="md-nav" aria-label="Setup">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#workflow-overview" class="md-nav__link">
+    Workflow overview
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#trace-collection" class="md-nav__link">
+    Trace collection
+  </a>
+  
+    <nav class="md-nav" aria-label="Trace collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#path-setup-do-this-once-every-time-you-login-to-the-target" class="md-nav__link">
+    Path setup (do this once, every time you login to the target)
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#example-collection-command-lines" class="md-nav__link">
+    Example collection command lines
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#profiling-results" class="md-nav__link">
+    Profiling results
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#itt-api-for-tracemarker-instrumentation" class="md-nav__link">
+    ITT API for tracemarker instrumentation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-to-do-now" class="md-nav__link">
+    What to do now
+  </a>
+  
 </li>
       
     </ul>
@@ -557,14 +679,18 @@
 </li>
 <li>
 <p>Relaxing OS security (Students do not have to do these on course servers. We already did.)</p>
-<p>```</p>
-<h1 id="add-to-etcsysctlconf">add to /etc/sysctl.conf</h1>
-<p>kernel.perf_event_paranoid=1
-kernel.kptr_restrict=0
-```
-Make it effective</p>
-<p><code>sudo sysctl -p</code></p>
 </li>
+</ul>
+<pre><code># add to /etc/sysctl.conf
+kernel.perf_event_paranoid=1
+kernel.kptr_restrict=0
+</code></pre>
+<p>Make it effective</p>
+<pre><code>```
+sudo sysctl -p   
+```
+</code></pre>
+<ul>
 <li>
 <p>(Optional) Set up your own target machine? Some notes: </p>
 </li>
