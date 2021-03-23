@@ -387,67 +387,6 @@
     Setup
   </a>
   
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#workflow-overview" class="md-nav__link">
-    Workflow overview
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#trace-collection" class="md-nav__link">
-    Trace collection
-  </a>
-  
-    <nav class="md-nav" aria-label="Trace collection">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#path-setup-do-this-once-every-time-you-login-to-the-target" class="md-nav__link">
-    Path setup (do this once, every time you login to the target)
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-collection-command-lines" class="md-nav__link">
-    Example collection command lines
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#profiling-results" class="md-nav__link">
-    Profiling results
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#itt-api-for-tracemarker-instrumentation" class="md-nav__link">
-    ITT API for tracemarker instrumentation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-to-do-now" class="md-nav__link">
-    What to do now
-  </a>
-  
 </li>
       
     </ul>
@@ -538,67 +477,6 @@
     Setup
   </a>
   
-    <nav class="md-nav" aria-label="Setup">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#workflow-overview" class="md-nav__link">
-    Workflow overview
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#trace-collection" class="md-nav__link">
-    Trace collection
-  </a>
-  
-    <nav class="md-nav" aria-label="Trace collection">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#path-setup-do-this-once-every-time-you-login-to-the-target" class="md-nav__link">
-    Path setup (do this once, every time you login to the target)
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#example-collection-command-lines" class="md-nav__link">
-    Example collection command lines
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#profiling-results" class="md-nav__link">
-    Profiling results
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#itt-api-for-tracemarker-instrumentation" class="md-nav__link">
-    ITT API for tracemarker instrumentation
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#what-to-do-now" class="md-nav__link">
-    What to do now
-  </a>
-  
 </li>
       
     </ul>
@@ -654,21 +532,45 @@
 <p>VTune has to be installed on the following machines. </p>
 <ul>
 <li><strong>Viewer machine</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </li>
-<li>Fetch the installation package from portal to your local computer. Path on <strong>cs.portal</strong></li>
-</ul>
-<pre><code>/u/xl6yq/cs4414/
+<li>
+<p>Fetch the installation package from portal to your local computer. The path on <strong>cs.portal</strong>:</p>
+<p><code>/u/xl6yq/cs4414/
 ├── vtune_profiler_2020_update2.dmg      
 ├── VTune_Profiler_2020_update2_setup.exe
-└── vtune_profiler_2020_update2.tar.gz   
+└── vtune_profiler_2020_update2.tar.gz</code></p>
+</li>
+</ul>
+<p>To download &amp; install: 
+* Method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .</code> </p>
+<pre><code>* This should work on Linux/WSL/PowerShell.
 </code></pre>
 <ul>
-<li>Method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .</code> </li>
-<li>Method 2: WinSCP, which can download files over SSH
-    <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></li>
-<li>(Optional) Want to try the newest VTune? Download from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. </li>
-<li><strong>Target machine</strong> (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/opt/intel/vtune_profiler</code>. <strong>We will use VTune from command line to collect trace.</strong> 
-  (Optional) Want to set up your own target machine? Some notes: </li>
-<li>Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. </li>
+<li>
+<p>Method 2: WinSCP, which can download files over SSH
+  <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></p>
+</li>
+<li>
+<p>(Optional) Want to try the newest VTune? Download from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. </p>
+</li>
+<li>
+<p><strong>Target machine</strong> (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/opt/intel/vtune_profiler</code>. <strong>We will use VTune from command line to collect trace.</strong> </p>
+</li>
+<li>
+<p>Relaxing OS security (Students do not have to do these on course servers. We already did.)</p>
+<p>```</p>
+<h1 id="add-to-etcsysctlconf">add to /etc/sysctl.conf</h1>
+<p>kernel.perf_event_paranoid=1
+kernel.kptr_restrict=0
+```
+Make it effective</p>
+<p><code>sudo sysctl -p</code></p>
+</li>
+<li>
+<p>(Optional) Set up your own target machine? Some notes: </p>
+</li>
+<li>
+<p>Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. </p>
+</li>
 <li>Preferred: Ubuntu 20.04 LTS with Linux kernel &gt; 4.17. Some VTune event-based sampling <a href="https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html">features</a> depends on it. </li>
 <li>granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.</li>
 <li><strong>Dev machine (optional)</strong>. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer &amp; dev machine. Recommended: Ubuntu 20.04 LTS. </li>
@@ -676,17 +578,18 @@
 <h3 id="workflow-overview">Workflow overview</h3>
 <p>Choose one of the two models that suit you. 
 <img alt="" src="../figures/workflow.png" /></p>
-<p><strong>Setup 1 -- develop on the server (for people who has no local Linux box)</strong>: develop code on the server (either via SSH terminals or mount the server filesystem). In this case, target &amp; dev machines are the same. </p>
+<p><strong>Setup 1 -- develop on the server </strong>: develop code on the server (either via SSH terminals or mount the server filesystem). In this case, target &amp; dev machines are the same. </p>
 <ul>
 <li>
 <p>Write code -&gt; build binary -&gt; (test to make sure it works correctly) -&gt; profile the program with VTune the server </p>
 </li>
 <li>
-<p>Download the profile results to your PC (the viewer machine). This can be done via rsync, scp, or ftp. </p>
+<p>Download the profile results to your PC (the viewer machine). This can be done from VSCode (or rsync, scp, ...)</p>
 </li>
-<li>
-<p>View the results on local VTune. </p>
-</li>
+</ul>
+<p><img alt="image-20210318122610743" src="../image-20210318122610743.png" /></p>
+<ul>
+<li>View the results on local VTune. </li>
 </ul>
 <p>To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code &amp; binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after <em>every</em> source modification &amp; rebuild. Automate this process with your script! </p>
 <p><img alt="" src="../figures/steal-ue.png" /></p>

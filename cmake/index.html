@@ -493,7 +493,6 @@
                 
                 
                 <h1 id="build-the-benchmark-with-cmake">Build the benchmark with CMake</h1>
-<p><em>There is no "quickstart". Just to make sure you read &amp; do the experiment.</em> </p>
 <h2 id="background">Background</h2>
 <p>Our source tree is managed by <code>CMake</code> instead of a hand-written Makefile. CMake is widely used to build large codebases. To us, CMake eases building multiple versions of the same source code, each built with difference build flags. We will see the benefits in subsequent experiments. </p>
 <p>To use CMake, we list our build targets in a file called <code>CMakeLists.txt</code>. Then we invoke <code>cmake</code>, which will take <code>CMakeLists.txt</code> and  generate a <code>makefile</code> . <code>cmake</code> will then invoke make automatically. </p>
@@ -502,14 +501,14 @@
 # assuming we are building exp1
 $ cd exp1
 $ cmake .
-$ make
 </code></pre>
-<p>This generates a Makefile from CMakeLists.txt. </p>
+<p>This generates a Makefile from CMakeLists.txt. Then type:</p>
+<pre><code>$ make
+</code></pre>
 <p><strong>Troubleshooting</strong> if CMakeCache.txt is complained to be out of date, simply delete or rename it and run <code>cmake</code> again. </p>
 <p>Peek at the generated Makefile to see whether you can understand it. </p>
 <h2 id="each-time-you-modify-source-and-need-to-rebuild"><strong>Each time you modify source and need to rebuild</strong></h2>
-<p>Simply run: </p>
-<p><code>$ make</code></p>
+<p>Simply run: <code>make</code></p>
 <p>To build individual targets: </p>
 <pre><code>$ make &lt;tab&gt; &lt;tab&gt; # this will list all targets
 # examples: 
