@@ -652,20 +652,18 @@
 </tbody>
 </table>
 <p>VTune has to be installed on the following machines. </p>
+<p>Machine 1: <strong>Viewer machine</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </p>
 <ul>
-<li><strong>Viewer machine</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </li>
-<li>
-<p>Fetch the installation package from portal to your local computer. The path on <strong>cs.portal</strong>:</p>
-<p><code>/u/xl6yq/cs4414/
+<li>Fetch the installation package from portal to your local computer. The path on <strong>cs.portal</strong>:</li>
+</ul>
+<pre><code>/u/xl6yq/cs4414/
 ├── vtune_profiler_2020_update2.dmg      
 ├── VTune_Profiler_2020_update2_setup.exe
-└── vtune_profiler_2020_update2.tar.gz</code></p>
-</li>
-</ul>
-<p>To download &amp; install: 
-* Method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .</code> </p>
-<pre><code>* This should work on Linux/WSL/PowerShell.
+└── vtune_profiler_2020_update2.tar.gz   
 </code></pre>
+<p>To download &amp; install: 
+* Method 1: scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .
+This should work on Linux/WSL/PowerShell.</p>
 <ul>
 <li>
 <p>Method 2: WinSCP, which can download files over SSH
@@ -686,9 +684,7 @@ kernel.perf_event_paranoid=1
 kernel.kptr_restrict=0
 </code></pre>
 <p>Make it effective</p>
-<pre><code>```
-sudo sysctl -p   
-```
+<pre><code>sudo sysctl -p   
 </code></pre>
 <ul>
 <li>
