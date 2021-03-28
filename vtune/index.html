@@ -652,34 +652,24 @@
 </tbody>
 </table>
 <p>VTune has to be installed <strong>both</strong> machines.</p>
-<ul>
-<li>
-<p><strong>Machine 1: Viewer</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </p>
-<ul>
-<li>Fetch the installation package from portal to your local computer. The path on <strong>cs.portal</strong>:</li>
-</ul>
-<p>/u/xl6yq/cs4414/
-├── vtune_profiler_2020_update2.dmg    <br />
+<p><strong>Machine 1: Viewer</strong>: Your own computer. Can be Windows/Linux/OSX. </p>
+<p><em>Required for all students</em></p>
+<p>Fetch the installation package from portal to your local computer. The path on cs.portal:</p>
+<pre><code>/u/xl6yq/cs4414/
+├── vtune_profiler_2020_update2.dmg 
 ├── VTune_Profiler_2020_update2_setup.exe
-└── vtune_profiler_2020_update2.tar.gz   </p>
-</li>
-<li>
-<p>Method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe</code>. This should work on Linux/WSL/PowerShell.</p>
-</li>
-<li>
-<p>Method 2: WinSCP, which can download files over SSH
-    <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></p>
-</li>
-<li>
-<p>(Optional) You may try the newest VTune from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. Not recommended. </p>
-</li>
-<li>
-<p><strong>Machine 2: Target </strong> (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/opt/intel/vtune_profiler</code>. <strong>We will call VTune from command lines to collect trace.</strong> </p>
-</li>
-<li>
-<p>Relaxing OS security (Students do not have to do these on course servers. We already did.)</p>
-</li>
+└── vtune_profiler_2020_update2.tar.gz   
+</code></pre>
+<ul>
+<li>Download method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe</code>. This should work on Linux/WSL/PowerShell.</li>
+<li>Download method 2: WinSCP, which can download files over SSH
+  <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></li>
 </ul>
+<p>(Optional) You may try the newest VTune from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. Not recommended. </p>
+<p><strong>Machine 2: Target </strong>: A multicore Linux machine. We will call VTune from command lines to collect trace. </p>
+<p><em>Students who use the course server: we already did the following things; no actions needed from you.</em></p>
+<p>Install VTune to: <code>/opt/intel/vtune_profiler</code></p>
+<p>Relaxing OS security </p>
 <pre><code># add to /etc/sysctl.conf
 kernel.perf_event_paranoid=1
 kernel.kptr_restrict=0
@@ -687,16 +677,10 @@ kernel.kptr_restrict=0
 <p>Make it effective</p>
 <pre><code>sudo sysctl -p   
 </code></pre>
+<p>(Optional) if you want to use your own Linux machine as the target, here are some notes: </p>
 <ul>
-<li>
-<p>(Optional) Set up your own target machine? Some notes: </p>
-</li>
-<li>
-<p>Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. </p>
-</li>
+<li>Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. FYI: granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.</li>
 <li>Preferred: Ubuntu 20.04 LTS with Linux kernel &gt; 4.17. Some VTune event-based sampling <a href="https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html">features</a> depends on it. </li>
-<li>granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.</li>
-<li><strong>Dev machine (optional)</strong>. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer &amp; dev machine. Recommended: Ubuntu 20.04 LTS. </li>
 </ul>
 <h3 id="workflow-overview">Workflow overview</h3>
 <p>Choose one of the two models that suit you. 
