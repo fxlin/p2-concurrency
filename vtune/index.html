@@ -651,29 +651,30 @@
 </tr>
 </tbody>
 </table>
-<p>VTune has to be installed on the following machines. </p>
-<p>Machine 1: <strong>Viewer machine</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </p>
+<p>VTune has to be installed <strong>both</strong> machines.</p>
+<ul>
+<li>
+<p><strong>Machine 1: Viewer</strong> (do this yourself): Your own computer. Can be Windows/Linux/OSX. </p>
 <ul>
 <li>Fetch the installation package from portal to your local computer. The path on <strong>cs.portal</strong>:</li>
 </ul>
-<pre><code>/u/xl6yq/cs4414/
-├── vtune_profiler_2020_update2.dmg      
+<p>/u/xl6yq/cs4414/
+├── vtune_profiler_2020_update2.dmg    <br />
 ├── VTune_Profiler_2020_update2_setup.exe
-└── vtune_profiler_2020_update2.tar.gz   
-</code></pre>
-<p>To download &amp; install: 
-* Method 1: scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .
-This should work on Linux/WSL/PowerShell.</p>
-<ul>
+└── vtune_profiler_2020_update2.tar.gz   </p>
+</li>
+<li>
+<p>Method 1: <code>scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe</code>. This should work on Linux/WSL/PowerShell.</p>
+</li>
 <li>
 <p>Method 2: WinSCP, which can download files over SSH
-  <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></p>
+    <img alt="image-20210220102706282" src="../image-20210220102706282.png" /></p>
 </li>
 <li>
-<p>(Optional) Want to try the newest VTune? Download from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. </p>
+<p>(Optional) You may try the newest VTune from <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone">Intel</a>. It seems bundled with a bunch of other stuffs as of Feb 2021. Not recommended. </p>
 </li>
 <li>
-<p><strong>Target machine</strong> (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/opt/intel/vtune_profiler</code>. <strong>We will use VTune from command line to collect trace.</strong> </p>
+<p><strong>Machine 2: Target </strong> (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: <code>/opt/intel/vtune_profiler</code>. <strong>We will call VTune from command lines to collect trace.</strong> </p>
 </li>
 <li>
 <p>Relaxing OS security (Students do not have to do these on course servers. We already did.)</p>
