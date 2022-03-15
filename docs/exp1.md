@@ -6,6 +6,8 @@ Races and Synchronization
 cd p2-concurrency/exp1/
 ```
 
+To build the given code, see [here](cmake.md).
+
 Objectives
 -------------
 
@@ -25,7 +27,7 @@ We will focus on concurrency correctness in this experiment, and will consider s
 
 To do this experiment, you may need to study a few things:
 
-* a more complete tutorial on [pthreads](https://computing.llnl.gov/tutorials/pthreads). Our benchmark app is written in the `pthread` API.
+* a more complete tutorial on [pthreads](https://hpc-tutorials.llnl.gov/posix/). Our benchmark app is written in the `pthread` API.
 
 * [clock\_gettime(2)](http://man7.org/linux/man-pages/man2/clock_gettime.2.html) ... high resolution timers (for accurate performance data collection).
 

@@ -1,7 +1,5 @@
 # Build the benchmark with CMake
 
-*There is no "quickstart". Just to make sure you read & do the experiment.* 
-
 ## Background
 
 Our source tree is managed by `CMake` instead of a hand-written Makefile. CMake is widely used to build large codebases. To us, CMake eases building multiple versions of the same source code, each built with difference build flags. We will see the benefits in subsequent experiments. 
@@ -15,10 +13,12 @@ git clone https://github.com/fxlin/p2-concurrency
 # assuming we are building exp1
 $ cd exp1
 $ cmake .
-$ make
 ```
 
-This generates a Makefile from CMakeLists.txt. 
+This generates a Makefile from CMakeLists.txt. Then type:
+```
+$ make
+```
 
 **Troubleshooting** if CMakeCache.txt is complained to be out of date, simply delete or rename it and run `cmake` again. 
 
@@ -26,9 +26,7 @@ Peek at the generated Makefile to see whether you can understand it.
 
 ## **Each time you modify source and need to rebuild**
 
-Simply run: 
-
-`$ make `
+Simply run: `make `
 
 To build individual targets: 
 
