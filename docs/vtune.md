@@ -31,24 +31,32 @@ The official user guide is [here](https://software.intel.com/content/www/us/en/d
 ## Setup
 In our experiments, we run and profile our program on the **target** **machine** and view profile results on the **viewer machine**. 
 
-**VTune version info** (Aug 2020): 
+**VTune version info** (Feb 2021): 
 
-| OS (choose one)  | Profiler version               | Installation package               |
-| ---------------- | ------------------------------ | ---------------------------------- |
-| Ubuntu 18.04 LTS | vtune_profiler_2020.1.0.607630 | vtune_profiler_2020_update1.tar.gz |
-| Ubuntu 20.04 LTS | vtune_profiler_2020.2.0.610396 | vtune_profiler_2020_update2.tar.gz |
+| Profiler version               | Installation package               |
+| ------------------------------ | ---------------------------------- |
+| vtune_profiler_2020.2.0.610396 | vtune_profiler_2020_update2.tar.gz |
 
 VTune has to be installed on the following machines. 
 
-* **Viewer machine** (do this yourself): Your own PC. Can be Windows/Linux/OSX. You need to download & install VTune from [here](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). Choose the standalone VTune version. 
-* **Target machine** (the class server; we have already prepared this): A multicore Linux machine. VTune is installed at: `/data/intel/vtune_profiler` or `/opt/intel/vtune_profiler`. **We will use VTune from command line to collect trace.** 
-  Want to set up your own target machine? Some notes: 
+* **Viewer machine** (do this yourself): Your own computer. Can be Windows/Linux/OSX. 
+  * Fetch the installation package from portal to your local computer. Path on **cs.portal**
+```
+/u/xl6yq/cs4414/
+├── vtune_profiler_2020_update2.dmg      
+├── VTune_Profiler_2020_update2_setup.exe
+└── vtune_profiler_2020_update2.tar.gz   
+```
+  * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .``` 
+  * Method 2: WinSCP, which can download files over SSH
+    ![image-20210220102706282](image-20210220102706282.png)
+  * (Optional) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). It seems bundled with a bunch of other stuffs as of Feb 2021. 
+* **Target machine** (the course server; we have already prepared this): A multicore Linux machine. VTune is installed at: `/opt/intel/vtune_profiler`. **We will use VTune from command line to collect trace.** 
+  (Optional) Want to set up your own target machine? Some notes: 
   * Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. 
-  * Preferred: Ubuntu 20.04 LTS which ships with Linux kernel > 4.17. Some VTune event-based sampling [features](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html) depends on it. 
-  * granger1: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
-  * labsrv06 (not recommended): Ubuntu 18.04 LTS on Intel Xeon Silver 4410 CPU (8c16t), 8 cores. 
-
-**Dev machine (optional)**. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer & dev machine. Recommended: Ubuntu 20.04 LTS. 
+  * Preferred: Ubuntu 20.04 LTS with Linux kernel > 4.17. Some VTune event-based sampling [features](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html) depends on it. 
+  * granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
+  * **Dev machine (optional)**. This is the same as the target machine if you develop on the server. In case you choose to develop on your own Linux box, your own Linux box can be both the viewer & dev machine. Recommended: Ubuntu 20.04 LTS. 
 
 ### Workflow overview
 
@@ -65,7 +73,7 @@ Choose one of the two models that suit you.
 
   To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code & binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after *every* source modification & rebuild. Automate this process with your script! 
 
-  <img src="figures/steal-ue.png" style="zoom: 50%;" />
+![](figures/steal-ue.png)
 
 **Setup 2 -- develop on a personal Linux box:**  develop & build code on your local Linux machine; execute on the server for profiling. 
 

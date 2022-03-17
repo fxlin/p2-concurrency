@@ -1,5 +1,7 @@
 # Scalability assignment
 
+**cs4414/6456 students: this is just a sample. Please refer to the official assignment.** 
+
 ## 0. Reproduce the benchmarks
 
 Repeat what has been described in our writeup. 

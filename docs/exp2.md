@@ -1,13 +1,14 @@
 Scalability 
 =============================================
 
-In the previous experiment, synchronization prevents racy access to a shared variable. In this experiment, we will study the overhead of synchronization, as well as how to overcome the resultant bottleneck. As you will see, scalability takes a **system approach** and is often not as easy as one may think. 
+In the previous experiment, synchronization prevents racy access to a shared variable. In this experiment, we will study the overhead of synchronization, as well as how to overcome the resultant bottleneck.  
 
 Objectives
 -------------------
 
 *   primary: demonstrate the ability to recognize scalability bottlenecks on data structures
 *   primary: experience with partitioning a serialized resource to improve parallelism
+*   primary: know that scalability takes a **system approach** and is often not as easy as one may think.
 *   primary: experience with a modern profiler 
 *   secondary: experience with finding, installing, and exploiting new libraries and tools. 
 
@@ -15,9 +16,7 @@ Objectives
 
 We will study a simple program (list.c) that inserts 64-bit integer keys into a doubly linked list. The figure below illustrates the execution timeline. 
 
-
-
-<img src="figures/design-0.png" style="zoom:25%;" />
+![](figures/design-0.png)
 
 * in the init phase, one thread pre-generates keys and stores them in a table in memory
 * in the parallel phase, multiple threads read keys from the table and insert them to a shared linked list
@@ -92,7 +91,7 @@ FYI -- here is a list of all the program versions we will examine.
 
 In the first version, multiple threads insert pre-generated keys to a monolithic list. Partitioning the keys for threads to insert is easy: we split the the array in as many ranges as the worker threads, and make each worker thread work on a range of keys. To avoid corrupting the list, we need one lock for the whole list. Each thread must grab the lock before inserting any key.  The design is shown below. 
 
-<img src="figures/design-1.png" style="zoom:25%;" />
+![](figures/design-1.png)
 
 The core function is: 
 
@@ -131,7 +130,7 @@ SortedListElement_t *get_element(int idx) {
 
 Why does not it scale? You probably have figured out the reason. Essentially, the insertion becomes a critical section. All worker threads are serialized on this critical section. While one worker thread is in, all other threads must wait outside doing nothing. Here is a sample profiling result from VTune: 
 
-<img src="figures/biglock-tr.png" style="zoom: 67%;" />
+![](figures/biglock-tr.png)
 
 On the top, the profiling result shows that mutex lock/unlock contribute a high fraction of "spin time". The timeline on the bottom shows that all worker threads are spinning frequently (the orange portions) without doing much useful work (the brownish portions). 
 
@@ -141,7 +140,7 @@ But this does NOT explain why throughput **drops** as thread counts goes up, rig
 
 Realizing the problem is the monolithic linked list, why don't we partition it? We can make each worker thread insert to its own list. After all keys are inserted and all worker threads are joined, the main thread simply concatenates the per-worker lists to a big one. Since we do not require the final list to be sorted, the concatenation takes O (1). The design is shown below. 
 
-<img src="figures/design-2.png" style="zoom:25%;" />
+![](figures/design-2.png)
 
 We quickly change the core code as follows, which no longer needs the big lock: 
 
@@ -164,7 +163,7 @@ void* thread_func(void *thread_id) {
 
 Removing the lock helps quite a lot! However, we are still not scaling ideally. :dizzy_face:
 
-<img src="figures/list-p.png" alt="fig1"  />
+![](figures/list-p.png)
 
 ## Attempt 2: avoid expensive memory allocation ("list-pm")
 
@@ -172,7 +171,7 @@ Removing the lock helps quite a lot! However, we are still not scaling ideally. 
 
 > The second hottest item is [vmlinux] which is the kernel. Why is our benchmark kernel-intensive? 
 
-<img src="figures\list-m-malloc.png" style="zoom: 50%;" />
+![](figures/list-m-malloc.png)
 
 **The fix.** You may try "scalable memory allocators", such as [jemalloc](http://jemalloc.net/), [Hoard](http://hoard.org/), and the one from Intel's TBB. Thanks to years of R&D on scalable allocation, these allocators for sure will scale better than the good and old `malloc`. However, our microbenchmark, where many threads allocate small memory pieces in tight loops, is probably too adversarial and can defeat them easily. 
 
@@ -227,7 +226,7 @@ After all, our program has to *accommodate* the fact that threads may proceed at
 
 We achieve this by slicing the input key array into smaller parts, where the number of parts, e.g. 64,  is much higher than the number of worker threads, e.g. 8. In the parallel phase, each worker will try to grab a part to work on. We put an atomic flag for each part, whichever worker grabs it will set the flag so that other workers can skip this part. 
 
-<img src="figures/design-3.png" style="zoom: 25%;" />
+![](figures/design-3.png)
 
 Accordingly, we upgrade the code for worker thread: 
 
@@ -255,9 +254,7 @@ Often, # of parts = 4x # of numThreads is enough to diminish stragglers.
 
 Hooray! Now all workers end more or less at the same time, indicating our fix is effective. Note the colorful brackets in the figure below. Each bracket corresponds to a worker working on one part of keys. it's fun to watch how our workers share workloads *dynamically*. In this example, fast workers can finish 5 parts while slower workers can only finish 3. As we have more worker threads and more parts, the effect will be more pronounced!
 
-<img src="figures/steal.png" style="zoom:50%;" />
-
-
+![](figures/steal.png)
 
 After load balancing, our scalability plot looks as the following. It's notably better (especially for a larger number of threads) but still not ideal. Why?
 
@@ -328,11 +325,11 @@ struct SortedListElement_padding {
 
 As a result, we push the fields (`prev` and `next`) that are frequently updated to separate CPU cache lines. 
 
-<img src="figures\design-4.png" style="zoom:25%;" />
+![](figures/design-4.png)
 
 **The results.** Run `make` to produce a binary called `list-pmla`, which includes all the above features with flags `"-DUSE_PREALLOC -DUSE_LB -DUSE_PADDING"`.  After this change, we are much close to linear scaling! :happy:
 
-<img src="figures/list-pmla.png" alt="fig1" style="zoom: 80%;" />
+![](figures/list-pmla.png)
 
 # Conclusion
 

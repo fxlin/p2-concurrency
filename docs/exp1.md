@@ -1,6 +1,11 @@
 Races and Synchronization
 ======================================
 
+```
+# git clone https://github.com/fxlin/p2-concurrency
+cd p2-concurrency/exp1/
+```
+
 Objectives
 -------------
 
