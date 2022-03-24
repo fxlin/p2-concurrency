@@ -9,7 +9,6 @@ For performance debugging like this, we can no longer rely on our "roll-it-your-
 Over the past decade, profiling has seen tremendous improvement, evolving from software-based instrumentation to hardware-assisted sampling. Today, the state-of-the-art profiler can both incur low overhead and provide rich information. 
 
 **Availability:** Intel used to charge a few thousand $$ for a VTune license. Now it's freely downloadable [here](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). Thanks Intel!
-
 > Aside: Arm's profiler is called DS-5, which IMHO is still not as mature as Intel VTune!
 
 ## Nomenclature
@@ -46,19 +45,25 @@ VTune has to be installed **both** machines.
 Fetch the installation package from portal to your local computer. The path on cs.portal:
 
 ```
-/u/xl6yq/cs4414/
-├── vtune_profiler_2020_update2.dmg 
-├── VTune_Profiler_2020_update2_setup.exe
-└── vtune_profiler_2020_update2.tar.gz   
+/u/xl6yq/cs4414/  
+=======
+├── vtune_profiler_2020_update2.dmg         (for Mac)
+├── m_oneapi_vtune_p_2022.2.0.172.dmg       (for Mac)
+├── VTune_Profiler_2020_update2_setup.exe   (for Windows)
+└── vtune_profiler_2020_update2.tar.gz      (for Linux)
 ```
+Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on Monterey 12.3. 
 
-* Download method 1: `scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe`. This should work on Linux/WSL/PowerShell.
-* Download method 2: WinSCP, which can download files over SSH
-  ![image-20210220102706282](image-20210220102706282.png)
+Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
 
-(Optional) You may try the newest VTune from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). It seems bundled with a bunch of other stuffs as of Feb 2021. Not recommended. 
+How to download: 
+  * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .``` 
+  * Method 2: WinSCP, which can download files over SSH
+    ![image-20210220102706282](image-20210220102706282.png)
 
-**Machine 2: Target **: A multicore Linux machine. We will call VTune from command lines to collect trace. 
+  * (Optional) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). It seems bundled with a bunch of other stuffs as of Feb 2021. 
+
+**Machine 2: Target**: A multicore Linux machine. We will call VTune from command lines to collect trace. 
 
 *Students who use the course server: we already did the following things; no actions needed from you.*
 
@@ -82,8 +87,6 @@ sudo sysctl -p
 
 * Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. FYI: granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
 * Preferred: Ubuntu 20.04 LTS with Linux kernel > 4.17. Some VTune event-based sampling [features](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html) depends on it. 
-
-  
 
 ### Workflow overview
 
