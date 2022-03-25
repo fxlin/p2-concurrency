@@ -56,6 +56,8 @@ Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, 
 
 Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
 
+If none of the method works, in case of deadline emergency, you can run the VTune viewer from the command line on granger1/2. See [here](vtune-cmd.md). 
+
 How to download: 
   * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .``` 
   * Method 2: WinSCP, which can download files over SSH
@@ -93,7 +95,7 @@ sudo sysctl -p
 Choose one of the two models that suit you. 
 ![](figures/workflow.png)
 
-**Setup 1 -- develop on the server **: develop code on the server (either via SSH terminals or mount the server filesystem). In this case, target & dev machines are the same. 
+**Setup 1 -- develop on the server**: develop code on the server (either via SSH terminals or mount the server filesystem). In this case, target & dev machines are the same. 
 
 * Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
 
