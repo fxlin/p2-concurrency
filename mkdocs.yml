@@ -39,8 +39,8 @@ plugins:
 nav:
   - exp1: exp1.md
   - exp2: exp2.md
-  - assign1: exp1-assignment.md
-  - assign2: exp2-assignment.md
+#  - assign1: exp1-assignment.md
+#  - assign2: exp2-assignment.md
   - /vtune: vtune.md
   - /cmake: cmake.md
   - /tracing: measurement.md
