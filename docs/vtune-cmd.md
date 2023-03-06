@@ -1,6 +1,10 @@
 # VTune command line results viewer
 
-For those who are still struggling with MacOS... Do this from granger1/2. Quite primitive but may be useful. 
+### This doc is about **VIEWER** on the Linux command line, not the **PROFILER**. 
+
+For those who are struggling with MacOS... Do this from granger1/2 in order to view profiling results. 
+
+Quite primitive but may be useful. 
 
 ## Generating a Report
 

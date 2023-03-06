@@ -1,36 +1,37 @@
 # Using Intel VTune, the modern x86 profiler
 
-This page describes VTune setup relevant to our experiments. It contains pointers to various information. It does not substitute the user guide for VTune. 
+This page describes VTune setup relevant to our experiments. It contains pointers to various information. 
 
 ## Why VTune
 
-For performance debugging like this, we can no longer rely on our "roll-it-your-own" manual code instrumentation which is too rudimentary. Modern profiler has been a crucial tool. In short, programmer launches a tool ("profiler") which in turns launches the target program being profiled. The profiler collects key information about target program execution. 
+For performance debugging like this, our "roll-it-your-own" manual code instrumentation can be too rudimentary. Modern profiler has been a crucial tool. In short, programmer launches a tool ("profiler") which in turns launches the target program being profiled. The profiler collects key information about target program execution. 
 
-Over the past decade, profiling has seen tremendous improvement, evolving from software-based instrumentation to hardware-assisted sampling. Today, the state-of-the-art profiler can both incur low overhead and provide rich information. 
+Over the past decade, profiling has seen tremendous improvement, evolving from software-based instrumentation to hardware-assisted sampling. Today, profilers can provide rich information at low overhead. 
 
-**Availability:** Intel used to charge a few thousand $$ for a VTune license. Now it's freely downloadable [here](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). Thanks Intel!
-> Aside: Arm's profiler is called DS-5, which IMHO is still not as mature as Intel VTune!
+**Availability:** Intel used to charge a few thousand $$ for a VTune license. Now it's freely downloadable. 
 
-## Nomenclature
+> Aside: Arm's profiler is called DS-5. 
 
-VTune is Intel's profiler. Prior to 2018 it was called Intel **VTune Amplifier** (a marketing term). There are still some old documents online with the latter name. Many of the current VTune executables are still named with the "amplxe-" prefix. 
+## Naming
+
+**VTune** is Intel's profiler. Prior to 2018 it was called Intel "VTune Amplifier" (a marketing term). There are still some old documents online with the latter name. Many of the current VTune executables are still named with the "amplxe-" prefix. Today it is called "oneAPI VTune". Intel likes to tinker with marketing terms.
 
 ## Useful VTune documents
 
 VTune's [front page](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/get-started.html) feature short articles & videos. Recommended readings: 
 
-* A quick introduction. This [video](https://software.intel.com/content/www/us/en/develop/videos/introduction-to-intel-vtune-amplifier.html). 
-* A case study on profiling Linux program. This [video](https://software.intel.com/content/www/us/en/develop/videos/finding-application-hotspots-on-a-linux-system-with-intel-vtune-amplifier-xe.html). 
+* A quick introduction. This [video](https://software.intel.com/content/www/us/en/develop/videos/introduction-to-intel-vtune-amplifier.html) (7 min)
+* A case study on profiling Linux program. This [video](https://software.intel.com/content/www/us/en/develop/videos/finding-application-hotspots-on-a-linux-system-with-intel-vtune-amplifier-xe.html) (4.5min)
 * About CPU instruction pipeline: this [video](https://techdecoded.intel.io/quickhits/what-you-need-to-know-about-the-instruction-pipeline/?elq_cid=3074796&erpm_id=5831526#gs.9eq2sk) and [this article](https://techdecoded.intel.io/resources/understanding-the-instruction-pipeline/?-1882156948.1541449095&erpm_id=3147218&elq_cid=3074796&erpm_id=5831526#gs.9ee57j) . A good refresher on CPU architecture and for understanding architecture profiling results. 
 
 There are more and you may skim them.
 
-The official user guide is [here](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html). It's long and you do NOT have to read from back to end. Just make sure when you Google (e.g. "vtune threading profiling"), only pick results coming from this user guide. 
+The official user guide is [here](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html). It's long and you do NOT have to read from back to end. Just make sure when you Google/Bing (e.g. "vtune threading profiling"), only pick results coming from this user guide. 
 
 ## Setup
 In our experiments, we run and profile our program on the **target** **machine** and view profile results on the **viewer machine**. 
 
-**VTune version info** (Feb 2021): 
+**VTune version info**: 
 
 | Profiler version               | Installation package               |
 | ------------------------------ | ---------------------------------- |
@@ -42,7 +43,7 @@ VTune has to be installed **both** machines.
 
 *Required for all students*
 
-Fetch the installation package from portal to your local computer. The path on cs.portal:
+Fetch the installation package from **portal** to your local computer. The path on cs.portal:
 
 ```
 /u/xl6yq/cs4414/  
@@ -52,22 +53,24 @@ Fetch the installation package from portal to your local computer. The path on c
 ├── VTune_Profiler_2020_update2_setup.exe   (for Windows)
 └── vtune_profiler_2020_update2.tar.gz      (for Linux)
 ```
-Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on Monterey 12.3. 
+Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3. 
 
 Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
 
-If none of the method works, in case of deadline emergency, you can run the VTune viewer from the command line on granger1/2. See [here](vtune-cmd.md). 
+If none of the method works, you MAY run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
 
-How to download: 
-  * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .``` 
-  * Method 2: WinSCP, which can download files over SSH
+Download packages from portal to your local machine: 
+  * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .```  (mac/Linux users should download dmg/tar.gz)
+  * Method 2 (Win only): WinSCP, which can download files over SSH
     ![image-20210220102706282](image-20210220102706282.png)
 
-  * (Optional) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone). It seems bundled with a bunch of other stuffs as of Feb 2021. 
+  * (Optional) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
 
-**Machine 2: Target**: A multicore Linux machine. We will call VTune from command lines to collect trace. 
+**Machine 2: Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
 
-*Students who use the course server: we already did the following things; no actions needed from you.*
+**We recommend most students to use the course server as target. **
+
+**Notes below are ONLY for students who want to use own Linux machine as the target.** 
 
 Install VTune to: `/opt/intel/vtune_profiler`
 
@@ -85,33 +88,31 @@ Make it effective
 sudo sysctl -p   
 ```
 
-(Optional) if you want to use your own Linux machine as the target, here are some notes: 
-
 * Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. FYI: granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
 * Preferred: Ubuntu 20.04 LTS with Linux kernel > 4.17. Some VTune event-based sampling [features](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html) depends on it. 
 
-### Workflow overview
+### Workflow: choose one mode that suits you
 
-Choose one of the two models that suit you. 
+
 ![](figures/workflow.png)
 
-**Setup 1 -- develop on the server**: develop code on the server (either via SSH terminals or mount the server filesystem). In this case, target & dev machines are the same. 
+**Mode 1 (recommended) -- develop on the server, view results locally**: develop code on the server (via SSH terminals, VS code, mounted network filesystem, etc.). In this case, target & dev machines are the same. 
 
 * Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
 
-* Download the profile results to your PC (the viewer machine). This can be done from VSCode (or rsync, scp, ...)
+* Download the profile results to your local machine (the viewer machine). This can be done from VSCode (or rsync, scp, ...)
 
-* *Note: this does NOT mean using your local VTune to connect to the server* 
+* *Note: this does **NOT** mean using your local VTune to connect to the server* 
 
   ![image-20210318122610743](image-20210318122610743.png)
 
 * View the results on your local VTune. 
 
-  To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code & binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after *every* source modification & rebuild. Automate this process with your script! 
+  To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code & binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after *every* source modification & rebuild. Consider automating this process with your script (e.g. rsync) 
 
 ![](figures/steal-ue.png)
 
-**Setup 2 -- develop on a personal Linux box:**  develop & build code on your local Linux machine; execute on the server for profiling. 
+**Mode 2 (if you so choose) -- develop on a personal Linux box:**  develop & build code on your local Linux machine; execute on the server for profiling. 
 
 The workflow is similar to setup 1. A few things to note though: 
 
@@ -119,13 +120,13 @@ The workflow is similar to setup 1. A few things to note though:
 * The path for ITT library. To use VTune's ITT [tracing API](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis.html), e.g. for adding task markers, you will have to include C headers & link to the ITT libraries. They ship with the VTune installation. Make sure you point to the right path in building, e.g. by changing CMakeList.txt. 
 * Be aware of local profiling results. If you try profiling on your local machine, the results may appear different than that on the target machine. Sometimes the difference may be confusing. 
 
-**My setup (FYI).** It's a variant of setup 2. A bit complicated while it works well for me. Locally I have a Windows machine (as the viewer) and a Linux machine (the dev machine) connected via GbE. They share a network filesystem (Samba). From the Windows machine I connect into the Linux machine via the terminal emulator of WSL2. I develop and briefly test program on the dev machine and rsync it to the server for profiling. Then I rsync the profiling results back to local for viewing. 
+**Instructor's pick (FYI).** It's a variant of mode 2. A bit complicated but works well for me. Locally I have a Windows machine (as the viewer) and a Linux machine (the dev machine) connected via GbE. They share a network filesystem (Samba). From the Windows machine I connect into the Linux machine (dev) via the terminal emulator of WSL2. I develop and briefly test program on the dev machine and rsync it to the server (target) for profiling. Then I rsync the profiling results to local (viewer) for viewing. 
 
 ## Trace collection
 
-On the target machine: 
+On the target machine (e.g. granger1/2): 
 
-### Path setup (do this once, every time you login to the target)
+### Path setup (do this every time you login to the target)
 
 ```
 source /opt/intel/vtune_profiler/vtune-vars.sh
@@ -134,9 +135,9 @@ export INTEL_LIBITTNOTIFY64=/opt/intel/vtune_profiler/lib64/runtime/libittnotify
 
 [Reference](# https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis/basic-usage-and-configuration/configuring-your-build-system.html#configuring-your-build-system) 
 
-Consider adding the commands above to your `~/.bashrc`
+To automate, consider appending the above to your `~/.bashrc` on the target. 
 
-### Example collection command lines
+### Example commands, to execute for each collection
 
 ```
 # hotspot analysis
@@ -158,13 +159,15 @@ Will be stored in a subdirectory named as, e.g. "r000tr/", "r014ue/", "r027hs/".
 
 The numbers are assigned by VTune in an ascending manner. The last two letters are the analysis type. tr-"threading", ue-"microarchitecture exploration", "hs"-hotspot. 
 
-Fetch the whole subdirectory to the viewer machine. Open the directory from VTune. 
+Fetch the whole subdirectory to the viewer machine. On the viewer, open the directory using the VTune installation. 
 
 ## ITT API for tracemarker instrumentation
 
 <!---- TODO--->
 
 To visualize how workers have grabbed parts to work on, we can lightly instrument our source with VTune's ITT API. The API allows us to programmatically add markers to the VTune timeline. 
+
+This is used in [exp2](./exp2.md#attempt-3-eliminate-stragglers-list-pml) for visualizing stragglers. 
 
 To learn the use of API by example, search for "USE_VTUNE" in the project source code provided to you.
 
