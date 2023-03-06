@@ -1,4 +1,4 @@
-
+# FL: some commands I found useful. FYI. Please use with full understanding. 
 
 
 ./lab2_add --iterations=10000 --threads=32 --sync=m
