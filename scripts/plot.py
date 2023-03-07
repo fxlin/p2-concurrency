@@ -5,7 +5,7 @@ prerequisite: pip3 install bokeh
 
 this script expects a list of log files, the names of which are defined in @progs below.
 
-This script parses the log files and produces a series of plots in HTML: res-0.html, res-1.html, ...
+This script parses log files and produces a series of plots in HTML: res-0.html, res-1.html, ...
 Each HTML includes additional data lines from a new log file.
 
 Example command:
@@ -18,7 +18,7 @@ $ ls *.html
 res-0.html  res-2.html  res-4.html
 res-1.html  res-3.html  res.html
 
-In the code below, show(pp) will draw in a window. If you run from a remote server, comment those lines out
+In the code below, show(pp) will draw in a window. If you run from a remote server, comment that line
 '''
 
 from bokeh.plotting import figure, show, output_file
@@ -26,7 +26,7 @@ from bokeh.plotting import figure, show, output_file
 from bokeh.io import export_png
 from bokeh.layouts import row, column
 
-MAX_CORE = 9 # we will not plot anything beyond this
+MAX_CORE = 9 # will not plot any data above this core count
 
 # return: a list of dicts
 def parse_trace(f):
@@ -76,7 +76,7 @@ progs = [
 ]
 
 
-# corresponding to the progs above
+# legends corresponding to the progs above
 legend_names = [
 	"baseline (biglock)",
 	"-p (partlists)",
