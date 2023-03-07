@@ -14,9 +14,9 @@ Clone the whole repository first. Follow the project description, tinker with th
 
 ## Prerequisite: connect to server
 
-This experiment should be finished on the **granger1** server. NOT **labsrv06** which many of you use in project 1.
+This experiment should be finished on **granger1/2**. Unlike p1, the programs here can be CPU intensive. So be mindful about the server load. 
 
-### (Optional) Run benchmarks on your local machine instead of granger1? 
+### (Optional) Use your local machine instead of granger1/2? 
 
 #### Linux
 
@@ -46,16 +46,16 @@ Follow the [CMake](cmake.md) instructions.
 
 * Follow the instructions on [Intel VTune](./vtune.md)
 
-* [A simple tracing facility](./measurement.md) 
+* [A simple tracing library](./measurement.md) 
 
 ## Experiments
 
 * **Exp1: Races & Synchronization** 
   * [Tutorial](./exp1.md)
-<!---  * [Exercises](./exp1-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
+  <!---  * [Exercises](./exp1-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
 * **Exp2: Scalability** 
   * [Tutorial](./exp2.md)
-<!----  * [Exercises](./exp2-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
+  <!----  * [Exercises](./exp2-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
 
 ## Assignment weights
 
