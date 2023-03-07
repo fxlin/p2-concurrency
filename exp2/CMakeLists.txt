@@ -8,7 +8,6 @@ SET(USE_INIT_ELEMENTS "0")
 
 # -- apply to all configurations --- #
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -g -Wall -Wextra -Werror -pthread -O2")
-#SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -pthread")
 SET(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}")
 SET(CMAKE_C_COMPILER "gcc")
 

@@ -152,32 +152,22 @@ void* thread_func(void* thread_id){
     int per_part = the_n_elements / the_config.numParts;
 
 #ifdef USE_MULTILISTS
-    //	#ifdef USE_VTUNE
-    //			__itt_task_begin(itt_domain, __itt_null, __itt_null, sh_parts[id]);
-    //	#endif
         vtune_task_begin(id);
-    		for (int i = per_part * id; i < per_part * (id + 1); i++) {
-    				//SortedList_insert(&lists[id], &elements[i]);
-    			SortedList_insert(&lists[id], get_element(i));
-    		}
-    //	#ifdef USE_VTUNE
-    //			__itt_task_end(itt_domain);
-    //	#endif // USE_VTUNE
-    		vtune_task_end();
+        for (int i = per_part * id; i < per_part * (id + 1); i++) {
+            SortedList_insert(&lists[id], get_element(i));
+        }
+        vtune_task_end();
 #elif defined(USE_LB) // thread load balancing
     for (int part = 0; part < the_config.numParts; part++) {
     	/* try to steal */
     	if (__sync_lock_test_and_set(&spinLocks[part], 1) == 0) {
 //    		printf("thread %d got part %d \n", id, part);
-//#ifdef USE_VTUNE
-//    			__itt_task_begin(itt_domain, __itt_null, __itt_null, sh_parts[part]);
-//#endif
     			vtune_task_begin(part);
     			for (int i = per_part * part; i < per_part * (part + 1); i++) {
 //						if(the_config.mutexFlag)
 //								pthread_mutex_lock(&mutexes[id]);
 
-						// on i5, it's weird that even having commented out the following
+						// on Intel i5, it's weird that even having commented out the following
 						// line, the whole loop still takes long. see i5-padding-quirks.txt
 							//SortedList_insert(&lists[id], &elements[i]);
 						SortedList_insert(&lists[id], get_element(i));
@@ -185,24 +175,17 @@ void* thread_func(void* thread_id){
 //						if(the_config.mutexFlag)
 //								pthread_mutex_unlock(&mutexes[id]);
 					}
-//#ifdef USE_VTUNE
-//    			__itt_task_end(itt_domain);
-//#endif // USE_VTUNE
     			vtune_task_end();
     	}
     }
 #else // use biglock
 	for (int i = per_part * id; i < per_part * (id + 1); i++) {
-			// we carefully do malloc() w/o grabbing lock
-//			SortedListElement_t *p = malloc(sizeof(SortedListElement_t));
-//			assert(p);
-//			p->key = keys[i];
+        // we carefully do malloc() w/o grabbing a lock
+        SortedListElement_t *p = get_element(i);
 
-			SortedListElement_t *p = get_element(i);
-
-			pthread_mutex_lock(&mutexes[0]);
-			SortedList_insert(&lists[0], p);
-			pthread_mutex_unlock(&mutexes[0]);
+        pthread_mutex_lock(&mutexes[0]);
+        SortedList_insert(&lists[0], p);
+        pthread_mutex_unlock(&mutexes[0]);
 	 }
 #endif // USB_LB
 

@@ -15,9 +15,10 @@ trace-pmla.txt  trace-pml.txt  trace-pm.txt  trace-p.txt  trace-.txt
 $ ~/p2-concurrency/scripts/plot.py
 
 $ ls *.html
-res-0.html  res-2.html  res-4.html  
+res-0.html  res-2.html  res-4.html
 res-1.html  res-3.html  res.html
 
+In the code below, show(pp) will draw in a window. If you run from a remote server, comment those lines out
 '''
 
 from bokeh.plotting import figure, show, output_file
@@ -111,7 +112,7 @@ for progid, prog in enumerate(progs):
 	pp.circle(tr, tput, fill_alpha=0.6, line_color='black', fill_color='black')
 
 	#show(column(row(ps), pp))
-	
+
 	output_file(f"res-{progid}.html", title="res")
 	#export_png(pp, filename="res.png")
 
