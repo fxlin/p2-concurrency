@@ -34,7 +34,7 @@ void print_csv_line(char* test, int threadNum, int iterations, int numList, int 
 }
 
 void usage() {
-	fprintf(stderr, "./lab2_list --iterations iterations "
+	fprintf(stderr, "./[this_program] --iterations iterations "
 			"--threads numThreads=1 [--sync option] \n");
 }
 
