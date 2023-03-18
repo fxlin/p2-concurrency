@@ -1,0 +1,61 @@
+diff --git a/exp1/counter.c b/exp1/counter.c
+index 7c73ef5..03a5a4a 100755
+--- a/exp1/counter.c
++++ b/exp1/counter.c
+@@ -8,6 +8,7 @@
+ #include <string.h>
+ #include <errno.h>
+ #include <pthread.h>
++#include <stdbool.h>
+ 
+ #define ONE_BILLION 1000000000L;
+ 
+@@ -20,7 +21,8 @@ int spinLockFlag = 0;
+ int c_and_sFlag = 0;
+ 
+ pthread_mutex_t mutex;
+-// todo: define a spinlock variable 
++// TODO: define a spinlock variable 
++bool is_locked;
+ 
+ char const * getTestName() {
+     if(mutexFlag)
+@@ -56,18 +58,29 @@ void add_iterate(int val, int iterations) {
+             pthread_mutex_unlock(&mutex);
+         }
+         else if(spinLockFlag) {
+-            // todo: lock the spinlock
++            // If is_locked is true initially, we will set is_locked to true and return true, so we continue looping.
++            // If is_locked is false intially, we will set is_locked to true and return false, so we break out of the while loop.
++            while(__atomic_test_and_set(&is_locked, __ATOMIC_SEQ_CST));
+             add(&the_counter, val);
+-            // todo: unlock the spinlock
++            // Unlock by setting is_locked to false, so another thread can set it to true.
++            __atomic_store_n(&is_locked, false, __ATOMIC_SEQ_CST);
+         }
+         else if(c_and_sFlag) {
+-            long long oldVal, newVal;
+-			
+-			/* todo: change the following, so that it updates @the_counter atomically using CAS */
+-			oldVal = the_counter;
+-			newVal = oldVal + val;
+-			the_counter = newVal; 
+-			/* --- */
++            // long long oldVal, newVal;
++
++			/* TODO: change the following, so that it updates @the_counter atomically using CAS */
++			// oldVal = the_counter;
++			// newVal = oldVal + val;
++			// the_counter = newVal; 
++			// /* --- */
++            long long old_val, new_val; 
++            old_val = the_counter;
++            do{          
++                new_val = old_val + val;
++                // If the counter is the same as the old value, then we are okay to update it to the new value
++                // If the counter is different, other threads changed it, so we update old value with the new counter, and calculate
++            }while(!__atomic_compare_exchange_n(&the_counter, &old_val, new_val, 0, __ATOMIC_SEQ_CST, __ATOMIC_SEQ_CST));
++
+         }
+         else
+             add(&the_counter, val);
