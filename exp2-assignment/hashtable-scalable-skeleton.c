@@ -157,13 +157,6 @@ void* thread_func(void* thread_id){
 	return NULL;
 }
 
-void print_entry(gpointer key, gpointer data, gpointer user_data)  
-{  
-	int* _key = key;
-	int* _data = data;
-	printf("key=%d, data=%d", *_key, *_data);
-} 
-
 int main(int argc, char** argv) {
 
 	the_config = parse_config(argc, argv);
