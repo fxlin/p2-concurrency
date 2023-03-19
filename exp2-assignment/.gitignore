@@ -2,3 +2,4 @@ CMakeCache.txt
 CMakefiles/
 cmake_install.cmake_install
 output/
+./hashtable-biglock
