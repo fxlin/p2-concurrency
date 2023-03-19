@@ -127,7 +127,6 @@ GHashTable** alloc_hashtables(int n_hashtables) {
 	for (int i = 0; i < n_hashtables; i++) {
 		hashtables[i] = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
 	}
-	//printf("%d\n", n_lists);
 	printf("allocated %d GHashTables\n",n_hashtables);
 	return hashtables;
 }

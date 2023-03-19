@@ -66,15 +66,3 @@ TARGET_LINK_LIBRARIES(hashtable-biglock
         )      
 
 # ------------------------------------- #
-
-add_executable(hashtable-scalable
-  hashtable-scalable-skeleton.c
-  ${COMMON_SOURCES}
-)
-
-TARGET_LINK_LIBRARIES(hashtable-scalable
-        ${COMMON_LIB}
-        PkgConfig::deps
-        )      
-
-# ------------------------------------- #

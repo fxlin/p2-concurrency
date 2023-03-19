@@ -48,48 +48,39 @@ __itt_string_handle **sh_parts = NULL; // per part task name
 
 void print_errors(char *error)
 {
-	if (strcmp(error, "clock_gettime") == 0)
-	{
+	if (strcmp(error, "clock_gettime") == 0) {
 		fprintf(stderr, "Error initializing clock time\n");
 		exit(1);
 	}
-	if (strcmp(error, "thread_create") == 0)
-	{
+	if (strcmp(error, "thread_create") == 0) {
 		fprintf(stderr, "Error creating threads.\n");
 		exit(2);
 	}
-	if (strcmp(error, "thread_join") == 0)
-	{
+	if (strcmp(error, "thread_join") == 0) {
 		fprintf(stderr, "Error with pthread_join.\n");
 		exit(2);
 	}
-	if (strcmp(error, "mutex") == 0)
-	{
+	if (strcmp(error, "mutex") == 0) {
 		fprintf(stderr, "Error with pthread_join. \n");
 		exit(2);
 	}
-	if (strcmp(error, "segfault") == 0)
-	{
+	if (strcmp(error, "segfault") == 0) {
 		fprintf(stderr, "Segmentation fault caught! \n");
 		exit(2);
 	}
-	if (strcmp(error, "size") == 0)
-	{
+	if (strcmp(error, "size") == 0) {
 		fprintf(stderr, "Sorted List length is not zero. List Corrupted\n");
 		exit(2);
 	}
-	if (strcmp(error, "lookup") == 0)
-	{
+	if (strcmp(error, "lookup") == 0) {
 		fprintf(stderr, "Could not retrieve inserted element due to corrupted list.\n");
 		exit(2);
 	}
-	if (strcmp(error, "length") == 0)
-	{
+	if (strcmp(error, "length") == 0) {
 		fprintf(stderr, "Could not retrieve length because list is corrupted.\n");
 		exit(2);
 	}
-	if (strcmp(error, "delete") == 0)
-	{
+	if (strcmp(error, "delete") == 0) {
 		fprintf(stderr, "Could not delete due to corrupted list. \n");
 		exit(2);
 	}
@@ -141,7 +132,6 @@ GHashTable **alloc_hashtables(int n_hashtables)
 	assert(hashtables);
 	for (int i = 0; i < n_hashtables; i++)
 		hashtables[i] = g_hash_table_new_full(g_direct_hash, g_direct_equal, NULL, NULL);
-	// printf("%d\n", n_lists);
 	printf("allocated %d GHashTables\n", n_hashtables);
 	return hashtables;
 }
@@ -152,18 +142,19 @@ void *thread_func(void *thread_id)
 {
 	int id = *((int *)thread_id);
 
-	pthread_mutex_lock(&mutexes[0]);
-	k2_measure("tr start");
+	pthread_mutex_lock(&mutexes[0]);	// must be locked to prevent trace corruption
+	k2_measure("tr start");	// for simplicity, the trace does not include thread id 
 	pthread_mutex_unlock(&mutexes[0]);
 
-	int per_part = the_n_elements / the_config.numParts; // num of keys this worker needs to insert
+	int per_part = the_n_elements / the_config.numParts; // Num of keys this worker needs to insert
 
 	vtune_task_begin(id);
-	// Insert data into the hash table.
+	// Insert a range of (key, val) into the hash table. The range depends on @id (thread_id)
 	for (int i = per_part * id; i < per_part * (id + 1); i++)
 	{		
-		// Only use a single hash table and a lock.
-		// TODO: modify this part so it selects a hash table to insert into and insert the data
+		// The current code only uses a single hash table and a lock.
+		// TODO: to scale it up, rewrite/modify the code so it selects a hash table to insert into 
+		// 	and insert the data
 		assert(id >= 0);
 		pthread_mutex_lock(&mutexes[0]);
 		g_hash_table_insert(hashtables[0], &keys[i], &vals[i]);
@@ -186,7 +177,8 @@ int main(int argc, char **argv)
 	int iterations = the_config.iterations;
 	int numParts = the_config.numParts;
 
-	// TODO: ensure N hashtables and N locks are allocated
+	// The current code only uses 1 hashtable & 1 lock. 
+	// TODO: ensure N hashtables and N locks are allocated & used
 	numHashTables = 1;
 
 	printf("thread count: %d\niters: %d\nhash tables: %d\n", numThreads, iterations, numHashTables);
@@ -199,12 +191,12 @@ int main(int argc, char **argv)
 
 	the_n_elements = numThreads * iterations;
 
-	// Allocate hash table lock(s). In fact only 1 will be in use.
+	// Allocate lock(s). 
 	alloc_locks(&mutexes, numHashTables, NULL, 0);
 	// Allocate hash table(s).
 	hashtables = alloc_hashtables(numHashTables);
 
-	// Generate keys and values to be inserted into the hash table(s).
+	// Generate keys and values to be inserted into the hash table(s). 
 	keys = alloc_keys(the_n_elements);
 	vals = alloc_vals(the_n_elements);
 
@@ -212,7 +204,7 @@ int main(int argc, char **argv)
 	itt_domain = __itt_domain_create("my domain");
 	__itt_thread_set_name("my main");
 
-	// pre create here, instead of doing it inside tasks
+	// pre create task_name, instead of doing it inside tasks
 	sh_parts = malloc(sizeof(__itt_string_handle *) * numParts);
 	assert(sh_parts);
 	char itt_task_name[32];

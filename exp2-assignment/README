@@ -6,4 +6,4 @@ hashtable-biglock.c: a sample hashtable implementation that showcases the hashta
 
 hashtable-scalable-skeleton.c: the boilerplate code for implementing a scalable hashtable. It's incomplete. Search for "TODO" 
 
-command.sh: sample commands for building, testing, and benchmarking hashtable. Tweak them. 
+run.sh: sample commands for building, testing, and benchmarking hashtable. Tweak them. 

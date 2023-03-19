@@ -37,7 +37,8 @@ run() {
 }
 
 # #####################
-run "./hashtable-biglock" "hashtable-mono.txt" 1
-#run "./hashtable" "hashtable-100.txt" 100
-#run "./hashtable" "hashtable-1000.txt" 1000
-#run "./hashtable" "hashtable-10000.txt" 10000
+mkdir -p output/
+run "./hashtable-biglock" "output/hashtable-mono.txt" 1
+#run "./hashtable" "output/hashtable-100.txt" 100
+#run "./hashtable" "output/hashtable-1000.txt" 1000
+#run "./hashtable" "output/hashtable-10000.txt" 10000
