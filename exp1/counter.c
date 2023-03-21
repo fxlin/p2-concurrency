@@ -63,11 +63,11 @@ void add_iterate(int val, int iterations) {
         else if(c_and_sFlag) {
             long long oldVal, newVal;
 			
-			/* todo: change the following, so that it updates @the_counter atomically using CAS */
-			oldVal = the_counter;
-			newVal = oldVal + val;
-			the_counter = newVal; 
-			/* --- */
+	    /* todo: change the following, so that it updates @the_counter atomically using CAS */
+	    oldVal = the_counter;
+	    newVal = oldVal + val;
+	    the_counter = newVal; 
+	    /* --- */
         }
         else
             add(&the_counter, val);
