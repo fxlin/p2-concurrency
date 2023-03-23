@@ -35,6 +35,7 @@ if (USE_INIT_ELEMENTS)
   add_definitions(-DUSE_INIT_ELEMENTS)
 endif()
 
+# so that assert() is effective
 add_definitions(-DDEBUG)
 
 file(GLOB HEADERS
