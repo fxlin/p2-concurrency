@@ -24,18 +24,18 @@ On command line (any machine: Linux, Windows powershell, macOS). Run the followi
 
 ```
 # replace COMPUTING_ID with yours, e.g. xl6yq
-python -c "print('''use granger%d''' %(abs(hash('''COMPUTING_ID'''))%2+1))" 
+python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''COMPUTING_ID'''.encode()).hexdigest(),16)%2+1))"
 ```
 
 Examples:
 
 ```
-PS C:\Users\xl6yq> python -c "print('''use granger%d''' %(abs(hash('''bfr4xr'''))%2+1))"
+python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''bfr4xr'''.encode()).hexdigest(),16)%2+1))"
 use granger2
 ```
 
 ```
-@granger1[~]$ python -c "print('''use granger%d''' %(abs(hash('''ag8mp'''))%2+1))"
+@granger1[~]$ python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''xl6yq'''.encode()).hexdigest(),16)%2+1))"
 use granger1
 ```
 
