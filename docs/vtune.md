@@ -57,6 +57,8 @@ Linux users: if the provided .tar.gz does not work, try the newest one from Inte
 
 Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3. 
 
+Windows users: if you have issues installing the package, try the compatibility mode (right click the .exe -> Troubleshoot compatibility)
+
 If none of the method works, Mac users may use the remote [Windows](https://www.cs.virginia.edu/wiki/doku.php?id=windows_server) provided by the CS IT. 
 Or they may run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
 
