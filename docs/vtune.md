@@ -39,11 +39,11 @@ In our experiments, we run and profile our program on the **target** **machine**
 
 VTune has to be installed **both** machines.
 
-**Machine 1: Viewer**: Your own computer. Can be Windows/Linux/OSX. 
+**Machine 1: Viewer**: Your own computer. Can be Windows/Linux. (Mac has some issues. See below)
 
 *Required for all students*
 
-Fetch the installation package from **portal** to your local computer. The path on cs.portal:
+Fetch the installation package from portal to your local computer. The path on cs.portal:
 
 ```
 /u/xl6yq/cs4414/  
@@ -53,18 +53,21 @@ Fetch the installation package from **portal** to your local computer. The path 
 ├── VTune_Profiler_2020_update2_setup.exe   (for Windows)
 └── vtune_profiler_2020_update2.tar.gz      (for Linux)
 ```
-Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3. 
-
 Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
 
-If none of the method works, you MAY run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
+Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3. 
 
-Download packages from portal to your local machine: 
+If none of the method works, Mac users may use the remote [Windows](https://www.cs.virginia.edu/wiki/doku.php?id=windows_server) provided by the CS IT. 
+Or they may run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
+
+Download packages from portal to your local machine:
+ 
   * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .```  (mac/Linux users should download dmg/tar.gz)
   * Method 2 (Win only): WinSCP, which can download files over SSH
     ![image-20210220102706282](image-20210220102706282.png)
+  * Method 3: download from Collab->resources->vtune
 
-  * (Optional) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
+  * (Optional; not recommended) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
 
 **Machine 2: Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
 
