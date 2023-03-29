@@ -63,7 +63,8 @@ Available packages:
 
 * Mac users: if you have an M1/M2 Mac, skip to "last resort" below. If you have an Intel Mac: try vtune_profiler_2020_update2.dmg first; if that crahes, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3 (e.g. verified to work on a Macbook 2017 (MacOS 12.6) with Intel i7); if that does not work, try the newest one from the Intel website; if no luck, skip to "last resort" below. 
 
-* Last resort: (1) If none of the method works, Mac users may use the remote [Windows](https://www.cs.virginia.edu/wiki/doku.php?id=windows_server) provided by the CS IT. (2) Students may run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
+* Last resort: 
+Students may run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
 
 The newest VTune from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
 
@@ -142,7 +143,7 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
 
 ```
 # hotspot analysis
-vtune -collect hotspots -knob sampling-mode=hw ./myprogram
+vtune -collect hotspot -knob sampling-mode=hw ./myprogram
 
 # threading analysis
 vtune -collect threading -knob sampling-and-waits=hw ./myprogram
@@ -153,6 +154,8 @@ vtune -collect uarch-exploration ./myprogram
 # For instance ...
 vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=1M --threads=1 --parts=1
 ```
+
+(I found ``-collect hotspot`` is the same as ``-collect hotspots``)
 
 ### Profiling results
 
