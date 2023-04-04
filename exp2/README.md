@@ -38,7 +38,7 @@ $ ../scripts/plot.py
 This python script parses trace files and produces a series of plots in HTML: res-0.html, res-1.html, ...
 Each HTML includes additional data lines from a new trace file.
 
-In its code, show(pp) will attempt to open a browser and show the htmls. If you run from a remote server or WSL, comment those lines. 
+In its code, `show(pp)` will attempt to open a browser and show the htmls. If you run from a remote server or WSL, comment those lines. 
 
 Example command:
 
