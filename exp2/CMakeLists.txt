@@ -3,8 +3,10 @@ cmake_minimum_required(VERSION 2.8.9)
 project(exp2)
 
 ## toggle this to use vtune itt notify instrumentation
-SET(USE_VTUNE "1") 
-SET(USE_INIT_ELEMENTS "0")
+#SET(USE_VTUNE "1") 
+option(USE_VTUNE ON)
+#SET(USE_INIT_ELEMENTS "0")
+option(USE_INIT_ELEMENTS OFF)
 
 # -- apply to all configurations --- #
 SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c99 -g -Wall -Wextra -Werror -pthread -O2")
