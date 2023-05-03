@@ -39,32 +39,34 @@ In our experiments, we run and profile our program on the **target** **machine**
 
 VTune has to be installed **both** machines.
 
-**Machine 1: Viewer**: Your own computer. Can be Windows/Linux/OSX. 
+**Machine 1: Viewer**: Your own computer. Can be Windows/Linux. (Mac has some issues. See below)
 
-*Required for all students*
-
-Fetch the installation package from **portal** to your local computer. The path on cs.portal:
+Download installation packages to your local machine:
+ 
+  * Method 1 (recommended): download from Collab->resources->vtune
+  * Method 2: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .```  (mac/Linux users should download dmg/tar.gz)
+  * Method 3 (Win only): WinSCP, which can download files over SSH
+    ![image-20210220102706282](image-20210220102706282.png)
+    
+Available packages: 
 
 ```
-/u/xl6yq/cs4414/  
-=======
 ├── vtune_profiler_2020_update2.dmg         (for Mac)
 ├── m_oneapi_vtune_p_2022.2.0.172.dmg       (for Mac)
 ├── VTune_Profiler_2020_update2_setup.exe   (for Windows)
 └── vtune_profiler_2020_update2.tar.gz      (for Linux)
 ```
-Mac users: try vtune_profiler_2020_update2.dmg first; if it crahes on your Mac, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3. 
 
-Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
+* Windows users: It should just work. If you have issues installing the package, try the compatibility mode (right click the .exe -> Troubleshoot compatibility). If you have an AMD machine, VTune should work too (verified on: Ryzen 7 5800x, Windows 10 21H2, VTune 2020 Update2).
 
-If none of the method works, you MAY run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
+* Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
 
-Download packages from portal to your local machine: 
-  * Method 1: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .```  (mac/Linux users should download dmg/tar.gz)
-  * Method 2 (Win only): WinSCP, which can download files over SSH
-    ![image-20210220102706282](image-20210220102706282.png)
+* Mac users: if you have an M1/M2 Mac, skip to "last resort" below. If you have an Intel Mac: try vtune_profiler_2020_update2.dmg first; if that crahes, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3 (e.g. verified to work on a Macbook 2017 (MacOS 12.6) with Intel i7); if that does not work, try the newest one from the Intel website; if no luck, skip to "last resort" below. 
 
-  * (Optional) Want to try the newest VTune? Download from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
+* Last resort: 
+Students may run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
+
+The newest VTune from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
 
 **Machine 2: Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
 
@@ -141,7 +143,7 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
 
 ```
 # hotspot analysis
-vtune -collect hotspots -knob sampling-mode=hw ./myprogram
+vtune -collect hotspot -knob sampling-mode=hw ./myprogram
 
 # threading analysis
 vtune -collect threading -knob sampling-and-waits=hw ./myprogram
@@ -152,6 +154,8 @@ vtune -collect uarch-exploration ./myprogram
 # For instance ...
 vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=1M --threads=1 --parts=1
 ```
+
+(I found ``-collect hotspot`` is the same as ``-collect hotspots``)
 
 ### Profiling results
 

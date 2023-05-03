@@ -18,28 +18,26 @@ This experiment should be finished on **granger1/2**. Unlike p1, the programs he
 
 ### Which server? 
 
-Concurrent students may create a lot of server loads. To balance the load, we suggest the following way to determine which server to use. 
+To balance server loads, we suggest the following way for students to determine which server to use. 
 
 On command line (any machine: Linux, Windows powershell, macOS). Run the following line (replace COMPUTING_ID with yours, e.g. xl6yq)
 
 ```
 # replace COMPUTING_ID with yours, e.g. xl6yq
-python -c "print('''use granger%d''' %(abs(hash('''COMPUTING_ID'''))%2+1))" 
+python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''COMPUTING_ID'''.encode()).hexdigest(),16)%2+1))"
 ```
 
 Examples:
 
 ```
-PS C:\Users\xl6yq> python -c "print('''use granger%d''' %(abs(hash('''bfr4xr'''))%2+1))"
+python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''bfr4xr'''.encode()).hexdigest(),16)%2+1))"
 use granger2
 ```
 
 ```
-@granger1[~]$ python -c "print('''use granger%d''' %(abs(hash('''ag8mp'''))%2+1))"
+@granger1[~]$ python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''xl6yq'''.encode()).hexdigest(),16)%2+1))"
 use granger1
 ```
-
-
 
 ### (Optional) Use your local machine instead of granger1/2? 
 

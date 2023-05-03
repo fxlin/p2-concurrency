@@ -1,7 +1,8 @@
 Scalability 
 =============================================
 
-**Servers: either granger1 or granger2 should work** 
+**Choose your server:** 
+[here](https://fxlin.github.io/p2-concurrency/#which-server)
 
 In the previous experiment, synchronization prevents racy access to a shared variable. In this experiment, we will study the overhead of synchronization, as well as how to overcome the resultant bottleneck.  
 

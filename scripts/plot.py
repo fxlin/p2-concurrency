@@ -119,7 +119,7 @@ for progid, prog in enumerate(progs):
 	# final touch...
 	pp.legend.location = "top_left"
 
-	show(pp)
+	#show(pp)
 
 output_file("res.html", title="res")
 #export_png(pp, filename="res.png")
@@ -128,4 +128,4 @@ output_file("res.html", title="res")
 pp.legend.location = "top_left"
 pp.legend.click_policy="hide"
 
-show(pp)
+#show(pp)
