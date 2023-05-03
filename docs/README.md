@@ -18,6 +18,8 @@ This experiment should be finished on **granger1/2**. Unlike p1, the programs he
 
 ### Which server? 
 
+**TBD (FL): UPDATE THE FOLLOWING WRITE UP FOR NEW SERVERS**
+
 To balance server loads, we suggest the following way for students to determine which server to use. 
 
 On command line (any machine: Linux, Windows powershell, macOS). Run the following line (replace COMPUTING_ID with yours, e.g. xl6yq)
