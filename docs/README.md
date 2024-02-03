@@ -14,34 +14,12 @@ Clone the whole repository first. Follow the project description, tinker with th
 
 ## Prerequisite: connect to server
 
-This experiment should be finished on **granger1/2**. Unlike p1, the programs here can be CPU intensive. So be mindful about the server load. 
+This experiment should be finished on **granger1/2**. Unlike p1, the programs here can be CPU intensive. Be mindful about the server load. 
 
-### Which server? 
+Use granger2 if granger1 is heavily loaded. 
 
-**TBD (FL): UPDATE THE FOLLOWING WRITE UP FOR NEW SERVERS**
 
-To balance server loads, we suggest the following way for students to determine which server to use. 
-
-On command line (any machine: Linux, Windows powershell, macOS). Run the following line (replace COMPUTING_ID with yours, e.g. xl6yq)
-
-```
-# replace COMPUTING_ID with yours, e.g. xl6yq
-python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''COMPUTING_ID'''.encode()).hexdigest(),16)%2+1))"
-```
-
-Examples:
-
-```
-python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''bfr4xr'''.encode()).hexdigest(),16)%2+1))"
-use granger2
-```
-
-```
-@granger1[~]$ python -c "import hashlib; print('''use granger%d''' %(int(hashlib.md5('''xl6yq'''.encode()).hexdigest(),16)%2+1))"
-use granger1
-```
-
-### (Optional) Use your local machine instead of granger1/2? 
+### (Adventurous) Use your local machine instead of granger1/2? 
 
 #### Linux
 
@@ -76,18 +54,12 @@ Follow the [CMake](cmake.md) instructions.
 ## Experiments
 
 * **Exp1: Races & Synchronization** 
-  * [Tutorial](./exp1.md)
+  * [Description](./exp1.md)
   <!---  * [Exercises](./exp1-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
 * **Exp2: Scalability** 
-  * [Tutorial](./exp2.md)
+  * [Description](./exp2.md)
   <!----  * [Exercises](./exp2-assignment.md) (cs6456 students: refer to MS teams for your assignments instead) --->
 
-## Assignment weights
-
-| Exp                                 | Weights |
-| ----------------------------------- | ------- |
-| Exp1               | 50      |
-| Exp2        | 50      |
 
 *Credits: inspired by UCLA "Operating Systems Principles"*
 
