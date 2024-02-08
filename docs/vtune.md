@@ -38,12 +38,8 @@ In our experiments, we run and profile our program on the **target machine** and
 | vtune_profiler_2020.2.0.610396 | vtune_profiler_2020_update2.tar.gz |
 
 
-<!-- The newest VTune from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).   -->
-
 **Viewer**: Your own computer. Can be Windows/Linux/Mac. Technically, the VTune viewer is launched on the server as a backend process, and students see its GUI via a local browser.
 **Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
-
-<!-- **You can profile on your local machine but we STRONGLY recommend most students to use the course server as a target. ** -->
 
 VTune Path in our servers: `/opt/intel/vtune_profiler`
 
@@ -64,11 +60,11 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
 
 * Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
 * Run the VTune viewer on the server. Before you do this, make sure you do the **Path setup** above.
- 
-  ```
+
+  ```bash
   # Use a random port (recommended)
   vtune-backend --data-directory <your directory> 
-
+  
   # Use your port
   vtune-backend --web-port 23444 --data-directory <your directory>
   ```
@@ -77,11 +73,12 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
   then **\<your directory\>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
   
 * Connect to the server via SSH with the designated port 
+
   If you successfully run the VTune viewer, you will see similar lines like below:
   ![alt text](figures/vtune-backend.png)
   In this case, a port number is `38881`, so all you need to do is to make another SSH connection with that port to use this VTune on your browser. This can be done as follows:
   
-  ```
+  ```bash
   # In your terminal application
   ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
   ```
@@ -90,6 +87,7 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
 
 * *Note: You need two SSH connections with this task: one running **the VTune viewer** and another making a connection for **SSH tunneling***
 * View the results on your local browser (e.g., Edge, Firefox, or Safari)
+
   If you access the VTune viewer for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
   ![alt text](figures/vtune-passphrase.png)
   <!-- To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code & binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after *every* source modification & rebuild. Consider automating this process with your script (e.g. rsync) -->
