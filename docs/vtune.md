@@ -29,7 +29,7 @@ There are more and you may skim them.
 The official user guide is [here](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html). It's long and you do NOT have to read from back to end. Just make sure when you Google/Bing (e.g. "vtune threading profiling"), only pick results coming from this user guide. 
 
 ## Setup
-In our experiments, we run and profile our program on the **target** **machine** and view profile results on the **viewer machine**. 
+In our experiments, we run and profile our program on the **target machine** and view profile results on the **viewer machine**.
 
 **VTune version info**: 
 
@@ -37,96 +37,15 @@ In our experiments, we run and profile our program on the **target** **machine**
 | ------------------------------ | ---------------------------------- |
 | vtune_profiler_2020.2.0.610396 | vtune_profiler_2020_update2.tar.gz |
 
-VTune has to be installed **both** machines.
 
-**Machine 1: Viewer**: Your own computer. Can be Windows/Linux. (Mac has some issues. See below)
+<!-- The newest VTune from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).   -->
 
-Download installation packages to your local machine:
- 
-  * Method 1 (recommended): download from Collab->resources->vtune
-  * Method 2: ```scp portal.cs.virginia.edu:/u/xl6yq/cs4414/VTune_Profiler_2020_update2_setup.exe .```  (mac/Linux users should download dmg/tar.gz)
-  * Method 3 (Win only): WinSCP, which can download files over SSH
-    ![image-20210220102706282](image-20210220102706282.png)
-    
-Available packages: 
+**Viewer**: Your own computer. Can be Windows/Linux/Mac. Technically, the VTune viewer is launched on the server as a backend process, and students see its GUI via a local browser.
+**Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
 
-```
-├── vtune_profiler_2020_update2.dmg         (for Mac)
-├── m_oneapi_vtune_p_2022.2.0.172.dmg       (for Mac)
-├── VTune_Profiler_2020_update2_setup.exe   (for Windows)
-└── vtune_profiler_2020_update2.tar.gz      (for Linux)
-```
+<!-- **You can profile on your local machine but we STRONGLY recommend most students to use the course server as a target. ** -->
 
-* Windows users: It should just work. If you have issues installing the package, try the compatibility mode (right click the .exe -> Troubleshoot compatibility). If you have an AMD machine, VTune should work too (verified on: Ryzen 7 5800x, Windows 10 21H2, VTune 2020 Update2).
-
-* Linux users: if the provided .tar.gz does not work, try the newest one from Intel. 
-
-* Mac users: if you have an M1/M2 Mac, skip to "last resort" below. If you have an Intel Mac: try vtune_profiler_2020_update2.dmg first; if that crahes, try m_oneapi_vtune_p_2022.2.0.172.dmg which reportedly works on > Monterey 12.3 (e.g. verified to work on a Macbook 2017 (MacOS 12.6) with Intel i7); if that does not work, try the newest one from the Intel website; if no luck, skip to "last resort" below. 
-
-* Last resort: 
-Students may run the VTune viewer from the command line on granger1/2. Limitations apply. See [here](vtune-cmd.md). 
-
-The newest VTune from [Intel](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/choose-download.html#standalone).  
-
-**Machine 2: Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
-
-**We recommend most students to use the course server as target. **
-
-**Notes below are ONLY for students who want to use own Linux machine as the target.** 
-
-Install VTune to: `/opt/intel/vtune_profiler`
-
-Relaxing OS security 
-
-```
-# add to /etc/sysctl.conf
-kernel.perf_event_paranoid=1
-kernel.kptr_restrict=0
-```
-
-Make it effective
-
-```
-sudo sysctl -p   
-```
-
-* Must have modern Intel processors (Broadwell, Haswell or even newer). Cannot be AMD. FYI: granger1/2: Ubuntu 20.04 LTS on 2x Xeon 2630v4 Broadwell (10c20t), 20 cores.
-* Preferred: Ubuntu 20.04 LTS with Linux kernel > 4.17. Some VTune event-based sampling [features](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/analyze-performance/parallelism-analysis-group/threading-analysis.html) depends on it. 
-
-### Workflow: choose one mode that suits you
-
-
-![](figures/workflow.png)
-
-**Mode 1 (recommended) -- develop on the server, view results locally**: develop code on the server (via SSH terminals, VS code, mounted network filesystem, etc.). In this case, target & dev machines are the same. 
-
-* Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
-
-* Download the profile results to your local machine (the viewer machine). This can be done from VSCode (or rsync, scp, ...)
-
-* *Note: this does **NOT** mean using your local VTune to connect to the server* 
-
-  ![image-20210318122610743](image-20210318122610743.png)
-
-* View the results on your local VTune. 
-
-  To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code & binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after *every* source modification & rebuild. Consider automating this process with your script (e.g. rsync) 
-
-![](figures/steal-ue.png)
-
-**Mode 2 (if you so choose) -- develop on a personal Linux box:**  develop & build code on your local Linux machine; execute on the server for profiling. 
-
-The workflow is similar to setup 1. A few things to note though: 
-
-* Since we build programs locally and execute on the server, there *may* be issues due to library version mismatch, etc. It worked fine for me (local machine: Ubuntu 18.04 LTS on Intel i5). A nice side effect, however, is that you no longer need to fetch source & binaries from the server for the local VTune to access. 
-* The path for ITT library. To use VTune's ITT [tracing API](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis.html), e.g. for adding task markers, you will have to include C headers & link to the ITT libraries. They ship with the VTune installation. Make sure you point to the right path in building, e.g. by changing CMakeList.txt. 
-* Be aware of local profiling results. If you try profiling on your local machine, the results may appear different than that on the target machine. Sometimes the difference may be confusing. 
-
-**Instructor's pick (FYI).** It's a variant of mode 2. A bit complicated but works well for me. Locally I have a Windows machine (as the viewer) and a Linux machine (the dev machine) connected via GbE. They share a network filesystem (Samba). From the Windows machine I connect into the Linux machine (dev) via the terminal emulator of WSL2. I develop and briefly test program on the dev machine and rsync it to the server (target) for profiling. Then I rsync the profiling results to local (viewer) for viewing. 
-
-## Trace collection
-
-On the target machine (e.g. granger1/2): 
+VTune Path in our servers: `/opt/intel/vtune_profiler`
 
 ### Path setup (do this every time you login to the target)
 
@@ -138,6 +57,42 @@ export INTEL_LIBITTNOTIFY64=/opt/intel/vtune_profiler/lib64/runtime/libittnotify
 [Reference](# https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis/basic-usage-and-configuration/configuring-your-build-system.html#configuring-your-build-system) 
 
 To automate, consider appending the above to your `~/.bashrc` on the target. 
+
+### Workflow
+<!-- ![](figures/workflow.png) -->
+**Develop on the server, view results locally**: develop code on the server (via SSH terminals, VS code, mounted network filesystem, etc.). In this case, target & dev machines are the same. 
+* Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
+* Run the VTune viewer on the server. Before you do this, make sure you do the **Path setup** above.
+  ```
+  # Use a random port (recommended)
+  vtune-backend --data-directory <your directory> 
+
+  # Use your port
+  vtune-backend --web-port 23444 --data-directory <your directory>
+  ```
+  For **\<your directory\>**, you need to put the parent location where your results are located. For instance, if your results are located in `/u/bfr4xr/p2-concurrency/exp2/r000hs`,
+  then **\<your directory\>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
+  
+* Connect to the server via SSH with the designated port 
+  If you successfully run the VTune viewer, you will see similar lines like below:
+  ![alt text](figures/vtune-backend.png)
+  In this case, a port number is `38881`, so all you need to do is to make another SSH connection with that port to use this VTune on your browser. This can be done as follows:
+  ```
+  # In your terminal application
+  ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
+  ```
+* *Note: You need two SSH connections with this task: one running **the VTune viewer** and another making a connection for **SSH tunneling***
+* View the results on your local browser (e.g., Edge, Firefox, or Safari)
+  If you access the VTune viewer for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
+  ![alt text](figures/vtune-passphrase.png)
+  <!-- To associate execution hotspots with source lines or assembly (see below for an example), the local VTune needs the program source code & binary (which must be build with symbols and debugging information). You will have to fetch them from the server to your local machine after *every* source modification & rebuild. Consider automating this process with your script (e.g. rsync) -->
+  
+  If you are successfully connected then you should see this screenshot:
+  ![alt text](figures/vtune-viewer.png)
+
+
+## Trace collection
+On the target machine (e.g. granger1/2): 
 
 ### Example commands, to execute for each collection
 
