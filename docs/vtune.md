@@ -61,8 +61,10 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
 ### Workflow
 <!-- ![](figures/workflow.png) -->
 **Develop on the server, view results locally**: develop code on the server (via SSH terminals, VS code, mounted network filesystem, etc.). In this case, target & dev machines are the same. 
+
 * Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
 * Run the VTune viewer on the server. Before you do this, make sure you do the **Path setup** above.
+ 
   ```
   # Use a random port (recommended)
   vtune-backend --data-directory <your directory> 
@@ -70,6 +72,7 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
   # Use your port
   vtune-backend --web-port 23444 --data-directory <your directory>
   ```
+
   For **\<your directory\>**, you need to put the parent location where your results are located. For instance, if your results are located in `/u/bfr4xr/p2-concurrency/exp2/r000hs`,
   then **\<your directory\>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
   
@@ -77,10 +80,14 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
   If you successfully run the VTune viewer, you will see similar lines like below:
   ![alt text](figures/vtune-backend.png)
   In this case, a port number is `38881`, so all you need to do is to make another SSH connection with that port to use this VTune on your browser. This can be done as follows:
+  
   ```
   # In your terminal application
   ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
   ```
+
+  This technique is called SSH Tunneling, which transports data from the remote server to the local server. See [this](https://www.ssh.com/academy/ssh/tunneling) if you are more interested in.
+
 * *Note: You need two SSH connections with this task: one running **the VTune viewer** and another making a connection for **SSH tunneling***
 * View the results on your local browser (e.g., Edge, Firefox, or Safari)
   If you access the VTune viewer for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
