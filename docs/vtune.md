@@ -58,7 +58,8 @@ To automate, consider appending the above to your `~/.bashrc` on the target.
 <!-- ![](figures/workflow.png) -->
 **Develop on the server, view results locally**: develop code on the server (via SSH terminals, VS code, mounted network filesystem, etc.). In this case, target & dev machines are the same. 
 
-**(1)** Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server 
+**(1)** Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server.
+
 **(2)** Run the VTune viewer on the server with the following cmds. Before you do this, make sure you do the **Path setup** above.
 ```bash
 # Use a random port (recommended)
@@ -81,7 +82,7 @@ In this case, a port number is `38881`, so all you need to do is to make another
 ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
 ```
 
-This technique is called SSH Tunneling, which transports data from the remote server to the local server. See [this](https://www.ssh.com/academy/ssh/tunneling) if you are more interested in.
+This technique is called SSH Tunneling, which transports data from the remote server to the local server. See [this](https://www.ssh.com/academy/ssh/tunneling) if you are interested in.
 
 > Note: You need two SSH connections with this task: one running **the VTune viewer** and another making a connection for **SSH tunneling**
 
