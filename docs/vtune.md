@@ -66,7 +66,7 @@ vtune -collect threading -knob sampling-and-waits=hw ./myprogram
 vtune -collect uarch-exploration ./myprogram
 
 # sample command to profile the assignment program
-vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=1M --threads=1 --parts=1
+vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=100M --threads=1 --parts=1
 ```
 
 (``-collect hotspot`` seems the same as ``-collect hotspots``)
@@ -109,6 +109,8 @@ This technique is called SSH Tunneling, which maps the server's 38881 port to yo
 
 > Note: You need two SSH connections with this task: one launches "vtune" and "vtune-backend"; the other makes a connection for **SSH tunneling**
 
+Tips: if vtune-backend is restarted and your local browser shows no content, try to rebuild the SSH tunnel. 
+
 Next, fire your local browser and paste the above URL (e.g. https://127.0.0.1:38881)
 
 If you access the VTune webUI for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
@@ -116,6 +118,10 @@ If you access the VTune webUI for the first time, you will see a prompt to input
 
 If you are successfully connected then you should see something like this:
 ![alt text](figures/vtune-viewer.png)
+
+Click to open a trace: 
+
+![image-20240208211734420](figures\image-20240208211734420.png)
 
 ## Extra info: ITT API for tracemarker instrumentation
 
