@@ -4,19 +4,15 @@ This page describes VTune setup relevant to our experiments. It contains pointer
 
 ## Why VTune
 
-For performance debugging like this, our "roll-it-your-own" manual code instrumentation can be too rudimentary. Modern profiler has been a crucial tool. In short, programmer launches a tool ("profiler") which in turns launches the target program being profiled. The profiler collects key information about target program execution. 
+For performance debugging like this, our "roll-it-your-own" manual code instrumentation can be too rudimentary. Modern profilers have been crucial. In short, programmer launches a tool ("profiler") which in turns launches the target program to be profiled. The profiler collects key information about target program execution, and presents the results to developers for post-analysis.
 
-Over the past decade, profiling has seen tremendous improvement, evolving from software-based instrumentation to hardware-assisted sampling. Today, profilers can provide rich information at low overhead. 
-
-**Availability:** Intel used to charge a few thousand $$ for a VTune license. Now it's freely downloadable. 
-
-> Aside: Arm's profiler is called DS-5. 
+Over the past decade, profiling has seen tremendous improvement, evolving from software-based instrumentation to hardware-assisted sampling. Today, profilers can have very low overhead. 
 
 ## Naming
 
-**VTune** is Intel's profiler. Prior to 2018 it was called Intel "VTune Amplifier" (a marketing term). There are still some old documents online with the latter name. Many of the current VTune executables are still named with the "amplxe-" prefix. Today it is called "oneAPI VTune". Intel likes to tinker with marketing terms.
+**VTune** is Intel's profiler. Prior to 2018 it was called Intel "VTune Amplifier" (a marketing term). There are still some old documents online with the latter name. Many of the current VTune executables are still named with the "amplxe-" prefix. Today it is called "oneAPI VTune". 
 
-## Useful VTune documents
+## VTune documents
 
 VTune's [front page](https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/get-started.html) feature short articles & videos. Recommended readings: 
 
@@ -26,76 +22,36 @@ VTune's [front page](https://software.intel.com/content/www/us/en/develop/tools/
 
 There are more and you may skim them.
 
-The official user guide is [here](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html). It's long and you do NOT have to read from back to end. Just make sure when you Google/Bing (e.g. "vtune threading profiling"), only pick results coming from this user guide. 
+The official user guide is [here](https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html). It's long and you do NOT have to read from back to end. Just make sure when you Google/Bing (e.g. "vtune threading profiling"), ONLY pick results coming from this user guide. 
 
-## Setup
-In our experiments, we run and profile our program on the **target machine** and view profile results on the **viewer machine**.
+## Step 0. Setup
+In our experiments, we run and profile our program on the **server machine** and view profile results on your **local machine** (Windows/Linux/Mac) from a browser.
 
-**VTune version info**: 
-
-| Profiler version               | Installation package               |
-| ------------------------------ | ---------------------------------- |
-| vtune_profiler_2020.2.0.610396 | vtune_profiler_2020_update2.tar.gz |
-
-
-**Viewer**: Your own computer. Can be Windows/Linux/Mac. Technically, the VTune viewer is launched on the server as a backend process, and students see its GUI via a local browser.
-**Target**: A multicore Linux machine, e.g. our course server. We will call VTune from command lines to collect trace. 
-
-VTune Path in our servers: `/opt/intel/vtune_profiler`
-
-### Path setup (do this every time you login to the target)
+First, add VTune to the executable path: 
 
 ```
 source /opt/intel/vtune_profiler/vtune-vars.sh
 export INTEL_LIBITTNOTIFY64=/opt/intel/vtune_profiler/lib64/runtime/libittnotify_collector.so
 ```
 
+Do this every time you login to the server. Or you can simply do "source env-vtune.sh" (a script provided to you). 
+
+Verify that vtune can be found: 
+
+```
+$ which vtune
+/opt/intel/vtune_profiler_2020.2.0.610396/bin64/vtune
+$ which vtune-backend
+/opt/intel/vtune_profiler_2020.2.0.610396/bin64/vtune-backend
+```
+
 [Reference](# https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis/basic-usage-and-configuration/configuring-your-build-system.html#configuring-your-build-system) 
 
-To automate, consider appending the above to your `~/.bashrc` on the target. 
+## Step 1. Trace collection
 
-### Workflow
-<!-- ![](figures/workflow.png) -->
-**Develop on the server, view results locally**: develop code on the server (via SSH terminals, VS code, mounted network filesystem, etc.). In this case, target & dev machines are the same. 
+Develop code on the server remotely (e.g. via VS code). Write code -> build binary -> (test to make sure it works correctly). 
 
-**(1)** Write code -> build binary -> (test to make sure it works correctly) -> profile the program with VTune the server.
-
-**(2)** Run the VTune viewer on the server with the following cmds. Before you do this, make sure you do the **Path setup** above.
-```bash
-# Use a random port (recommended)
-vtune-backend --data-directory <your directory> 
-
-# Use your port
-vtune-backend --web-port 23444 --data-directory <your directory>
-```
-
-For **\<your directory\>**, you need to put the parent location where your results are located. For instance, if your results are located in `/u/bfr4xr/p2-concurrency/exp2/r000hs`, then **\<your directory\>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
-  
-**(3)** Connect to the server via SSH with the designated port  
-If you successfully run the VTune viewer, you will see similar lines like below:
-![alt text](figures/vtune-backend.png)
-
-In this case, a port number is `38881`, so all you need to do is to make another SSH connection with that port to use this VTune on your browser. This can be done as follows:
-  
-```bash
-# In your terminal application
-ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
-```
-
-This technique is called SSH Tunneling, which transports data from the remote server to the local server. See [this](https://www.ssh.com/academy/ssh/tunneling) if you are interested in.
-
-> Note: You need two SSH connections with this task: one running **the VTune viewer** and another making a connection for **SSH tunneling**
-
-**(4)** View the results on your local browser (e.g., Edge, Firefox, or Safari)
-
-If you access the VTune viewer for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
-![alt text](figures/vtune-passphrase.png)
-
-If you are successfully connected then you should see this screenshot:
-![alt text](figures/vtune-viewer.png)
-
-## Trace collection
-On the target machine (e.g. granger1/2): 
+Next, profile the program with VTune. To do so, from the server command line: 
 
 ### Example commands, to execute for each collection
 
@@ -109,21 +65,59 @@ vtune -collect threading -knob sampling-and-waits=hw ./myprogram
 # microarchitecture analysis
 vtune -collect uarch-exploration ./myprogram
 
-# For instance ...
+# sample command to profile the assignment program
 vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=1M --threads=1 --parts=1
 ```
 
-(I found ``-collect hotspot`` is the same as ``-collect hotspots``)
+(``-collect hotspot`` seems the same as ``-collect hotspots``)
 
-### Profiling results
+### Where are the profiling results?
 
-Will be stored in a subdirectory named as, e.g. "r000tr/", "r014ue/", "r027hs/". 
+They are stored in a subdirectory automatically named as, e.g. "r000tr/", "r014ue/", "r027hs/". 
 
 The numbers are assigned by VTune in an ascending manner. The last two letters are the analysis type. tr-"threading", ue-"microarchitecture exploration", "hs"-hotspot. 
 
-Fetch the whole subdirectory to the viewer machine. On the viewer, open the directory using the VTune installation. 
+## Step 2. Launch vtune-backend (webserver)
 
-## ITT API for tracemarker instrumentation
+We will launch "vtune-backend'' on the server, which will present the profiling results over web UI: 
+
+```bash
+# Use a random port (recommended)
+vtune-backend --data-directory <your directory> 
+
+# Use a specific port, run "source env-tune.sh" before below 
+vtune-backend --web-port ${MYPORT} --data-directory <your directory>
+```
+
+For **\<your directory\>**, you need to put the parent location where your results are located. For instance, if your results are located in `/u/bfr4xr/p2-concurrency/exp2/r000hs`, then **\<your directory\>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
+If you successfully launch vtune-backend, you will see similar lines like below:
+![alt text](figures/vtune-backend.png)
+
+In this case, the port number is `38881`. 
+
+## Step 3. View trace from a local browser
+
+Make **another** SSH connection (from your local machine to the server) with the port from the output above, e.g. 
+
+```bash
+# From your local machine (Windows: PowerShell/VSCode; Mac: Terminal)
+ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
+# NOTE: 38881 is just an example; use your own port
+```
+
+This technique is called SSH Tunneling, which maps the server's 38881 port to your local machine's 38881 port. As a result, it transports data from the remote server to the local server. See [this](https://www.ssh.com/academy/ssh/tunneling) for more. 
+
+> Note: You need two SSH connections with this task: one launches "vtune" and "vtune-backend"; the other makes a connection for **SSH tunneling**
+
+Next, fire your local browser and paste the above URL (e.g. https://127.0.0.1:38881)
+
+If you access the VTune webUI for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
+![alt text](figures/vtune-passphrase.png)
+
+If you are successfully connected then you should see something like this:
+![alt text](figures/vtune-viewer.png)
+
+## Extra info: ITT API for tracemarker instrumentation
 
 <!---- TODO--->
 
@@ -133,7 +127,8 @@ This is used in [exp2](./exp2.md#attempt-3-eliminate-stragglers-list-pml) for vi
 
 To learn the use of API by example, search for "USE_VTUNE" in the project source code provided to you.
 
-## What to do now
 
-Set up VTune with your local machine and test the whole workflow with a simple program. 
 
+*Changelog*
+
+*2/8/2024: update to use vtune-backend and browser* 
