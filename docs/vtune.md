@@ -121,7 +121,7 @@ If you are successfully connected then you should see something like this:
 
 Click to open a trace: 
 
-![image-20240208211734420](figures\image-20240208211734420.png)
+![image-20240208211734420](figures/vtune-viewer1.png)
 
 ## Extra info: ITT API for tracemarker instrumentation
 
