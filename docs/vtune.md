@@ -89,7 +89,7 @@ vtune-backend --data-directory <your directory>
 vtune-backend --web-port ${MYPORT} --data-directory <your directory>
 ```
 
-For **\<your directory\>**, you need to put the parent location where your results are located. For instance, if your results are located in `/u/bfr4xr/p2-concurrency/exp2/r000hs`, then **\<your directory\>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
+For **<your directory>**, you need to put the parent location where your results are located. For instance, if your results are located in `/u/bfr4xr/p2-concurrency/exp2/r000hs`, then **<your directory>** should be `--data-directory /u/bfr4xr/p2-concurrency/exp2`.
 If you successfully launch vtune-backend, you will see similar lines like below:
 ![alt text](figures/vtune-backend.png)
 
@@ -108,6 +108,8 @@ ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
 This technique is called SSH Tunneling, which maps the server's 38881 port to your local machine's 38881 port. As a result, it transports data from the remote server to the local server. See [this](https://www.ssh.com/academy/ssh/tunneling) for more. 
 
 > Note: You need two SSH connections with this task: one launches "vtune" and "vtune-backend"; the other makes a connection for **SSH tunneling**
+
+VSCode users may also try its support for "port forwarding". https://code.visualstudio.com/docs/remote/ssh#_forwarding-a-port-creating-ssh-tunnel
 
 Tips: if vtune-backend is restarted and your local browser shows no content, try to rebuild the SSH tunnel. 
 
