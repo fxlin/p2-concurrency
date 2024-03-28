@@ -1,0 +1,700 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../exp2/">
+      
+      
+        <link rel="next" href="../cmake/">
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>/vtune - p2-concurrency</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#using-intel-vtune-the-modern-x86-profiler" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="p2-concurrency" class="md-header__button md-logo" aria-label="p2-concurrency" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            p2-concurrency
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              /vtune
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../exp1/" class="md-tabs__link">
+      exp1
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../exp2/" class="md-tabs__link">
+      exp2
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
+      /vtune
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../cmake/" class="md-tabs__link">
+      /cmake
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../measurement/" class="md-tabs__link">
+      /tracing
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="p2-concurrency" class="md-nav__button md-logo" aria-label="p2-concurrency" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    p2-concurrency
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exp1/" class="md-nav__link">
+        exp1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exp2/" class="md-nav__link">
+        exp2
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          /vtune
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        /vtune
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-vtune" class="md-nav__link">
+    Why VTune
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    Naming
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vtune-documents" class="md-nav__link">
+    VTune documents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-setup" class="md-nav__link">
+    Step 0. Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-trace-collection" class="md-nav__link">
+    Step 1. Trace collection
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1. Trace collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-commands-to-execute-for-each-collection" class="md-nav__link">
+    Example commands, to execute for each collection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-are-the-profiling-results" class="md-nav__link">
+    Where are the profiling results?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-launch-vtune-backend-webserver" class="md-nav__link">
+    Step 2. Launch vtune-backend (webserver)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-view-trace-from-a-local-browser" class="md-nav__link">
+    Step 3. View trace from a local browser
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extra-info-itt-api-for-tracemarker-instrumentation" class="md-nav__link">
+    Extra info: ITT API for tracemarker instrumentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cmake/" class="md-nav__link">
+        /cmake
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../measurement/" class="md-nav__link">
+        /tracing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#why-vtune" class="md-nav__link">
+    Why VTune
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#naming" class="md-nav__link">
+    Naming
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#vtune-documents" class="md-nav__link">
+    VTune documents
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-0-setup" class="md-nav__link">
+    Step 0. Setup
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-trace-collection" class="md-nav__link">
+    Step 1. Trace collection
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1. Trace collection">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-commands-to-execute-for-each-collection" class="md-nav__link">
+    Example commands, to execute for each collection
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#where-are-the-profiling-results" class="md-nav__link">
+    Where are the profiling results?
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-2-launch-vtune-backend-webserver" class="md-nav__link">
+    Step 2. Launch vtune-backend (webserver)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-view-trace-from-a-local-browser" class="md-nav__link">
+    Step 3. View trace from a local browser
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extra-info-itt-api-for-tracemarker-instrumentation" class="md-nav__link">
+    Extra info: ITT API for tracemarker instrumentation
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="using-intel-vtune-the-modern-x86-profiler">Using Intel VTune, the modern x86 profiler</h1>
+<p>This page describes VTune setup relevant to our experiments. It contains pointers to various information. </p>
+<h2 id="why-vtune">Why VTune</h2>
+<p>For performance debugging like this, our "roll-it-your-own" manual code instrumentation can be too rudimentary. Modern profilers have been crucial. In short, programmer launches a tool ("profiler") which in turns launches the target program to be profiled. The profiler collects key information about target program execution, and presents the results to developers for post-analysis.</p>
+<p>Over the past decade, profiling has seen tremendous improvement, evolving from software-based instrumentation to hardware-assisted sampling. Today, profilers can have very low overhead. </p>
+<h2 id="naming">Naming</h2>
+<p><strong>VTune</strong> is Intel's profiler. Prior to 2018 it was called Intel "VTune Amplifier" (a marketing term). There are still some old documents online with the latter name. Many of the current VTune executables are still named with the "amplxe-" prefix. Today it is called "oneAPI VTune". </p>
+<h2 id="vtune-documents">VTune documents</h2>
+<p>VTune's <a href="https://software.intel.com/content/www/us/en/develop/tools/vtune-profiler/get-started.html">front page</a> feature short articles &amp; videos. Recommended readings: </p>
+<ul>
+<li>A quick introduction. This <a href="https://software.intel.com/content/www/us/en/develop/videos/introduction-to-intel-vtune-amplifier.html">video</a> (7 min)</li>
+<li>A case study on profiling Linux program. This <a href="https://software.intel.com/content/www/us/en/develop/videos/finding-application-hotspots-on-a-linux-system-with-intel-vtune-amplifier-xe.html">video</a> (4.5min)</li>
+<li>About CPU instruction pipeline: this <a href="https://techdecoded.intel.io/quickhits/what-you-need-to-know-about-the-instruction-pipeline/?elq_cid=3074796&amp;erpm_id=5831526#gs.9eq2sk">video</a> and <a href="https://techdecoded.intel.io/resources/understanding-the-instruction-pipeline/?-1882156948.1541449095&amp;erpm_id=3147218&amp;elq_cid=3074796&amp;erpm_id=5831526#gs.9ee57j">this article</a> . A good refresher on CPU architecture and for understanding architecture profiling results. </li>
+</ul>
+<p>There are more and you may skim them.</p>
+<p>The official user guide is <a href="https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top.html">here</a>. It's long and you do NOT have to read from back to end. Just make sure when you Google/Bing (e.g. "vtune threading profiling"), ONLY pick results coming from this user guide. </p>
+<h2 id="step-0-setup">Step 0. Setup</h2>
+<p>In our experiments, we run and profile our program on the <strong>server machine</strong> and view profile results on your <strong>local machine</strong> (Windows/Linux/Mac) from a browser.</p>
+<p>First, add VTune to the executable path: </p>
+<pre><code>source /opt/intel/vtune_profiler/vtune-vars.sh
+export INTEL_LIBITTNOTIFY64=/opt/intel/vtune_profiler/lib64/runtime/libittnotify_collector.so
+</code></pre>
+<p>Do this every time you login to the server. Or you can simply do "source env-vtune.sh" (a script provided to you). </p>
+<p>Verify that vtune can be found: </p>
+<pre><code>$ which vtune
+/opt/intel/vtune_profiler_2020.2.0.610396/bin64/vtune
+$ which vtune-backend
+/opt/intel/vtune_profiler_2020.2.0.610396/bin64/vtune-backend
+</code></pre>
+<p><a href="# https://software.intel.com/content/www/us/en/develop/documentation/vtune-help/top/api-support/instrumentation-and-tracing-technology-apis/basic-usage-and-configuration/configuring-your-build-system.html#configuring-your-build-system">Reference</a> </p>
+<h2 id="step-1-trace-collection">Step 1. Trace collection</h2>
+<p>Develop code on the server remotely (e.g. via VS code). Write code -&gt; build binary -&gt; (test to make sure it works correctly). </p>
+<p>Next, profile the program with VTune. To do so, from the server command line: </p>
+<h3 id="example-commands-to-execute-for-each-collection">Example commands, to execute for each collection</h3>
+<pre><code># hotspot analysis
+vtune -collect hotspot -knob sampling-mode=hw ./myprogram
+
+# threading analysis
+vtune -collect threading -knob sampling-and-waits=hw ./myprogram
+
+# microarchitecture analysis
+vtune -collect uarch-exploration ./myprogram
+
+# sample command to profile the assignment program
+vtune -collect hotspot -knob sampling-mode=hw ./list-p --iterations=100M --threads=1 --parts=1
+</code></pre>
+<p>(<code>-collect hotspot</code> seems the same as <code>-collect hotspots</code>)</p>
+<h3 id="where-are-the-profiling-results">Where are the profiling results?</h3>
+<p>They are stored in a subdirectory automatically named as, e.g. "r000tr/", "r014ue/", "r027hs/". </p>
+<p>The numbers are assigned by VTune in an ascending manner. The last two letters are the analysis type. tr-"threading", ue-"microarchitecture exploration", "hs"-hotspot. </p>
+<h2 id="step-2-launch-vtune-backend-webserver">Step 2. Launch vtune-backend (webserver)</h2>
+<p>We will launch "vtune-backend'' on the server, which will present the profiling results over web UI: </p>
+<pre><code class="language-bash"># Use a random port (recommended)
+vtune-backend --data-directory &lt;your directory&gt; 
+
+# Use a specific port, run &quot;source env-tune.sh&quot; before below 
+vtune-backend --web-port ${MYPORT} --data-directory &lt;your directory&gt;
+</code></pre>
+<p>For <strong><your directory></strong>, you need to put the parent location where your results are located. For instance, if your results are located in <code>/u/bfr4xr/p2-concurrency/exp2/r000hs</code>, then <strong><your directory></strong> should be <code>--data-directory /u/bfr4xr/p2-concurrency/exp2</code>.
+If you successfully launch vtune-backend, you will see similar lines like below:
+<img alt="alt text" src="../figures/vtune-backend.png" /></p>
+<p>In this case, the port number is <code>38881</code>. </p>
+<h2 id="step-3-view-trace-from-a-local-browser">Step 3. View trace from a local browser</h2>
+<p>Make <strong>another</strong> SSH connection (from your local machine to the server) with the port from the output above, e.g. </p>
+<pre><code class="language-bash"># From your local machine (Windows: PowerShell/VSCode; Mac: Terminal)
+ssh -L 38881:127.0.0.1:38881 bfr4xr@granger2.cs.virginia.edu
+# NOTE: 38881 is just an example; use your own port
+</code></pre>
+<p>This technique is called SSH Tunneling, which maps the server's 38881 port to your local machine's 38881 port. As a result, it transports data from the remote server to the local server. See <a href="https://www.ssh.com/academy/ssh/tunneling">this</a> for more. </p>
+<blockquote>
+<p>Note: You need two SSH connections with this task: one launches "vtune" and "vtune-backend"; the other makes a connection for <strong>SSH tunneling</strong></p>
+</blockquote>
+<p>VSCode users may also try its support for "port forwarding". https://code.visualstudio.com/docs/remote/ssh#_forwarding-a-port-creating-ssh-tunnel</p>
+<p>Tips: if vtune-backend is restarted and your local browser shows no content, try to rebuild the SSH tunnel. </p>
+<p>Next, fire your local browser and paste the above URL (e.g. https://127.0.0.1:38881)</p>
+<p>If you access the VTune webUI for the first time, you will see a prompt to input a passphrase. Insert any passphrase as you want.
+<img alt="alt text" src="../figures/vtune-passphrase.png" /></p>
+<p>If you are successfully connected then you should see something like this:
+<img alt="alt text" src="../figures/vtune-viewer.png" /></p>
+<p>Click to open a trace: </p>
+<p><img alt="image-20240208211734420" src="../figures/vtune-viewer1.png" /></p>
+<h2 id="extra-info-itt-api-for-tracemarker-instrumentation">Extra info: ITT API for tracemarker instrumentation</h2>
+<!---- TODO--->
+
+<p>To visualize how workers have grabbed parts to work on, we can lightly instrument our source with VTune's ITT API. The API allows us to programmatically add markers to the VTune timeline. </p>
+<p>This is used in <a href="../exp2/#attempt-3-eliminate-stragglers-list-pml">exp2</a> for visualizing stragglers. </p>
+<p>To learn the use of API by example, search for "USE_VTUNE" in the project source code provided to you.</p>
+<p><em>Changelog</em></p>
+<p><em>2/8/2024: update to use vtune-backend and browser</em> </p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>

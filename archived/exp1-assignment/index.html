@@ -1,0 +1,548 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      <link rel="icon" href="../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>Races and Synchronization - p2-concurrency</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#races-and-synchronization" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="p2-concurrency" class="md-header__button md-logo" aria-label="p2-concurrency" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            p2-concurrency
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Races and Synchronization
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../exp1/" class="md-tabs__link">
+      exp1
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../exp2/" class="md-tabs__link">
+      exp2
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../vtune/" class="md-tabs__link">
+      /vtune
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../cmake/" class="md-tabs__link">
+      /cmake
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../../measurement/" class="md-tabs__link">
+      /tracing
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="p2-concurrency" class="md-nav__button md-logo" aria-label="p2-concurrency" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    p2-concurrency
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exp1/" class="md-nav__link">
+        exp1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../exp2/" class="md-nav__link">
+        exp2
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../vtune/" class="md-nav__link">
+        /vtune
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../cmake/" class="md-nav__link">
+        /cmake
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../measurement/" class="md-nav__link">
+        /tracing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#short-qa-10" class="md-nav__link">
+    Short Q&amp;A (10%)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-zoom-in-the-scene-of-race-condition-20" class="md-nav__link">
+    1. Zoom in the scene of race condition (20%)
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-use-spinlock-cas-30" class="md-nav__link">
+    2. Use spinlock &amp; CAS (30%)
+  </a>
+  
+    <nav class="md-nav" aria-label="2. Use spinlock &amp; CAS (30%)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example-output" class="md-nav__link">
+    Example output
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deliverable" class="md-nav__link">
+    Deliverable:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-measure-slowdown-caused-by-synchronization-40" class="md-nav__link">
+    3. Measure slowdown caused by synchronization (40%)
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="races-and-synchronization">Races and Synchronization</h1>
+<p><strong>cs4414/6456 students: this is just a sample. Please refer to the official assignment.</strong></p>
+<p>NOTE: this experiment should be finished on the <strong>granger1</strong> server. NOT <strong>labsrv06</strong> which many of you use in project 1!</p>
+<h2 id="short-qa-10">Short Q&amp;A (10%)</h2>
+<ul>
+<li>How many threads that can run simultaneously (i.e. thread-level parallelism offered by CPU hardware) on the lab server? If you are using a different machine, state it. </li>
+<li>What does pthread_join() do in the given code? </li>
+<li>Why concurrent, unsynchronized updates to <code>the_counter</code> leads to program errors? </li>
+<li>The given counter.c invokes <code>atexit()</code>. What does the function do? </li>
+</ul>
+<h2 id="1-zoom-in-the-scene-of-race-condition-20">1. Zoom in the scene of race condition (20%)</h2>
+<p>Here is the assembly of function <code>add(long long *pointer, long long value)</code>, as dumped from objdump. Note that without assuming x86 knowledge from you, I showed the ARMv8 version below (compiled with -O2). </p>
+<pre><code class="language-asm">640 0000000000001600 &lt;add&gt;:
+641     long long sum = *pointer + value;
+642        f9400002    ldr x2, [x0]
+643        8b010041    add x1, x2, x1
+644     *pointer = sum;
+645        f9000001    str x1, [x0]
+646 }
+647        d65f03c0    ret
+</code></pre>
+<p>Read the assembly and answer: </p>
+<p>i) How many bits in a <code>long long</code> type of integer? </p>
+<p>ii) Point out which instructions (by their line numbers above) constitute the window for race condition. </p>
+<p>iii) Will race condition still exist, if we run the program with multiple threads but on a single-core machine?</p>
+<h2 id="2-use-spinlock-cas-30">2. Use spinlock &amp; CAS (30%)</h2>
+<p>Add the following mechanisms to the source code: </p>
+<ul>
+<li>one that protects the add by a spin-lock, enabled by a <strong>--sync=s</strong> option. You will have to implement your own spin-lock operation. </li>
+<li>one that performs the add using compare-and-swap (CAS) primitives to ensure atomic updates to the shared counter, enabled by a <strong>--sync=c</strong> option. Note the name: compare-and-swap is the same as compare-and-exchange. </li>
+</ul>
+<p>The provided code can already parse these new options! :wink:</p>
+<h3 id="example-output">Example output</h3>
+<p>Before (by the give code)</p>
+<pre><code class="language-bash">$./counter --iterations=10000 --threads=10 --sync=s
+test=add-s threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=5640178 avgTime(ns)=28 count=-10113
+$./counter --iterations=10000 --threads=10 --sync=c
+test=add-c threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=4469589 avgTime(ns)=22 count=-7513
+</code></pre>
+<p>After (expected from your code). With with spinlocks and CAS, the final count value is integral, i.e. ==0. </p>
+<pre><code class="language-bash">$./counter --iterations=10000 --threads=10 --sync=s
+test=add-s threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=27917650 avgTime(ns)=139 count=0
+$./counter --iterations=10000 --threads=10 --sync=c
+test=add-c threadNum=10 iterations=10000 numOperation=200000 runTime(ns)=20609670 avgTime(ns)=103 count=0
+</code></pre>
+<p><strong>Implementation hints</strong>: both spinlock and CAS shall be implemented using the GCC's atomic built-ins. Since the built-ins are architecture-independent, you do not have to write any assembly. </p>
+<ul>
+<li>
+<p>The documentation can be found <a href="https://gcc.gnu.org/onlinedocs/gcc/_005f_005fatomic-Builtins.html">here</a>. Some related <a href="https://stackoverflow.com/questions/13941385/using-gcc-atomic-builtins">discussion</a>. </p>
+</li>
+<li>
+<p>Useful functions include  <code>__atomic_compare_exchange_n()</code> and <code>__atomic_store_n()</code></p>
+</li>
+<li>These functions require memory order, for which you may specific <code>__ATOMIC_SEQ_CST</code>.  (Q: could other memory order work?)</li>
+<li>Note: older GCC offers <code>__sync_XXX</code> built-ins, which are still supported today for backward compatibility. Avoid them. They are deprecated by the __atomic builtins. </li>
+</ul>
+<p>Search for "todo" in the given source code for extra hints. </p>
+<h3 id="deliverable">Deliverable:</h3>
+<p>[upload a standalone tarball named as p2-1-2.tar.gz] </p>
+<h2 id="3-measure-slowdown-caused-by-synchronization-40">3. Measure slowdown caused by synchronization (40%)</h2>
+<p>Compare the times taken for parallel updating the shared counter: </p>
+<ul>
+<li>
+<p>Without any synchronization</p>
+</li>
+<li>
+<p>With mutex (--sync=m)</p>
+</li>
+<li>
+<p>With spinlock (--sync=s)</p>
+</li>
+<li>
+<p>With CAS (--sync=c)</p>
+</li>
+</ul>
+<p>Report the performance with the following arguments. Write a small paragraph to explain your observation. How many repeated runs did you execute? How do you ensure your executions was unaffected by other students who may run the experiments at the same time? Would different thread counts and iteration counts affect your observation? </p>
+<pre><code>./counter --iterations=100000 --threads=10 --sync=m
+./counter --iterations=100000 --threads=10 --sync=s
+./counter --iterations=100000 --threads=10 --sync=c
+</code></pre>
+<!---- To measure the time, instrument the source code with `clock_gettime()`. Take two timestamps: right before spawning all worker threads and right after all worker threads are joined. --->
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.tabs"], "search": "../../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>

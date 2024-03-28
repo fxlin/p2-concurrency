@@ -1,0 +1,898 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../exp1/">
+      
+      
+        <link rel="next" href="../vtune/">
+      
+      <link rel="icon" href="../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.6">
+    
+    
+      
+        <title>exp2 - p2-concurrency</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.558e4712.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="teal">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#scalability" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="p2-concurrency" class="md-header__button md-logo" aria-label="p2-concurrency" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            p2-concurrency
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              exp2
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-tabs__inner md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../exp1/" class="md-tabs__link">
+      exp1
+    </a>
+  </li>
+
+      
+        
+  
+  
+    
+  
+
+
+  <li class="md-tabs__item">
+    <a href="./" class="md-tabs__link md-tabs__link--active">
+      exp2
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../vtune/" class="md-tabs__link">
+      /vtune
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../cmake/" class="md-tabs__link">
+      /cmake
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../measurement/" class="md-tabs__link">
+      /tracing
+    </a>
+  </li>
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="p2-concurrency" class="md-nav__button md-logo" aria-label="p2-concurrency" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 89 89">
+  <path d="M3.136,17.387l0,42.932l42.932,21.467l-42.932,-64.399Z" />
+  <path d="M21.91,8l42.933,64.398l-18.775,9.388l-42.932,-64.399l18.774,-9.387Z" style="fill-opacity: 0.5" />
+  <path d="M67.535,17.387l-27.262,18.156l21.878,32.818l5.384,2.691l0,-53.665Z" />
+  <path d="M67.535,17.387l0,53.666l18.774,-9.388l0,-53.665l-18.774,9.387Z" style="fill-opacity: 0.25" />
+</svg>
+
+    </a>
+    p2-concurrency
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../exp1/" class="md-nav__link">
+        exp1
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          exp2
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        exp2
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-benchmark" class="md-nav__link">
+    The benchmark
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measuring-performance" class="md-nav__link">
+    Measuring performance
+  </a>
+  
+    <nav class="md-nav" aria-label="Measuring performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    Methodologies
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-source-code-structure" class="md-nav__link">
+    The source code structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-baseline-biglock" class="md-nav__link">
+    The baseline ("biglock")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-1-remove-the-big-lock-by-partitioning-list-p" class="md-nav__link">
+    Attempt 1: remove the big lock by partitioning ("list-p")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-2-avoid-expensive-memory-allocation-list-pm" class="md-nav__link">
+    Attempt 2: avoid expensive memory allocation ("list-pm")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-3-eliminate-stragglers-list-pml" class="md-nav__link">
+    Attempt 3: eliminate stragglers ("list-pml")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-4-remove-false-sharing-list-pmla" class="md-nav__link">
+    Attempt 4: remove false sharing ("list-pmla")
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vtune/" class="md-nav__link">
+        /vtune
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cmake/" class="md-nav__link">
+        /cmake
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../measurement/" class="md-nav__link">
+        /tracing
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#objectives" class="md-nav__link">
+    Objectives
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-benchmark" class="md-nav__link">
+    The benchmark
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#measuring-performance" class="md-nav__link">
+    Measuring performance
+  </a>
+  
+    <nav class="md-nav" aria-label="Measuring performance">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#metrics" class="md-nav__link">
+    Metrics
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#methodologies" class="md-nav__link">
+    Methodologies
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-source-code-structure" class="md-nav__link">
+    The source code structure
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#the-baseline-biglock" class="md-nav__link">
+    The baseline ("biglock")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-1-remove-the-big-lock-by-partitioning-list-p" class="md-nav__link">
+    Attempt 1: remove the big lock by partitioning ("list-p")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-2-avoid-expensive-memory-allocation-list-pm" class="md-nav__link">
+    Attempt 2: avoid expensive memory allocation ("list-pm")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-3-eliminate-stragglers-list-pml" class="md-nav__link">
+    Attempt 3: eliminate stragglers ("list-pml")
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attempt-4-remove-false-sharing-list-pmla" class="md-nav__link">
+    Attempt 4: remove false sharing ("list-pmla")
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="scalability">Scalability</h1>
+<p>In the previous experiment, synchronization prevents racy access to a shared variable. In this experiment, we will study the overhead of synchronization, as well as how to overcome the resultant bottleneck.  </p>
+<h2 id="objectives">Objectives</h2>
+<ul>
+<li>primary: demonstrate the ability to recognize scalability bottlenecks on data structures</li>
+<li>primary: experience with partitioning a serialized resource to improve parallelism</li>
+<li>primary: know that scalability takes a <strong>system approach</strong> and is often not as easy as one may think.</li>
+<li>primary: experience with a modern profiler </li>
+<li>secondary: experience with finding, installing, and exploiting new libraries and tools. </li>
+</ul>
+<h2 id="the-benchmark">The benchmark</h2>
+<p>We will study a simple program (list.c) that inserts 64-bit integer keys into a doubly linked list. The figure below illustrates the execution timeline. </p>
+<p><img alt="" src="../figures/design-0.png" /></p>
+<ul>
+<li>in the init phase, one thread pre-generates keys and stores them in a table in memory</li>
+<li>in the parallel phase, multiple threads read keys from the table and insert them to a shared linked list</li>
+<li>the keys can be unsorted in the table, and can be unsored in the linked list</li>
+</ul>
+<p>This benchmark is for educational purpose. The reason we use a linked list is for simplicity. A more useful concurrent data structure would be hashtable, which we will see in the exercise. </p>
+<h2 id="measuring-performance">Measuring performance</h2>
+<h3 id="metrics">Metrics</h3>
+<p>We care about two metrics: </p>
+<ol>
+<li>the program's <em>overall performance</em>, which is characterized by <strong>its aggregate throughput</strong>, i.e. key insertions per second by all threads combined. </li>
+<li><em>scalability</em>: how much the throughput increases as we use more threads (cores) in  the program. </li>
+</ol>
+<h3 id="methodologies">Methodologies</h3>
+<p>We have to run our benchmark for sufficiently long (more than a few seconds). Otherwise, the measurement will be distorted by the startup cost (cache warmup, kernel scheduling, etc.) and sampling errors (e.g. VTune samples context switches at millisecond intervals). </p>
+<p><strong>How to measure throughput?</strong>  We will instrument the benchmark source code with <em>clock_gettime</em>(), before and after the parallel phase, to measure <code>time_diff</code>.  This is shown in the figure above. Our measurement focuses on the parallel phase, and excludes the time of init phase (e.g. key generation) from measurement. </p>
+<blockquote>
+<p>Q: before we measure anything, make an educated guess of the throughput ballpark. </p>
+</blockquote>
+<p><strong>The scalability plot</strong></p>
+<p>With the same number of iterations (i.e. total number of keys to insert by each thread), we run the benchmark with different numbers of threads. Each run will report its throughput, e.g. </p>
+<pre><code>$./list --iterations=1M --threads=1 
+..
+test=list-none threadNum=1 iterations=1000000 numList=1 numOperation=1000000 runTime(ms)=115 tput(Mops)=8.63
+$./list --iterations=1M --threads=2
+..
+</code></pre>
+<p>To automate the test, we provide a boilerplate script called <code>run.sh</code>, which launches the benchmark in multiple runs. For each run, the script redirects the program's output (both stdout and stderr) to a txt file. </p>
+<pre><code class="language-bash"># see run.sh for more details
+for tr in 1 2 4 8 
+do 
+    $VTUNE $PROG --iterations=$ITER  --threads=$tr --lists=`expr $tr \* $FACTOR` &gt;&gt; $TRACEFILE 2&gt;&amp;1   
+done
+</code></pre>
+<p>You need to understand <code>run.sh</code> and make your adjustment. </p>
+<p>FYI -- A Python script <code>scripts/plot.py</code> parses multiple such txt files from a set of runs and produces a scalability plot. All plots below are generated by the Python script. Feel free to use &amp; adapt <code>plot.py</code>.  Check out its comments for details. </p>
+<p>All following experiments are done with the following parameters: 1M keys (iterations) per thread, 1-8 threads. </p>
+<h2 id="the-source-code-structure">The source code structure</h2>
+<p>We maintain one copy of source code with all the fixes (or "features") needed for scalability. These fixes can be turned on/off at the compile time, controlled via a set of compilation flags in C. When we type <code>make</code>, our makefile (generated by CMake) will build the same source code with different combinations of compilation flags, producing a series program binaries with different fixes on or off. </p>
+<p>In the discussion below, we start with all fixes off, incrementally turn on fixes, and show the resultant scalability. You will see why each fix matters and to what extent it matters. </p>
+<p>FYI -- here is a list of all the program versions we will examine. </p>
+<table>
+<thead>
+<tr>
+<th>Program name suffix ("list-XXX")</th>
+<th>list(s)</th>
+<th>memory allocation</th>
+<th>load balancing</th>
+<th>eliminating false sharing</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>N/A, aka "biglock"</td>
+<td>One big list</td>
+<td>malloc()</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>-p</td>
+<td>Partitioned lists</td>
+<td>malloc()</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>-pm</td>
+<td>Partitioned lists</td>
+<td>pre-allocated</td>
+<td>No</td>
+<td>No</td>
+</tr>
+<tr>
+<td>-pml</td>
+<td>Partitioned lists</td>
+<td>pre-allocated</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>-pmla</td>
+<td>Partitioned lists</td>
+<td>pre-allocated</td>
+<td>Yes</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="the-baseline-biglock">The baseline ("biglock")</h2>
+<p>In the first version, multiple threads insert pre-generated keys to a monolithic list. Partitioning the keys for threads to insert is easy: we split the the array in as many ranges as the worker threads, and make each worker thread work on a range of keys. To avoid corrupting the list, we need one lock for the whole list. Each thread must grab the lock before inserting any key.  The design is shown below. </p>
+<p><img alt="" src="../figures/design-1.png" /></p>
+<p>The core function is: </p>
+<pre><code class="language-C">// list.c built without any macro defined
+void* thread_func(void *thread_id) {
+    /* ... */
+    int id = *((int*)thread_id);
+    int per_part = numElements / the_config.numParts; // numParts == numThreads
+
+    for (int i = per_part * id; i &lt; per_part * (id + 1); i++) {
+            // we carefully do malloc() w/o grabbing lock
+            SortedListElement_t *p = get_element(i);
+
+            pthread_mutex_lock(&amp;mutexes[0]); // only one mutex and one list
+            SortedList_insert(&amp;lists[0], p);
+            pthread_mutex_unlock(&amp;mutexes[0]);
+     }  
+     /* ... */
+}   
+</code></pre>
+<p>In the code above, <code>get_element()</code> allocates a new list node and copies over a key from the array index <code>i</code>. The code is: </p>
+<pre><code>SortedListElement_t *get_element(int idx) {
+    SortedListElement_t *p = malloc(sizeof(SortedListElement_t));
+    p-&gt;key = keys[idx];
+    return p;
+}   
+</code></pre>
+<p><strong>Results.</strong> Type <code>make</code>, we get a program called <code>list</code>. Run <code>list</code> multiple times with different core counts (see the "scalability plot" paragraph above), we get a scalability plot. </p>
+<p><img alt="fig1" src="../figures/baseline.png" /></p>
+<p>Why does not it scale? You probably have figured out the reason. Essentially, the insertion becomes a critical section. All worker threads are serialized on this critical section. While one worker thread is in, all other threads must wait outside doing nothing. Here is a sample profiling result from VTune: </p>
+<p><img alt="" src="../figures/biglock-tr.png" /></p>
+<p>On the top, the profiling result shows that mutex lock/unlock contribute a high fraction of "spin time". The timeline on the bottom shows that all worker threads are spinning frequently (the orange portions) without doing much useful work (the brownish portions). </p>
+<p>But this does NOT explain why throughput <strong>drops</strong> as thread counts goes up, right? </p>
+<h2 id="attempt-1-remove-the-big-lock-by-partitioning-list-p">Attempt 1: remove the big lock by partitioning ("list-p")</h2>
+<p>Realizing the problem is the monolithic linked list, why don't we partition it? We can make each worker thread insert to its own list. After all keys are inserted and all worker threads are joined, the main thread simply concatenates the per-worker lists to a big one. Since we do not require the final list to be sorted, the concatenation takes O (1). The design is shown below. </p>
+<p><img alt="" src="../figures/design-2.png" /></p>
+<p>We quickly change the core code as follows, which no longer needs the big lock: </p>
+<pre><code class="language-C">// list.c compiled with -DMULTILISTS
+SortedList_t* lists = malloc(sizeof(SortedList_t) * the_config.numThreads); 
+
+void* thread_func(void *thread_id) {
+    /* ... */
+    int id = *((int*)thread_id);
+    int per_part = numElements / the_config.numThreads;
+
+    for (int i = per_part * id; i &lt; per_part * (id + 1); i++) 
+        SortedList_insert(&amp;lists[id], get_element(i));    
+    /* ... */
+}   
+</code></pre>
+<p><strong>Results.</strong> Run <code>make</code>, we get a binary called <code>list-m</code> which includes the above feature by <code>-DMULTILISTS</code>. </p>
+<p>Removing the lock helps quite a lot! However, we are still not scaling ideally. :dizzy_face:</p>
+<p><img alt="" src="../figures/list-p.png" /></p>
+<h2 id="attempt-2-avoid-expensive-memory-allocation-list-pm">Attempt 2: avoid expensive memory allocation ("list-pm")</h2>
+<p><strong>The problem.</strong> The profiling result of <code>list-m</code> shows that <code>malloc()</code> is the top hotspot, taking more than 50% of the total CPU time. This sounds right: our thread workers calls <code>malloc()</code> at high rates, and <code>malloc()</code> has scaling bottleneck in itself. </p>
+<blockquote>
+<p>The second hottest item is [vmlinux] which is the kernel. Why is our benchmark kernel-intensive? </p>
+</blockquote>
+<p><img alt="" src="../figures/list-m-malloc.png" /></p>
+<p><strong>The fix.</strong> You may try "scalable memory allocators", such as <a href="http://jemalloc.net/">jemalloc</a>, <a href="http://hoard.org/">Hoard</a>, and the one from Intel's TBB. Thanks to years of R&amp;D on scalable allocation, these allocators for sure will scale better than the good and old <code>malloc</code>. However, our microbenchmark, where many threads allocate small memory pieces in tight loops, is probably too adversarial and can defeat them easily. </p>
+<p>The right way to fix? The spirit is to aggressively specialize memory allocation according to our workloads Have a memory pool populated with many pre-allocated same-size list nodes. Whenever a worker thread requests a new node, it can quickly grab a free node from the pool; the pool is designed in a way such that <em>most</em> allocation/free requests can be fulfilled without locking the whole pool. This is also the idea behind the Linux kernel's <a href="https://hammertux.github.io/slab-allocator">slab allocator</a>.</p>
+<p>As compared to generic, complex memory allocators, specialization gives us simplicity, and therefore low cost and scalability. </p>
+<p>However, designing a scalable memory pool is easier saying than doing. There are many details to take care of. Without too much distraction into it, we fix our memory allocation problem by "emulating" the effect of such a memory pool. The main thread pre-allocates all list nodes in one big memory chunk by one <code>malloc()</code> in the init phase. This simplistic mechanism has many limitations, e.g. cannot free nodes individually but has to free all nodes as a whole. But you get the idea. </p>
+<blockquote>
+<p>Can you try jemalloc on the benchmark? </p>
+</blockquote>
+<p>We pre-allocate a big an array of list nodes in <code>main()</code>, and change the way thread workers get elements: </p>
+<pre><code class="language-C">// list.c compiled with -DUSE_PREALLOC
+SortedListElement_t *alloc_elements(int numElements) {
+    /* ... */
+    SortedListElement_t * elements = malloc(sizeof(SortedListElement_t) * numElements);
+    /* ... */
+}
+
+SortedListElement_t *get_element(int idx) {
+    return &amp;elements[idx];
+}
+</code></pre>
+<p><img alt="fig1" src="../figures/list-pm.png" /></p>
+<p><strong>The results.</strong> Run <code>make</code> to produce a binary called <code>list-pm</code>, which includes the above features with flags <code>"-DUSE_PREALLOC -DUSE_MULTILISTS"</code>.  </p>
+<p>Viola! Our throughput ("nomalloc") is 4x-5x better without expensive malloc() in worker threads. But it still <em>scales</em> poorly. </p>
+<h2 id="attempt-3-eliminate-stragglers-list-pml">Attempt 3: eliminate stragglers ("list-pml")</h2>
+<p><strong>The problem.</strong> It's time to summon VTune again. Look at the threading timeline closely: we notice that all worker threads can proceed at different rates. Although they i) insert the same number of keys and ii) start more or less at the same time (near 1000ms), they take very different times to complete! The difference could be as high as 3x! The slower workers (called "straggler", e.g. the ones on the bottom) become the bottleneck, as the main thread has to wait for all workers to complete.  </p>
+<p>Now, the more worker threads we have, the more likely we have stragglers, and the worse the problem is! This limits scalability. </p>
+<p>Stragglers are a generic performance issue, e.g. when you run distributed workloads across multiple machines within a data center. </p>
+<blockquote>
+<p>Note: on the timeline below, our instrumentation with VTune's ITT API is visible -- we declared multiple per-thread "tasks" which emerge as the colorful brackets above each thread's timeline. This feature is enabled by -DUSE_VTUNE. </p>
+</blockquote>
+<p><img alt="" src="../figures/list-m-timeline-8t.png" /></p>
+<p>Why stragglers exist? Our target machine has abundant CPU cores (20), many of them are still idle in this experiment which uses 8 cores. There are multiple causes. 1) Nondeterminism exists everywhere in commodity software/hardware, from memory bus to the kernel CPU scheduler. 2) Our workers compete for shared hardware resources -- among themselves and with other tasks in the system. </p>
+<p>After all, our program has to <em>accommodate</em> the fact that threads may proceed at quite different rates!</p>
+<p><strong>The fix.</strong> Our problem is that we assign the same amount of work to every worker (i.e. the same number of keys). Instead, we should dynamically adjust the amount of work for workers depending on their progresses. </p>
+<p>We achieve this by slicing the input key array into smaller parts, where the number of parts, e.g. 64,  is much higher than the number of worker threads, e.g. 8. In the parallel phase, each worker will try to grab a part to work on. We put an atomic flag for each part, whichever worker grabs it will set the flag so that other workers can skip this part. </p>
+<p><img alt="" src="../figures/design-3.png" /></p>
+<p>Accordingly, we upgrade the code for worker thread: </p>
+<pre><code class="language-C">void* thread_func(void* thread_id) {
+    /* ... */
+    for (int part = 0; part &lt; the_config.numParts; part++) { // go through all parts of keys
+        if (__sync_lock_test_and_set(&amp;spinLocks[part], 1) == 0) { // try to grab a part of keys to work on
+            for (int i = per_part * part; i &lt; per_part * (part + 1); i++)       { // we've got a part!
+                SortedList_insert(&amp;lists[id], get_element(i));
+            }
+    }
+    /* ... */
+}
+</code></pre>
+<p>Some rationale behind determining the size of each part (and hence how many parts). </p>
+<ul>
+<li>Each part has to be sufficiently small so that workload is evenly balanced across workers. </li>
+<li>Each part cannot be too small otherwise the overhead from grabbing parts (e.g. setting atomic flags) will start to emerge. </li>
+</ul>
+<p>Often, # of parts = 4x # of numThreads is enough to diminish stragglers.</p>
+<p><strong>The results.</strong> Run <code>make</code> to produce <code>list-pml</code>, which includes the above features with flags <code>"-DUSE_PREALLOC -DUSE_LB"</code>.  Run VTune again. </p>
+<p>Hooray! Now all workers end more or less at the same time, indicating our fix is effective. Note the colorful brackets in the figure below. Each bracket corresponds to a worker working on one part of keys. it's fun to watch how our workers share workloads <em>dynamically</em>. In this example, fast workers can finish 5 parts while slower workers can only finish 3. As we have more worker threads and more parts, the effect will be more pronounced!</p>
+<p><img alt="" src="../figures/steal.png" /></p>
+<p>After load balancing, our scalability plot looks as the following. It's notably better (especially for a larger number of threads) but still not ideal. Why?</p>
+<p><img alt="fig1" src="../figures/list-pml.png" /></p>
+<h2 id="attempt-4-remove-false-sharing-list-pmla">Attempt 4: remove false sharing ("list-pmla")</h2>
+<p><strong>The problem.</strong> Compare the run with ONE worker and the run with TWO workers. (The output is produced by using our lightweight, in-house tracing <a href="../measurement/">functions</a>) You will see <strong>both</strong> workers in the second run takes much longer time ("tr done", 360ms+ vs 271ms) than the <strong>single</strong> worker in the first run. </p>
+<pre><code>./list-pml --iterations=10M --threads=1
+--------------------k2_measure_flush------#samples=6---------------
+                                     msg   delta(tod/us)        now(tod)
+*                                    init               0      3186721656
+                                init done           32166      3186753822
+                              tr launched              52      3186753874
+                                 tr start              44      3186753918
+                                  tr done          271050      3187024968
+                                tr joined             116      3187025084
+ TOTAL: 303428 us(gettimeofday)  tracebuf overflow: 0
+---------------------------------------------------------------
+
+./list-pml --iterations=10M --threads=2
+--------------------k2_measure_flush------#samples=8---------------
+                                     msg   delta(tod/us)        now(tod)
+*                                    init               0      3378084426
+                                init done           33455      3378117881
+                              tr launched              93      3378117974
+                                 tr start               3      3378117977
+                                 tr start              42      3378118019
+                                  tr done          360317      3378478336
+                                  tr done           18851      3378497187
+                                tr joined             112      3378497299
+ TOTAL: 412873 us(gettimeofday)  tracebuf overflow: 0
+---------------------------------------------------------------
+</code></pre>
+<p>In the second run, the two workers seem to slow down each other. However, by design, we intent these two workers to be independent without sharing anything such as locks. How could this happen? </p>
+<p>It turns our that they indeed share something, albeit implicitly. </p>
+<p>Recall that we allocate the heads of per-worker lists back to back with the following code: </p>
+<pre><code class="language-C">SortedList_t * alloc_lists(int n_lists) {
+    /* ... */
+    lists = malloc(sizeof(SortedList_t) * the_config.numThreads);
+    /* ... */
+}   
+</code></pre>
+<p>Each list head is only as small as tens of bytes. Therefore, multiple adjacent list heads fit into the same CPU L1 cache line. As each worker inserts nodes by updating its own list head frequently, a cache line could be bumping among different CPU cores these workers run on; this causes a lot of core-to-core traffic and causes performance degradation. </p>
+<p>You may have learnt from the architecture course: this is called <strong>false sharing</strong>. To refresh your memory, read about it <a href="https://software.intel.com/content/www/us/en/develop/articles/avoiding-and-identifying-false-sharing-among-threads.html">here</a> and the first several slides of this <a href="http://groups.csail.mit.edu/commit/papers/2013/falsesharing-sc13-slides.pdf">deck</a>. </p>
+<p>There are multiple mechanisms to remove false sharing, e.g. <a href="https://lwn.net/Articles/258238/">percpu</a> variables in Linux. The common idea is placing those memory objects far apart so that they won't be mapped to the same CPU cache line. In this experiment, we achieve so by manual padding.  We enlarge a list head by enclosing extra bytes at its end. </p>
+<pre><code class="language-c">struct SortedListElement_padding {
+  struct SortedListElement *prev;
+  struct SortedListElement *next;
+  my_key_t key;
+  char padding[4096];
+};
+</code></pre>
+<p>As a result, we push the fields (<code>prev</code> and <code>next</code>) that are frequently updated to separate CPU cache lines. </p>
+<p><img alt="" src="../figures/design-4.png" /></p>
+<p><strong>The results.</strong> Run <code>make</code> to produce a binary called <code>list-pmla</code>, which includes all the above features with flags <code>"-DUSE_PREALLOC -DUSE_LB -DUSE_PADDING"</code>.  After this change, we are much close to linear scaling! :happy:</p>
+<p><img alt="" src="../figures/list-pmla.png" /></p>
+<h1 id="conclusion">Conclusion</h1>
+<p>Now you should have basic knowledge on scalability concepts, the tools, and some common pitfalls. </p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.tabs"], "search": "../assets/javascripts/workers/search.e5c33ebb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.51d95adb.min.js"></script>
+      
+    
+  </body>
+</html>

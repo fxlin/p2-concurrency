@@ -1,0 +1,30 @@
+on i5: 
+it's weird that even commenting out SortedList_insert, the worker thread takes non trivial time to finish. 
+however, once have naive padding, the problem is gone. 
+
+the problem cannot be reproduced on other machines, e.g. makalu, where padding helps as expected
+
+reason still unknown
+
+xzl@minibox:/data/teaching/race-ucla-p2/src/lab2b$ ./lab2_list-steal --iterations=4000000 --threads=4 --lists=16
+init 16 sub lists. sizeof(SortedList_t) = 65560
+init 4 mutex
+list 0: 0 items; list 1: 0 items; list 2: 0 items; list 3: 0 items;
+total 0 items
+--------------------k2_measure_flush------#samples=12---------------
+                                     msg delta  now  delta(tod/us)        now(tod)    mb_ov
+*                                    init    0    0              0       605232149        0
+                                init done    0    0            122       605232271        0
+                              tr launched    0    0            198       605232469        0
+                                 tr start    0    0             19       605232488        0
+                                 tr start    0    0             35       605232523        0
+                                 tr start    0    0             42       605232565        0
+                                 tr start    0    0             23       605232588        0
+                                  tr done    0    0         515353       605747941        0
+                                  tr done    0    0          10404       605758345        0
+                                  tr done    0    0          37542       605795887        0
+                                  tr done    0    0           3023       605798910        0
+                                tr joined    0    0             36       605798946        0
+ TOTAL: 0 64cycles 566761 us(gettimeofday)
+---------------------------------------------------------------
+test=list-m-16part threadNum=4 iterations=4000000 numList=16 numOperation=16000000 runTime(ms)=566
